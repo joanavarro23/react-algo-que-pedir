@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+        contents: write
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js
@@ -25,6 +27,7 @@ jobs:
     - name: Run the tests and generate coverage report
       run: npm test -- --coverage
     - name: Adding coverage badge
+      if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
       uses: demyanets/angular-coverage-badges-action@v1
       with:
         coverage-summary-path: ./coverage/coverage-summary.json
