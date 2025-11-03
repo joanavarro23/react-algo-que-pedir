@@ -34,12 +34,12 @@ const config = defineConfig({
     'html, body': {
         maxWidth: '400px',
         margin: '0 auto',
-        backgroundColor: 'var(--chakra-colors-fondo)',
+        backgroundColor: 'fondo',
         fontFamily: 'body',
       },
       a: {
         textDecoration: 'none',
-        color: 'var(--chakra-colors-textoPrimario)',
+        color: 'textoPrimario',
       },
   },
 })

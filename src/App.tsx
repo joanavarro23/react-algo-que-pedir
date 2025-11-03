@@ -1,5 +1,4 @@
 import { Box, Link, Text } from '@chakra-ui/react'
-import './App.css'
 
 import { AlgoQuePedirRouter } from './routes/routes' 
 import { Button } from './components/boton/boton'
