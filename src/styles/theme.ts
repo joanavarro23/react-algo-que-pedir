@@ -18,9 +18,6 @@ const config = defineConfig({
       fonts: {
         body: { value: '"Nata Sans", sans-serif' },
       },
-      breakpoints: {
-        mobile: { value: '400px'},
-      }
     },
 
     // Se aplica la "receta" de cada componente de manera reutilizable
@@ -32,10 +29,9 @@ const config = defineConfig({
   // Estilos globales en general
   globalCss: {
     'html, body': {
-        maxWidth: '400px',
-        margin: '0 auto',
+        margin: '0',
+        padding: '0',
         backgroundColor: 'fondo',
-        fontFamily: 'body',
       },
       a: {
         textDecoration: 'none',

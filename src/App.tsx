@@ -5,11 +5,10 @@ import { Button } from './components/boton/boton'
 
 const App = () => {
   return (
-      // <div className="App">
+      // <Box maxW="400px" mx="auto" w="100%">
       //   <AlgoQuePedirRouter />
-      // </div>
-    <div>
-   
+      // </Box>
+    <Box maxW="400px" mx="auto" w="100%">
       <h3>Chakra hola hola</h3>
       <Button variant='secundario'>Boton</Button>
       
@@ -18,9 +17,7 @@ const App = () => {
       <Button variant='primario'>
         Guardar
       </Button>
-
-    </div>
-
+    </Box>
   )
 }
 
