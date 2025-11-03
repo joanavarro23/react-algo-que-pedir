@@ -1,7 +1,8 @@
-import { Box, Button, Text } from '@chakra-ui/react'
+import { Box, Link, Text } from '@chakra-ui/react'
 import './App.css'
 
 import { AlgoQuePedirRouter } from './routes/routes' 
+import { Button } from './components/boton/boton'
 
 const App = () => {
   return (
@@ -9,16 +10,16 @@ const App = () => {
       //   <AlgoQuePedirRouter />
       // </div>
     <div>
-    <Box bg="bg" color="text" p={20}>
+   
       <h3>Chakra hola hola</h3>
-      <Button>Boton</Button>
+      <Button variant='secundario'>Boton</Button>
       
-      <Text>Hola a todos 💙</Text>
-
-      <Button bg="button.primary" color="white" _hover={{ bg: 'button.secondary' }}>
+      <Text color="textoPrimario">Hola a todos 💙</Text>
+      <Link href="#">Ver más</Link>
+      <Button variant='primario'>
         Guardar
       </Button>
-    </Box>
+
     </div>
 
   )
