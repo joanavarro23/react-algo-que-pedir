@@ -7,7 +7,9 @@ export const PerfilUsuario = () => {
             {/* Preview de la informacion del usuario */}
            <Heading as='h1'>Perfil</Heading>
            <VStack>
-                {/* <Avatar.Image src='public/usuario-chica.png'/> */}
+                <Avatar.Root>
+                    <Avatar.Image src='/usuario-chica.png'/>
+                </Avatar.Root> 
                 <Heading as='h2'>Nombre</Heading>
                 <Text color='parrafos'>Email</Text>
            </VStack>
