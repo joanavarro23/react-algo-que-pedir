@@ -1,37 +1,46 @@
 // TEMAS GLOBALES, VARIABLES Y ESTILOS, se pasa a chakra
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react'
+import { buttonRecipe } from '@chakra-ui/react/theme'
 
+// Aca se define el "tema" base para todo el proyecto
 const config = defineConfig({
   theme: {
     tokens: {
       colors: {
-        primary: { value: '#0088CC' },
-        secondary: { value: '#F6AD55' },
-        text: { value: '#1A202C' },
-        bg: { value: '#F9FAFB' },
+        principal: { value: '#FF0000' },
+        secundario: { value: '#FFFFFF' },
+        textoPrimario: { value: '#000000' },
+        textoSecundario: { value: '#3b3b3b' },
+        bordes: { value: '#dddddd' },
+        fondo: { value: 'rgb(233, 233, 233)' },
+        parrafos: { value: '#97749d' },
       },
       fonts: {
-        heading: { value: '\'Poppins\', sans-serif' },
-        body: { value: '\'Poppins\', sans-serif' },
+        body: { value: '"Nata Sans", sans-serif' },
       },
+      breakpoints: {
+        mobile: { value: '400px'},
+      }
     },
 
-    // Alias semánticos (opcionales, pero recomendables)
-    semanticTokens: {
-      colors: {
-        bg: {
-          DEFAULT: { value: '{colors.bg}' },
-          primary: { value: '{colors.primary}' },
-        },
-        text: {
-          DEFAULT: { value: '{colors.text}' },
-        },
-        button: {
-          primary: { value: '{colors.primary}' },
-          secondary: { value: '{colors.secondary}' },
-        },
+    // Se aplica la "receta" de cada componente de manera reutilizable
+    recipes: {
+      button: buttonRecipe,
+    }
+  },
+  
+  // Estilos globales en general
+  globalCss: {
+    'html, body': {
+        maxWidth: '400px',
+        margin: '0 auto',
+        backgroundColor: 'var(--chakra-colors-fondo)',
+        fontFamily: 'body',
       },
-    },
+      a: {
+        textDecoration: 'none',
+        color: 'var(--chakra-colors-textoPrimario)',
+      },
   },
 })
 
