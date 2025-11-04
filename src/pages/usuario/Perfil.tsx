@@ -1,5 +1,5 @@
 import { Button } from '@/components/boton/boton'
-import { toaster } from '@/components/ui/toaster'
+import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/hooks'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
