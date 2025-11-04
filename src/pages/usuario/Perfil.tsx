@@ -4,13 +4,25 @@ import { useOnInit } from '@/customHooks/hooks'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { Avatar, Card, Field, Heading, Input, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Card, Field, Heading, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
-import type { ErrorResponse } from 'react-router-dom'
+import { FaChevronRight } from 'react-icons/fa'
+import { useNavigate, type ErrorResponse } from 'react-router-dom'
 
 export const PerfilUsuario = () => {
+    const navigate = useNavigate()
     const usuarioVacio = new Usuario()
     const [usuario, setUsuario] = useState<Usuario>(usuarioVacio)
+
+    const opciones = [
+        { label: 'Criterios de búsqueda', path: '/perfilUsuario/preferencias/criteriosBusqueda' },
+        { label: 'Ingredientes preferidos', path: '/perfilUsuario/preferencias/ingredientes' },
+        { label: 'Ingredientes a evitar', path: '/perfilUsuario/preferencias/ingredientes' },
+    ]
+
+    const gotoPreferencias = (opcion: { label: string; path: string }) => {
+        navigate(opcion.path)
+    }
 
     const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
         setUsuario({
@@ -21,7 +33,7 @@ export const PerfilUsuario = () => {
 
     const traerUsuario = async () => {
         try {
-            const usuario = await usuarioService.getById(2)
+            const usuario = await usuarioService.getById(0)
             setUsuario(usuario)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
@@ -35,7 +47,8 @@ export const PerfilUsuario = () => {
 
     const guardar = () => {
         toaster.create({
-            title: 'Usuario actualizado con éxito',
+            title: 'Usuario actualizado',
+            description: 'Los datos se actualizaron con éxito.',
             type: 'success',
         })
     }
@@ -104,9 +117,21 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack>
-                        <Text>Criterios de búsqueda</Text>
-                        <Text>Ingredientes preferidos</Text>
-                        <Text>Ingredientes a evitar</Text>
+                        {opciones.map((opcion) => (
+                            <Stack direction="row"
+                            justify="space-between"
+                            align="center"
+                            key={opcion.path}
+                            onClick={(() => gotoPreferencias(opcion))}
+                            >
+                            <Text>{opcion.label}</Text>
+                            <IconButton
+                                aria-label="Ir a sección"
+                                variant="ghost"
+                                size="sm"
+                            > <FaChevronRight /> </IconButton>
+                            </Stack>
+                        ))}
                     </Stack>
                 </Card.Body>
            </Card.Root>
