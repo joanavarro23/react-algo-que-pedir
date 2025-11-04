@@ -7,6 +7,7 @@ export const buttonRecipe = defineRecipe({
         borderRadius: '10px',
         width: '90%',
         mx: 'auto',
+        cursor: 'pointer'
     },
     variants: {
         variant: {
