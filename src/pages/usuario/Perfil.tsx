@@ -33,6 +33,13 @@ export const PerfilUsuario = () => {
         }
     }
 
+    const guardar = () => {
+        toaster.create({
+            title: 'Usuario actualizado con éxito',
+            type: 'success',
+        })
+    }
+
     useOnInit(traerUsuario)
     
     return(
@@ -104,7 +111,7 @@ export const PerfilUsuario = () => {
                 </Card.Body>
            </Card.Root>
 
-           <Button>Guardar Cambios</Button>
+           <Button onClick={guardar}>Guardar Cambios</Button>
         </Stack>
     )
 }
