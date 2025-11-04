@@ -95,7 +95,7 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root required invalid>
+                        <Field.Root required>
                             <Field.Label>Nombre</Field.Label>
                             <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
