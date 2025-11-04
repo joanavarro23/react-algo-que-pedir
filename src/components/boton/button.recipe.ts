@@ -5,7 +5,8 @@ export const buttonRecipe = defineRecipe({
         border: 'none',
         padding: '.3rem 1rem',
         borderRadius: '10px',
-        width: '100%',
+        width: '90%',
+        mx: 'auto',
     },
     variants: {
         variant: {
