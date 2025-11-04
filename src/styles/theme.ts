@@ -10,9 +10,9 @@ const config = defineConfig({
         principal: { value: '#FF0000' },
         secundario: { value: '#FFFFFF' },
         textoPrimario: { value: '#000000' },
-        textoSecundario: { value: '#3b3b3b' },
-        bordes: { value: '#dddddd' },
-        fondo: { value: 'rgba(243, 243, 243, 1)' },
+        textoSecundario: { value: '#9A6E63' },
+        bordes: { value: '#eeccbeff' },
+        fondo: { value: '#FFF9F8' },
         parrafos: { value: '#97749d' },
       },
       fonts: {
