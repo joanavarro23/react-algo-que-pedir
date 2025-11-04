@@ -9,6 +9,7 @@ import { useState, type ChangeEvent } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
+import { TextoRequerido } from '@/utils/validaciones/validacionStrategy'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
@@ -31,7 +32,15 @@ export const PerfilUsuario = () => {
     }
     useOnInit(traerUsuario)
     
+    // Validacion de los campos
+    const validarCampo = (): boolean => {
+        return true
+    }
+
     // Actualización de los campos inputs
+    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
+        setUsuario({ ...usuario, [referencia]: valor })
+    }
     // const generarUsuarioNuevo = (usuario: Usuario) => {
     //     const nuevoUsuario = Object.assign(new Usuario(), usuario)
     //     setUsuario(nuevoUsuario)
@@ -40,9 +49,6 @@ export const PerfilUsuario = () => {
     //     usuario.[referencia] = valor
     //     generarUsuarioNuevo(usuario)
     // }
-    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario({ ...usuario, [referencia]: valor })
-    }
 
     // Se guardan los cambios realizados
     const guardar = async () => {
@@ -89,33 +95,33 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root>
+                        <Field.Root required invalid>
                             <Field.Label>Nombre</Field.Label>
                             <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
                         </Field.Root>
-                        <Field.Root>
+                        <Field.Root required>
                             <Field.Label>Apellido</Field.Label>
                             <Input value={usuario.apellido} placeholder='Apellido' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('apellido', event.target.value)}/>
                         </Field.Root>
-                        <Field.Root>
+                        <Field.Root required>
                             <Field.Label>Dirección</Field.Label>
                             <Input value={usuario.direccion} placeholder='Dirección' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('direccion', event.target.value)}/>
                         </Field.Root>
-                        <Field.Root>
+                        <Field.Root required>
                             <Field.Label>Ubicación</Field.Label>
                             <Input value={usuario.ubicacion} placeholder='Ciudad, Provincia' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('ubicacion', event.target.value)}/>
                         </Field.Root>
                         <Stack direction='row'>
-                            <Field.Root>
+                            <Field.Root required>
                                 <Field.Label>Latitud</Field.Label>
                                 <Input type='number' value={usuario.latitud} placeholder='Ej: -34.61' 
                                 onChange={(event: { target: {value: unknown} }) => actualizar('latitud', event.target.value)}/>
                             </Field.Root>
-                            <Field.Root>
+                            <Field.Root required>
                                 <Field.Label>Longitud</Field.Label>
                                 <Input type='number' value={usuario.longitud} placeholder='Ej: 58.38' 
                                 onChange={(event: { target: {value: unknown} }) => actualizar('longitud', event.target.value)}/>

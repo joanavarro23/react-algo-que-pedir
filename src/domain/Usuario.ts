@@ -11,14 +11,18 @@ export class Usuario {
     public longitud = 0
   ) {}
 
-    static fromJson(usuarioJSON: UsuarioJSON): Usuario {
-        return Object.assign(new Usuario(), usuarioJSON)
+  validarCambios() {
+    throw new Error('Method not implemented.')
+  }
 
-    }
+  static fromJson(usuarioJSON: UsuarioJSON): Usuario {
+      return Object.assign(new Usuario(), usuarioJSON)
 
-    // toJSON(): UsuarioJSON {
-    //     return {...this}
-    // }
+  }
+
+  // toJSON(): UsuarioJSON {
+  //     return {...this}
+  // }
 }
 
 export type UsuarioJSON = {
