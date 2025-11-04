@@ -5,35 +5,20 @@ import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
 import { Avatar, Card, Field, Heading, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, type ChangeEvent } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
-import { useNavigate, type ErrorResponse } from 'react-router-dom'
+import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
+import { preferencias } from './preferencias/rutas'
 
 export const PerfilUsuario = () => {
-    const navigate = useNavigate()
-    const usuarioVacio = new Usuario()
-    const [usuario, setUsuario] = useState<Usuario>(usuarioVacio)
-
-    const opciones = [
-        { label: 'Criterios de búsqueda', path: '/perfilUsuario/preferencias/criteriosBusqueda' },
-        { label: 'Ingredientes preferidos', path: '/perfilUsuario/preferencias/ingredientes' },
-        { label: 'Ingredientes a evitar', path: '/perfilUsuario/preferencias/ingredientes' },
-    ]
-
-    const gotoPreferencias = (opcion: { label: string; path: string }) => {
-        navigate(opcion.path)
-    }
-
-    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario({
-            ...usuario,
-            [referencia]: valor
-        })
-    }
-
+    const imagen = '/usuario-chica.png'
+    // const { id }= useParams()
+    const [usuario, setUsuario] = useState<Usuario>(new Usuario())
+    
+    // Carga de datos inicial
     const traerUsuario = async () => {
         try {
-            const usuario = await usuarioService.getById(0)
+            const usuario = await usuarioService.getById(0) //+id!
             setUsuario(usuario)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
@@ -44,24 +29,54 @@ export const PerfilUsuario = () => {
             })
         }
     }
-
-    const guardar = () => {
-        toaster.create({
-            title: 'Usuario actualizado',
-            description: 'Los datos se actualizaron con éxito.',
-            type: 'success',
-        })
-    }
-
     useOnInit(traerUsuario)
     
+    // Actualización de los campos inputs
+    // const generarUsuarioNuevo = (usuario: Usuario) => {
+    //     const nuevoUsuario = Object.assign(new Usuario(), usuario)
+    //     setUsuario(nuevoUsuario)
+    // }
+    // const actualizar = (referencia: keyof Usuario, valor: unknown) => {
+    //     usuario.[referencia] = valor
+    //     generarUsuarioNuevo(usuario)
+    // }
+    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
+        setUsuario({ ...usuario, [referencia]: valor })
+    }
+
+    // Se guardan los cambios realizados
+    const guardar = async () => {
+        try {
+            usuario.validarCambios()
+            await usuarioService.actualizar(usuario)
+            toaster.create({
+                title: 'Usuario actualizado',
+                description: 'Los datos se actualizaron con éxito.',
+                type: 'success',
+            })
+        } catch (error: unknown) {
+            const errorMessage = getMensajeError(error)
+            toaster.create({
+                title: 'Error al actualizar usuario',
+                description: errorMessage,
+                type: 'error'
+            })
+        }
+    }
+
+    // Navegación a las preferencias
+    const navigate = useNavigate()
+    const gotoPreferencias = (opcion: { label: string; path: string }) => {
+        navigate(opcion.path)
+    }
+
     return(
         <Stack py='5'>
            <Heading as='h1' size='md' textAlign="center">Perfil</Heading>
             {/* Preview de la informacion del usuario */}
-           <VStack py='5'>
+           <VStack py='3'>
                 <Avatar.Root size='2xl'>
-                    <Avatar.Image src='/usuario-chica.png'/>
+                    <Avatar.Image src={imagen}/>
                 </Avatar.Root> 
                 <Heading as='h2' size='2xl'>{usuario.nombre} {usuario.apellido}</Heading>
                 <Text color='parrafos'>{usuario.email}</Text>
@@ -117,19 +132,12 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack>
-                        {opciones.map((opcion) => (
-                            <Stack direction="row"
-                            justify="space-between"
-                            align="center"
-                            key={opcion.path}
-                            onClick={(() => gotoPreferencias(opcion))}
-                            >
-                            <Text>{opcion.label}</Text>
-                            <IconButton
-                                aria-label="Ir a sección"
-                                variant="ghost"
-                                size="sm"
-                            > <FaChevronRight /> </IconButton>
+                        {preferencias.map((opcion) => (
+                            <Stack direction="row" justify="space-between" align="center"
+                            key={opcion.path} onClick={(() => gotoPreferencias(opcion))}>
+                                <Text>{opcion.label}</Text>
+                                <IconButton variant="ghost" size="sm"
+                                ><FaChevronRight /></IconButton>
                             </Stack>
                         ))}
                     </Stack>
