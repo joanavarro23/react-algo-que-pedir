@@ -12,9 +12,9 @@ class UsuarioService {
         return USUARIOS_MOCK[id]
     }
 
-    // actualizar(usuario: Usuario) {
-    //     return axios.put(`${REST_SERVER_URL}/usuario/${usuario.id}`, usuario.toJSON())
-    // }
+    actualizar(usuario: Usuario) {
+        return axios.put(`${REST_SERVER_URL}/usuario/${usuario.id}`, usuario.toJSON())
+    }
 }
 
 export const usuarioService = new UsuarioService()
