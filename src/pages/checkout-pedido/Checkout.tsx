@@ -44,11 +44,11 @@ export const CheckoutPedido = () => {
                     </Stack>
                 </article>
             </Stack>
-            <Stack className="container-checkout">
+            <Stack as="section" className="container-checkout">
                 <span>Forma de pago</span>
                 <select name="medio-de-pago" id="medio-de-pago">
                     <option value="efectivo">Efectivo</option>
-                    <option value="tarjeta">Trajeta</option>
+                    <option value="tarjeta">Tarjeta</option>
                     <option value="QR">QR</option>
                 </select>
                 <Button>Confirmar pedido</Button>
