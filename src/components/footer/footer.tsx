@@ -1,5 +1,5 @@
-import { chakra, Box, Flex, VStack, Image, Text } from '@chakra-ui/react'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Box, Flex, VStack, Image, Text } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
 
 import home from '/home.svg'
 import ticketRecibo from '/ticketRecibo.svg'
