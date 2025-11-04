@@ -1,15 +1,15 @@
-import { Box, IconButton } from '@chakra-ui/react'
+import { Box, IconButton, Image, Heading, VStack, Text } from '@chakra-ui/react'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
 export const DetalleLocal = () => {
     const navigate = useNavigate()
-    
+
     //Datos de manera momentanea
     const local = {
        nombre: 'Restaurante Italiano',
        imagenUrl: './restaurante.png',
-       reting: 4.5,
+       rating: 4.5,
        reviews: 1200,
        pedidos: 546
     }
@@ -23,11 +23,21 @@ export const DetalleLocal = () => {
     return (
         <Box className="main-detalleLocal">
 
-            <Box position="relative">
+            <Box position="relative">   {/*Header de foto del local*/}
                 <IconButton aria-label="Volver atras" onClick={ () => navigate(-1)}>
                     <IoArrowBack/>
                 </IconButton>
+                <Heading size="lg">{local.nombre}</Heading>
+
+                <Image src="./restaurante.png" alt="Foto del local" w="100%" h="300px" objectFit="cover"/>
             </Box>
+
+            <VStack>
+                <Heading size="lg">{local.nombre}</Heading>
+                <Text fontSize="md" color="textoSecundario">
+                    {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
+                </Text>
+            </VStack>
 
         </Box>
     )
