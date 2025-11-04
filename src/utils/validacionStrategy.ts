@@ -19,3 +19,10 @@ export class ValorPositivo implements ValidacionStrategy<number> {
         return valor <= 0
     }
 }
+
+export class RangoNumerico implements ValidacionStrategy<number> {
+    constructor(private min: number, private max: number){}
+    validarCambios(valor: number): boolean {
+        return valor < this.min || valor > this.max
+    }
+}
