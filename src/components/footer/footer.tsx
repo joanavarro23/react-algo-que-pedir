@@ -1,4 +1,4 @@
-import { chakra, Box, Flex, Link, VStack, Image, Text } from '@chakra-ui/react'
+import { chakra, Box, Flex, VStack, Image, Text } from '@chakra-ui/react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 
 import home from '/home.svg'
@@ -6,27 +6,29 @@ import ticketRecibo from '/ticketRecibo.svg'
 import perfil from '/perfil.svg'
 import estrellaPuntuacion  from '/estrellaPuntuacion.svg'
 
+import './footer.css'
+
 //Hay que agregar las rutas aca y en el routes.tsx
 const linksFooter = [
     { link: '/', label:'Inicio', icon: home },
-    { link: '/', label: 'Pedidos', icon: ticketRecibo },
+    { link: '/checkout-pedido', label: 'Pedidos', icon: ticketRecibo },
     { link: '/', label: 'Calificar', icon: estrellaPuntuacion },
     { link: '/perfil-usuario', label: 'Perfil', icon: perfil }  
 ]
 
-export const ALTURA_FOOTER = '15px'
+export const SEPARADOR_FOOTER = '15px'
 
 export const FooterApp = () => {
     return (
         <Box as="footer" className="footer-app">
-            <Flex direction="row" className="rutas-footer">
+            <Flex direction="row" className="rutas-footer" justifyContent="space-around">
                 { linksFooter.map((item) => (
-                    <Link as={RouterLink} to={item.link} key={item.label}>
-                        <VStack>
-                            <Image src={item.icon} alt={item.label}/>
-                            <Text>{item.label}</Text>
+                    <RouterLink to={item.link} key={item.label}>
+                        <VStack gap={1.5}>
+                            <Image height="30px" width="30px" src={item.icon} alt={item.label}/>
+                            <Text textStyle="sm">{item.label}</Text>
                         </VStack >
-                    </Link>
+                    </RouterLink>
                  ))}
             </Flex>
         </Box>
