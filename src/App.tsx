@@ -3,7 +3,7 @@ import { AlgoQuePedirRouter } from './routes/routes'
 
 const App = () => {
   return (
-    <Box maxW="400px" mx="auto" w="100%">
+    <Box maxW="400px" mx="auto" w="100%" border='1px solid'>
       <AlgoQuePedirRouter />
     </Box>
   )
