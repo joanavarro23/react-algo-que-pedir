@@ -5,9 +5,9 @@ import { IoMdClose } from 'react-icons/io'
 
 
 interface ArticuloProps {
-  nombre: string;
-  cantidad: number;
-  precioUnitario: number;
+  nombre: string
+  cantidad: number
+  precioUnitario: number
 }
 
 export const Articulo = ({ nombre, cantidad, precioUnitario }: ArticuloProps) => {
