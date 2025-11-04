@@ -9,7 +9,7 @@ import { useState, type ChangeEvent } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
-import { TextoRequerido } from '@/utils/validaciones/validacionStrategy'
+import { TextoRequerido } from '@/utils/validacionStrategy'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
