@@ -12,7 +12,7 @@ const config = defineConfig({
         textoPrimario: { value: '#000000' },
         textoSecundario: { value: '#3b3b3b' },
         bordes: { value: '#dddddd' },
-        fondo: { value: 'rgb(233, 233, 233)' },
+        fondo: { value: 'rgba(243, 243, 243, 1)' },
         parrafos: { value: '#97749d' },
       },
       fonts: {
