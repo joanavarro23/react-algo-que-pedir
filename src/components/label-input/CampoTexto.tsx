@@ -1,4 +1,3 @@
-import React from 'react'
 import { Field, Input, type InputProps } from '@chakra-ui/react'
 
 interface CampoTextoProps extends InputProps {
