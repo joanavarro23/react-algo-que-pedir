@@ -6,6 +6,7 @@ import { Ingredientes } from '@/pages/usuario/preferencias/ingredientes'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
+import { DetallePedido } from '@/pages/detalle-pedido/DetallePedido'
 
 export const AQPRoutes = () =>
     <Routes>
@@ -16,13 +17,7 @@ export const AQPRoutes = () =>
             <Route path="/perfilUsuario/preferencias/ingredientes" element={<Ingredientes />} />
             <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             <Route path="/crear-pedido" element={<DetalleLocal/>} />
-            <Route path="/detalle-pedido" element={<div style={{ textAlign: "center"}}>
-                                                <img 
-                                                    src="https://img.buzzfeed.com/buzzfeed-static/static/2018-11/2/10/asset/buzzfeed-prod-web-06/sub-buzz-4633-1541168774-1.png" 
-                                                    alt="Detalle del Pedido" 
-                                                    style={{ maxWidth: "100%", height: "auto" }} 
-                                                />
-                                                </div>} />
+            <Route path="/detalle-pedido" element={<DetallePedido/>}/>
         </Route>
     </Routes>
 
