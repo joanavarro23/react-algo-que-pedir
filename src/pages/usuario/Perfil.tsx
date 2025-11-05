@@ -90,38 +90,38 @@ export const PerfilUsuario = () => {
                         <Field.Root required invalid={useValidacion(usuario.nombre, 'textoRequerido')}>
                             <Field.Label>Nombre</Field.Label>
                             <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
+                            onChange={(event) => actualizar('nombre', event.target.value)}/>
                             <Field.ErrorText>El campo nombre es requerido</Field.ErrorText>
                         </Field.Root>
                         <Field.Root required invalid={useValidacion(usuario.apellido, 'textoRequerido')}>
                             <Field.Label>Apellido</Field.Label>
                             <Input value={usuario.apellido} placeholder='Apellido' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('apellido', event.target.value)}/>
+                            onChange={(event) => actualizar('apellido', event.target.value)}/>
                             <Field.ErrorText>El campo apellido es requerido</Field.ErrorText>
                         </Field.Root>
                         <Field.Root required invalid={useValidacion(usuario.direccion, 'textoRequerido')}>
                             <Field.Label>Dirección</Field.Label>
                             <Input value={usuario.direccion} placeholder='Dirección' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('direccion', event.target.value)}/>
+                            onChange={(event) => actualizar('direccion', event.target.value)}/>
                             <Field.ErrorText>El campo direccion es requerido</Field.ErrorText>
                         </Field.Root>
                         <Field.Root required invalid={useValidacion(usuario.ubicacion, 'textoRequerido')}>
                             <Field.Label>Ubicación</Field.Label>
                             <Input value={usuario.ubicacion} placeholder='Ciudad, Provincia' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('ubicacion', event.target.value)}/>
+                            onChange={(event) => actualizar('ubicacion', event.target.value)}/>
                             <Field.ErrorText>El campo ubicacion es requerido</Field.ErrorText>
                         </Field.Root>
                         <Stack direction='row'>
                             <Field.Root required invalid={latitudValidacion}>
                                 <Field.Label>Latitud</Field.Label>
                                 <Input type='number' value={usuario.latitud} placeholder='Ej: -34.61' 
-                                onChange={(event: { target: {value: unknown} }) => actualizar('latitud', event.target.value)}/>
+                                onChange={(event) => actualizar('latitud', event.target.value)}/>
                                 <Field.ErrorText>El campo latitud es requerido y debe estar entre -90 y 90</Field.ErrorText>
                             </Field.Root>
                             <Field.Root required invalid={longitudValidacion}>
                                 <Field.Label>Longitud</Field.Label>
                                 <Input type='number' value={usuario.longitud} placeholder='Ej: 58.38' 
-                                onChange={(event: { target: {value: unknown} }) => actualizar('longitud', event.target.value)}/>
+                                onChange={(event) => actualizar('longitud', event.target.value)}/>
                                 <Field.ErrorText>El campo longitud es requerido y debe estar entre -180 y 180</Field.ErrorText>
                             </Field.Root>
                         </Stack>
