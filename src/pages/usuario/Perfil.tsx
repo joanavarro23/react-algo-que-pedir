@@ -1,15 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Button } from '@/components/boton/boton'
 import { toaster } from '@/components/chakra-toaster/toaster'
-import { useOnInit } from '@/customHooks/hooks'
+import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
 import { Avatar, Card, Field, Heading, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
-import { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
-import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
+import { useNavigate, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
-import { TextoRequerido, validacionStrategy } from '@/utils/validacionStrategy'
+import { useValidacion } from '@/customHooks/useValidacion'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
@@ -30,12 +31,11 @@ export const PerfilUsuario = () => {
             })
         }
     }
-    useOnInit(traerUsuario)
-    
-    // Validacion de los campos
-    const validarCampo = (): boolean => {
-        return true
-    }
+    useOnInit(traerUsuario) 
+
+    // Validaciones compuestas para los numeros:
+    const latitudValidacion = useValidacion(usuario.latitud, 'valorRequerido') || useValidacion(usuario.latitud, 'rangoNumerido', {min: -90, max: 90})
+    const longitudValidacion = useValidacion(usuario.longitud, 'valorRequerido') || useValidacion(usuario.longitud, 'rangoNumerido', {min: -180, max: 180})
 
     // Actualización de los campos inputs
     const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
@@ -87,37 +87,42 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root required invalid={validacionStrategy.textoRequerido.validarCambios(usuario.nombre)}>
+                        <Field.Root required invalid={useValidacion(usuario.nombre, 'textoRequerido')}>
                             <Field.Label>Nombre</Field.Label>
                             <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
                             <Field.ErrorText>El campo nombre es requerido</Field.ErrorText>
                         </Field.Root>
-                        <Field.Root required>
+                        <Field.Root required invalid={useValidacion(usuario.apellido, 'textoRequerido')}>
                             <Field.Label>Apellido</Field.Label>
                             <Input value={usuario.apellido} placeholder='Apellido' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('apellido', event.target.value)}/>
+                            <Field.ErrorText>El campo apellido es requerido</Field.ErrorText>
                         </Field.Root>
-                        <Field.Root required>
+                        <Field.Root required invalid={useValidacion(usuario.direccion, 'textoRequerido')}>
                             <Field.Label>Dirección</Field.Label>
                             <Input value={usuario.direccion} placeholder='Dirección' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('direccion', event.target.value)}/>
+                            <Field.ErrorText>El campo direccion es requerido</Field.ErrorText>
                         </Field.Root>
-                        <Field.Root required>
+                        <Field.Root required invalid={useValidacion(usuario.ubicacion, 'textoRequerido')}>
                             <Field.Label>Ubicación</Field.Label>
                             <Input value={usuario.ubicacion} placeholder='Ciudad, Provincia' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('ubicacion', event.target.value)}/>
+                            <Field.ErrorText>El campo ubicacion es requerido</Field.ErrorText>
                         </Field.Root>
                         <Stack direction='row'>
-                            <Field.Root required>
+                            <Field.Root required invalid={latitudValidacion}>
                                 <Field.Label>Latitud</Field.Label>
                                 <Input type='number' value={usuario.latitud} placeholder='Ej: -34.61' 
                                 onChange={(event: { target: {value: unknown} }) => actualizar('latitud', event.target.value)}/>
+                                <Field.ErrorText>El campo latitud es requerido y debe estar entre -90 y 90</Field.ErrorText>
                             </Field.Root>
-                            <Field.Root required>
+                            <Field.Root required invalid={longitudValidacion}>
                                 <Field.Label>Longitud</Field.Label>
                                 <Input type='number' value={usuario.longitud} placeholder='Ej: 58.38' 
                                 onChange={(event: { target: {value: unknown} }) => actualizar('longitud', event.target.value)}/>
+                                <Field.ErrorText>El campo longitud es requerido y debe estar entre -180 y 180</Field.ErrorText>
                             </Field.Root>
                         </Stack>
                     </Stack>
