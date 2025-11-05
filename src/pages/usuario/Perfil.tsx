@@ -9,7 +9,7 @@ import { useState, type ChangeEvent } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
-import { TextoRequerido } from '@/utils/validacionStrategy'
+import { TextoRequerido, validacionStrategy } from '@/utils/validacionStrategy'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
@@ -39,16 +39,8 @@ export const PerfilUsuario = () => {
 
     // Actualización de los campos inputs
     const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario({ ...usuario, [referencia]: valor })
+        setUsuario(Object.assign(new Usuario(), { ...usuario, [referencia]: valor }))
     }
-    // const generarUsuarioNuevo = (usuario: Usuario) => {
-    //     const nuevoUsuario = Object.assign(new Usuario(), usuario)
-    //     setUsuario(nuevoUsuario)
-    // }
-    // const actualizar = (referencia: keyof Usuario, valor: unknown) => {
-    //     usuario.[referencia] = valor
-    //     generarUsuarioNuevo(usuario)
-    // }
 
     // Se guardan los cambios realizados
     const guardar = async () => {
@@ -95,10 +87,11 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root required>
+                        <Field.Root required invalid={validacionStrategy.textoRequerido.validarCambios(usuario.nombre)}>
                             <Field.Label>Nombre</Field.Label>
                             <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
                             onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
+                            <Field.ErrorText>El campo nombre es requerido</Field.ErrorText>
                         </Field.Root>
                         <Field.Root required>
                             <Field.Label>Apellido</Field.Label>
