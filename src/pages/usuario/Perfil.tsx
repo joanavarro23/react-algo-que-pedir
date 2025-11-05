@@ -11,6 +11,7 @@ import { FaChevronRight } from 'react-icons/fa'
 import { useNavigate, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
 import { useValidacion } from '@/customHooks/useValidacion'
+import { CampoTexto } from '@/components/label-input/CampoTexto'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
@@ -77,7 +78,7 @@ export const PerfilUsuario = () => {
                     <Avatar.Image src={imagen}/>
                 </Avatar.Root> 
                 <Heading as='h2' size='2xl'>{usuario.nombre} {usuario.apellido}</Heading>
-                <Text color='parrafos'>{usuario.email}</Text>
+                <Text color='textoSecundario'>{usuario.email}</Text>
            </VStack>
 
            {/* Informacion personal */}
@@ -87,43 +88,24 @@ export const PerfilUsuario = () => {
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root required invalid={useValidacion(usuario.nombre, 'textoRequerido')}>
-                            <Field.Label>Nombre</Field.Label>
-                            <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
-                            onChange={(event) => actualizar('nombre', event.target.value)}/>
-                            <Field.ErrorText>El campo nombre es requerido</Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root required invalid={useValidacion(usuario.apellido, 'textoRequerido')}>
-                            <Field.Label>Apellido</Field.Label>
-                            <Input value={usuario.apellido} placeholder='Apellido' 
-                            onChange={(event) => actualizar('apellido', event.target.value)}/>
-                            <Field.ErrorText>El campo apellido es requerido</Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root required invalid={useValidacion(usuario.direccion, 'textoRequerido')}>
-                            <Field.Label>Dirección</Field.Label>
-                            <Input value={usuario.direccion} placeholder='Dirección' 
-                            onChange={(event) => actualizar('direccion', event.target.value)}/>
-                            <Field.ErrorText>El campo direccion es requerido</Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root required invalid={useValidacion(usuario.ubicacion, 'textoRequerido')}>
-                            <Field.Label>Ubicación</Field.Label>
-                            <Input value={usuario.ubicacion} placeholder='Ciudad, Provincia' 
-                            onChange={(event) => actualizar('ubicacion', event.target.value)}/>
-                            <Field.ErrorText>El campo ubicacion es requerido</Field.ErrorText>
-                        </Field.Root>
+                        <CampoTexto invalid={useValidacion(usuario.nombre, 'textoRequerido')} nombreLabel='Nombre' nombreTest='nombre' placeholder='Nombre'
+                        value={usuario.nombre} onChange={(event) => actualizar('nombre', event.target.value)} msjError='El campo nombre es requerido' />
+
+                        <CampoTexto invalid={useValidacion(usuario.apellido, 'textoRequerido')} nombreLabel='Apellido' nombreTest='apellido' placeholder='Apellido'
+                        value={usuario.apellido} onChange={(event) => actualizar('apellido', event.target.value)} msjError='El campo apellido es requerido' />
+                        
+                        <CampoTexto invalid={useValidacion(usuario.direccion, 'textoRequerido')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
+                        value={usuario.direccion} onChange={(event) => actualizar('direccion', event.target.value)} msjError='El campo dirección es requerido' />
+
+                        <CampoTexto invalid={useValidacion(usuario.ubicacion, 'textoRequerido')} nombreLabel='Ubicación' nombreTest='ubicacion' placeholder='Ciudad, Provincia'
+                        value={usuario.ubicacion} onChange={(event) => actualizar('ubicacion', event.target.value)} msjError='El campo ubicación es requerido' />
+
                         <Stack direction='row'>
-                            <Field.Root required invalid={latitudValidacion}>
-                                <Field.Label>Latitud</Field.Label>
-                                <Input type='number' value={usuario.latitud} placeholder='Ej: -34.61' 
-                                onChange={(event) => actualizar('latitud', event.target.value)}/>
-                                <Field.ErrorText>El campo latitud es requerido y debe estar entre -90 y 90</Field.ErrorText>
-                            </Field.Root>
-                            <Field.Root required invalid={longitudValidacion}>
-                                <Field.Label>Longitud</Field.Label>
-                                <Input type='number' value={usuario.longitud} placeholder='Ej: 58.38' 
-                                onChange={(event) => actualizar('longitud', event.target.value)}/>
-                                <Field.ErrorText>El campo longitud es requerido y debe estar entre -180 y 180</Field.ErrorText>
-                            </Field.Root>
+                            <CampoTexto invalid={latitudValidacion} nombreLabel='Latitud' nombreTest='latitud' placeholder='Ej: -34.61' type='number'
+                            value={usuario.latitud} onChange={(event) => actualizar('latitud', event.target.value)} msjError='El campo latitud es requerido y debe estar entre -90 y 90' />
+                            
+                            <CampoTexto invalid={longitudValidacion} nombreLabel='Longitud' nombreTest='longitud' placeholder='Ej: 58.38' type='number'
+                            value={usuario.longitud} onChange={(event) => actualizar('longitud', event.target.value)} msjError='El campo longitud es requerido y debe estar entre -180 y 180' />
                         </Stack>
                     </Stack>
                 </Card.Body>
