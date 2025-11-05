@@ -1,29 +1,28 @@
 interface ValidacionStrategy<T> {
-    validarCambios(valor: T): boolean
+    esValido(valor: T, rango?: { min: number, max: number }): boolean
 }
 
 class TextoRequerido implements ValidacionStrategy<string> {
-    validarCambios(valor: string): boolean {
+    esValido(valor: string): boolean {
         return (!valor || valor.trim().length === 0)
     }
 }
 
 class ValorRequerido implements ValidacionStrategy<number> {
-    validarCambios(valor: number): boolean {
-        return valor == null
+    esValido(valor: number): boolean {
+        return !valor
     }
 }
 
 class ValorPositivo implements ValidacionStrategy<number> {
-    validarCambios(valor: number): boolean {
+    esValido(valor: number): boolean {
         return valor <= 0
     }
 }
 
 class RangoNumerico implements ValidacionStrategy<number> {
-    constructor(private min: number, private max: number){}
-    validarCambios(valor: number): boolean {
-        return valor < this.min || valor > this.max
+    esValido(valor: number, rango: { min: number, max: number }): boolean {
+        return valor < rango.min || valor > rango.max
     }
 }
 
@@ -31,5 +30,5 @@ export const validacionStrategy = {
     textoRequerido: new TextoRequerido(),
     valorRequerido: new ValorRequerido(),
     valorPositivo: new ValorPositivo(),
-    rangoNumerico(min: number, max:number) { return new RangoNumerico(min, max) },
+    rangoNumerido: new RangoNumerico()
 }
