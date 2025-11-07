@@ -5,7 +5,7 @@ import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { Avatar, Card, Field, Heading, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Card, Field, Heading, HStack, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
 import { useNavigate, type ErrorResponse } from 'react-router-dom'
@@ -82,7 +82,7 @@ export const PerfilUsuario = () => {
            </VStack>
 
            {/* Informacion personal */}
-           <Card.Root variant='subtle'>
+           <Card.Root variant='outline'>
                 <Card.Header>
                     <Card.Title>Informacion Personal</Card.Title>
                 </Card.Header>
@@ -112,19 +112,19 @@ export const PerfilUsuario = () => {
            </Card.Root>
 
            {/* Preferencias */}
-           <Card.Root variant='subtle'>
+           <Card.Root variant='outline'>
                 <Card.Header>
                     <Card.Title>Preferencias</Card.Title>
                 </Card.Header>
                 <Card.Body>
                     <Stack>
                         {preferencias.map((opcion) => (
-                            <Stack direction="row" justify="space-between" align="center"
+                            <HStack justify="space-between" align="center"
                             key={opcion.path} onClick={(() => gotoPreferencias(opcion))}>
                                 <Text>{opcion.label}</Text>
                                 <IconButton variant="ghost" size="sm"
                                 ><FaChevronRight /></IconButton>
-                            </Stack>
+                            </HStack>
                         ))}
                     </Stack>
                 </Card.Body>
