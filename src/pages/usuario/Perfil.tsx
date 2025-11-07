@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Button } from '@/components/boton/boton'
 import { toaster } from '@/components/chakra-toaster/toaster'
-import { useOnInit } from '@/customHooks/hooks'
+import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { Avatar, Card, Field, Heading, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
-import { useState, type ChangeEvent } from 'react'
+import { Avatar, Card, Field, Heading, HStack, IconButton, Input, Stack, Text, VStack } from '@chakra-ui/react'
+import { useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
-import { useNavigate, useParams, type ErrorResponse } from 'react-router-dom'
+import { useNavigate, type ErrorResponse } from 'react-router-dom'
 import { preferencias } from './preferencias/rutas'
-import { TextoRequerido } from '@/utils/validacionStrategy'
+import { useValidacion } from '@/customHooks/useValidacion'
+import { CampoTexto } from '@/components/label-input/CampoTexto'
 
 export const PerfilUsuario = () => {
     const imagen = '/usuario-chica.png'
@@ -30,25 +32,16 @@ export const PerfilUsuario = () => {
             })
         }
     }
-    useOnInit(traerUsuario)
-    
-    // Validacion de los campos
-    const validarCampo = (): boolean => {
-        return true
-    }
+    useOnInit(traerUsuario) 
+
+    // Validaciones compuestas para los numeros:
+    const latitudValidacion = useValidacion(usuario.latitud, 'valorRequerido') || useValidacion(usuario.latitud, 'rangoNumerido', {min: -90, max: 90})
+    const longitudValidacion = useValidacion(usuario.longitud, 'valorRequerido') || useValidacion(usuario.longitud, 'rangoNumerido', {min: -180, max: 180})
 
     // Actualización de los campos inputs
     const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario({ ...usuario, [referencia]: valor })
+        setUsuario(Object.assign(new Usuario(), { ...usuario, [referencia]: valor }))
     }
-    // const generarUsuarioNuevo = (usuario: Usuario) => {
-    //     const nuevoUsuario = Object.assign(new Usuario(), usuario)
-    //     setUsuario(nuevoUsuario)
-    // }
-    // const actualizar = (referencia: keyof Usuario, valor: unknown) => {
-    //     usuario.[referencia] = valor
-    //     generarUsuarioNuevo(usuario)
-    // }
 
     // Se guardan los cambios realizados
     const guardar = async () => {
@@ -85,66 +78,53 @@ export const PerfilUsuario = () => {
                     <Avatar.Image src={imagen}/>
                 </Avatar.Root> 
                 <Heading as='h2' size='2xl'>{usuario.nombre} {usuario.apellido}</Heading>
-                <Text color='parrafos'>{usuario.email}</Text>
+                <Text color='textoSecundario'>{usuario.email}</Text>
            </VStack>
 
            {/* Informacion personal */}
-           <Card.Root variant='subtle'>
+           <Card.Root variant='outline'>
                 <Card.Header>
                     <Card.Title>Informacion Personal</Card.Title>
                 </Card.Header>
                 <Card.Body>
                     <Stack gap='4'>
-                        <Field.Root required>
-                            <Field.Label>Nombre</Field.Label>
-                            <Input data-testid='input-nombre' value={usuario.nombre} placeholder='Nombre' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('nombre', event.target.value)}/>
-                        </Field.Root>
-                        <Field.Root required>
-                            <Field.Label>Apellido</Field.Label>
-                            <Input value={usuario.apellido} placeholder='Apellido' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('apellido', event.target.value)}/>
-                        </Field.Root>
-                        <Field.Root required>
-                            <Field.Label>Dirección</Field.Label>
-                            <Input value={usuario.direccion} placeholder='Dirección' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('direccion', event.target.value)}/>
-                        </Field.Root>
-                        <Field.Root required>
-                            <Field.Label>Ubicación</Field.Label>
-                            <Input value={usuario.ubicacion} placeholder='Ciudad, Provincia' 
-                            onChange={(event: { target: {value: unknown} }) => actualizar('ubicacion', event.target.value)}/>
-                        </Field.Root>
+                        <CampoTexto invalid={useValidacion(usuario.nombre, 'textoRequerido')} nombreLabel='Nombre' nombreTest='nombre' placeholder='Nombre'
+                        value={usuario.nombre} onChange={(event) => actualizar('nombre', event.target.value)} msjError='El campo nombre es requerido' />
+
+                        <CampoTexto invalid={useValidacion(usuario.apellido, 'textoRequerido')} nombreLabel='Apellido' nombreTest='apellido' placeholder='Apellido'
+                        value={usuario.apellido} onChange={(event) => actualizar('apellido', event.target.value)} msjError='El campo apellido es requerido' />
+                        
+                        <CampoTexto invalid={useValidacion(usuario.direccion, 'textoRequerido')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
+                        value={usuario.direccion} onChange={(event) => actualizar('direccion', event.target.value)} msjError='El campo dirección es requerido' />
+
+                        <CampoTexto invalid={useValidacion(usuario.ubicacion, 'textoRequerido')} nombreLabel='Ubicación' nombreTest='ubicacion' placeholder='Ciudad, Provincia'
+                        value={usuario.ubicacion} onChange={(event) => actualizar('ubicacion', event.target.value)} msjError='El campo ubicación es requerido' />
+
                         <Stack direction='row'>
-                            <Field.Root required>
-                                <Field.Label>Latitud</Field.Label>
-                                <Input type='number' value={usuario.latitud} placeholder='Ej: -34.61' 
-                                onChange={(event: { target: {value: unknown} }) => actualizar('latitud', event.target.value)}/>
-                            </Field.Root>
-                            <Field.Root required>
-                                <Field.Label>Longitud</Field.Label>
-                                <Input type='number' value={usuario.longitud} placeholder='Ej: 58.38' 
-                                onChange={(event: { target: {value: unknown} }) => actualizar('longitud', event.target.value)}/>
-                            </Field.Root>
+                            <CampoTexto invalid={latitudValidacion} nombreLabel='Latitud' nombreTest='latitud' placeholder='Ej: -34.61' type='number'
+                            value={usuario.latitud} onChange={(event) => actualizar('latitud', event.target.value)} msjError='El campo latitud es requerido y debe estar entre -90 y 90' />
+                            
+                            <CampoTexto invalid={longitudValidacion} nombreLabel='Longitud' nombreTest='longitud' placeholder='Ej: 58.38' type='number'
+                            value={usuario.longitud} onChange={(event) => actualizar('longitud', event.target.value)} msjError='El campo longitud es requerido y debe estar entre -180 y 180' />
                         </Stack>
                     </Stack>
                 </Card.Body>
            </Card.Root>
 
            {/* Preferencias */}
-           <Card.Root variant='subtle'>
+           <Card.Root variant='outline'>
                 <Card.Header>
                     <Card.Title>Preferencias</Card.Title>
                 </Card.Header>
                 <Card.Body>
                     <Stack>
                         {preferencias.map((opcion) => (
-                            <Stack direction="row" justify="space-between" align="center"
+                            <HStack justify="space-between" align="center"
                             key={opcion.path} onClick={(() => gotoPreferencias(opcion))}>
                                 <Text>{opcion.label}</Text>
                                 <IconButton variant="ghost" size="sm"
                                 ><FaChevronRight /></IconButton>
-                            </Stack>
+                            </HStack>
                         ))}
                     </Stack>
                 </Card.Body>
