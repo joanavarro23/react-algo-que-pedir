@@ -45,7 +45,7 @@ export const RegisterUsuario = () => {
                 <Button onClick={() => 'TODO()'}>Registrarse</Button>
                 
                 <Text>¿Ya tienes una cuenta? 
-                    <RouterLink to="/login">Inicia Sesión</RouterLink>
+                    <RouterLink to="/login"> Inicia Sesión</RouterLink>
                 </Text>
             </Stack>
         </Stack>

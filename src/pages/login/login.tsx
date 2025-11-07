@@ -36,7 +36,7 @@ export const LoginUsuario = () => {
                 <Button onClick={() => 'TODO()'}>Iniciar Sesión</Button>
                 
                 <Text>¿No tienes una cuenta? 
-                    <RouterLink to="/register">Registrate</RouterLink>
+                    <RouterLink to="/register"> Registrate</RouterLink>
                 </Text>
             </Stack>
         </Stack>
