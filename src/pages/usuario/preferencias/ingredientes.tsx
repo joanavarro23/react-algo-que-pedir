@@ -1,7 +1,26 @@
-import { Heading } from '@chakra-ui/react'
+import { Heading, IconButton, Stack } from '@chakra-ui/react'
+import { IoMdArrowBack } from 'react-icons/io'
 
-export const Ingredientes = () => {
+export const IngredientesPreferidos = () => {
     return (
-        <Heading as='h1'>Estas en la vista de ingredientes </Heading>
+        <Stack py='5'>
+            <Stack direction='row' align='center'>
+                <IconButton variant="ghost"><IoMdArrowBack/></IconButton>
+                <Heading as='h1'>Estas en la vista de ingredientes preferidos </Heading>
+            </Stack>
+
+        </Stack>
+    )
+}
+
+export const IngredientesEvitar = () => {
+    return (
+        <Stack py='5'>
+            <Stack direction='row'>
+                <IconButton variant="ghost"><IoMdArrowBack/></IconButton>
+                <Heading as='h1'>Estas en la vista de ingredientes a evitar </Heading>
+            </Stack>
+
+        </Stack>
     )
 }

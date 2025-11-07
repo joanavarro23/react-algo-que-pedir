@@ -4,7 +4,7 @@ import { Toaster } from './components/chakra-toaster/toaster'
 
 const App = () => {
   return (
-    <Box maxW="400px" mx="auto" w="100%" border='1px solid'>
+    <Box>
       <AlgoQuePedirRouter />
       <Toaster />
     </Box>
