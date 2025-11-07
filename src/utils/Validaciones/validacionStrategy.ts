@@ -30,5 +30,5 @@ export const validacionStrategy = {
     textoRequerido: new TextoRequerido(),
     valorRequerido: new ValorRequerido(),
     valorPositivo: new ValorPositivo(),
-    rangoNumerido: new RangoNumerico()
+    rangoNumerico: new RangoNumerico()
 }
