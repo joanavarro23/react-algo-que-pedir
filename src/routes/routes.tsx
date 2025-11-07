@@ -1,11 +1,13 @@
 // RUTAS DE LA PAGINA [React Routes]
 import { CheckoutPedido } from '@/pages/checkout-pedido/Checkout'
 import { PerfilUsuario } from '@/pages/usuario/Perfil'
-import { CriteriosBusqueda } from '@/pages/usuario/preferencias/CriteriosBusqueda'
-import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/Ingredientes'
+import { CriteriosBusqueda } from '@/pages/usuario/preferencias/criteriosBusqueda'
+import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/ingredientes'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
+import { LoginUsuario } from '@/pages/login/login'
+import { RegisterUsuario } from '@/pages/register/register'
 
 export const AQPRoutes = () =>
     <Routes>
@@ -17,6 +19,8 @@ export const AQPRoutes = () =>
             <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
             <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             <Route path="/crear-pedido" element={<DetalleLocal/>} />
+            <Route path="/login" element={<LoginUsuario/>} />
+            <Route path="/register" element={<RegisterUsuario/>} />
         </Route>
         <Route path="*" element={ <Navigate to={'/'}/> } />
     </Routes>
