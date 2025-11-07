@@ -16,20 +16,22 @@ export const LoginUsuario = () => {
             <Heading as="h1" size="3xl">Algo que pedir - LOGIN</Heading>
             <Stack className="inputs-login">
                 <CampoTexto 
-                invalid={useValidacion(usuario.username, 'textoRequerido')}
+                invalid={useValidacion(usuario.username, 'valorRequerido')}
                 nombreLabel='Usuario'
                 nombreTest='Usuario'
                 placeholder='Usuario'
                 value={usuario.username}
+                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { username: e.target.value }))}
                 msjError='El campo nombre es requerido'
                 ></CampoTexto>
 
                 <CampoTexto 
-                invalid={useValidacion(usuario.password, 'textoRequerido')}
+                invalid={useValidacion(usuario.password, 'valorRequerido')}
                 nombreLabel='Password'
                 nombreTest='Password'
                 placeholder='Password'
                 value={usuario.password}
+                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { password: e.target.value }))}
                 msjError='El campo nombre es requerido'
                 ></CampoTexto>
 
