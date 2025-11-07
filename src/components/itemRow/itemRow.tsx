@@ -1,4 +1,4 @@
-import { HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 
 interface ItemRowProps {
@@ -15,7 +15,7 @@ export const ItemRow = ({ titulo, subtitulo, id, icono, onClick }: ItemRowProps 
             <Stack key={id}>
                 <Text>{titulo}</Text>
                 {subtitulo && (
-                    <Text>{subtitulo}</Text>
+                    <Heading as='p' size='xs'>{subtitulo}</Heading>
                 )}
             </Stack>
             {icono && <IconButton variant='ghost' onClick={onClick}>{icono}</IconButton>}
