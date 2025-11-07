@@ -1,4 +1,4 @@
-import { Box, IconButton, Image, Heading, VStack, Text } from '@chakra-ui/react'
+import { Box, IconButton, Image, Heading, VStack, Text, Flex } from '@chakra-ui/react'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
@@ -22,21 +22,23 @@ export const DetalleLocal = () => {
 
     return (
         <Box className="main-detalleLocal">
+            <VStack> {/* Contenedor vertical para la pagina */}
+                <Flex>   {/* Barra navegacion para atras */}
+                    <IconButton aria-label="Volver atras" onClick={ () => navigate(-1)}>
+                        <IoArrowBack/>
+                    </IconButton>
+                    <Heading size="lg">{local.nombre}</Heading>
+                </Flex>
+                
+                <Box direction="column">
+                    <Image src="./restaurante.png" alt="Foto del local" w="100%" h="300px" objectFit="cover"/>
+                    <Heading size="lg">{local.nombre}</Heading>
+                    <Text fontSize="md" color="textoSecundario">
+                        {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
+                    </Text>
+                </Box>
 
-            <Box position="relative">   {/*Header de foto del local*/}
-                <IconButton aria-label="Volver atras" onClick={ () => navigate(-1)}>
-                    <IoArrowBack/>
-                </IconButton>
-                <Heading size="lg">{local.nombre}</Heading>
 
-                <Image src="./restaurante.png" alt="Foto del local" w="100%" h="300px" objectFit="cover"/>
-            </Box>
-
-            <VStack>
-                <Heading size="lg">{local.nombre}</Heading>
-                <Text fontSize="md" color="textoSecundario">
-                    {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
-                </Text>
             </VStack>
 
         </Box>
