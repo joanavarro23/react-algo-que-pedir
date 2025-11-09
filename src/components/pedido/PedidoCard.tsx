@@ -48,11 +48,11 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
                 {order.local.nombre}
               </Card.Title>
 
-              <Card.Description fontWeight="bold">
+              <Card.Description fontSize="s" color="gray.600">
                 Total: ${order.costoTotalPedido.toFixed(2)}
               </Card.Description>
               
-              <Card.Description fontSize="xs" color="gray.600">
+              <Card.Description fontSize="s" color="gray.600">
                 {order.fechaPedido} - {order.platosDelPedido.length} artículos
               </Card.Description>
 
