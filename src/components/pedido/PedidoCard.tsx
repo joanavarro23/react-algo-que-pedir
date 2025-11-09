@@ -1,4 +1,5 @@
 import { LuX } from "react-icons/lu" 
+import { useNavigate } from "react-router-dom"
 import type { Pedido } from "@/pages/detalle-pedido/Pedido"
 import { Button, Card, Image, Grid, GridItem, VStack } from "@chakra-ui/react"
 
@@ -7,10 +8,18 @@ interface PedidoCardProps {
   onCancel: (id: number) => void
 }
 
-export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
-  const handleCancelClick = () => {
-    onCancel(order.id)
-  }
+  export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
+
+  const clickearCard = () => {
+    console.log("¡Click en la Card! Navegando a:", `/detalle-pedido/${order.id}`)
+    const navigate = useNavigate()  
+    navigate(`/detalle-pedido/${order.id}`, { state: { pedido: order } })
+    }
+
+  const cancelarPedido = (e: React.MouseEvent) => {
+      e.stopPropagation() 
+      onCancel(order.id)
+    }
 
   return (
     <Card.Root
@@ -24,6 +33,9 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
           templateColumns="100px 1fr auto"
           templateRows="auto auto auto"
           w="100%"
+
+          onClick={clickearCard}
+          _hover={{ cursor: "pointer", bg: "gray.50" }}
         >
           <GridItem gridRow="1 / 4" gridColumn="1 / 2">
             <Image
@@ -74,7 +86,7 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
                 variant="ghost"
                 colorScheme="red"
                 aria-label="Cancelar pedido"
-                onClick={handleCancelClick}
+                onClick={cancelarPedido}
               >
                 <LuX size={20} />
               </Button>

@@ -1,86 +1,62 @@
-import { useState } from "react"
-import type { Pedido } from "./Pedido"
-import { Tabs, VStack } from "@chakra-ui/react" 
 import { MOCK_PEDIDOS } from "@/mocks/pedidosMocks"
-import { PedidoCard } from "../../components/pedido/PedidoCard"
-import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
+import { useLocation, useParams } from 'react-router-dom'
+import { Box, Heading, Text, VStack } from '@chakra-ui/react'
+import type { Pedido } from "@/pages/detalle-pedido/Pedido"
 
-export const DetallePedido = () => {
-  
-  const [pedidos, setPedidos] = useState<Pedido[]>(MOCK_PEDIDOS)
+export const PaginaDetallePedido = () => {
 
-  const pedidosPendientes = pedidos.filter(p => p.estadoDelPedido === 'PENDIENTE')
-  const pedidosCompletados = pedidos.filter(p => p.estadoDelPedido === 'ENTREGADO')
-  const pedidosCancelados = pedidos.filter(p => p.estadoDelPedido === 'CANCELADO')
+  // A. Leemos el ID de la URL (para el caso de F5 o link directo)
+  // ej: /detalle-pedido/1 -> id valdrá "1"
+  const { id } = useParams()
 
-  const cancelarPedido = (id: number) => {
-      setPedidos(currentPedidos =>
-        currentPedidos.map(p =>
-          p.id === id ? { ...p, estadoDelPedido: 'CANCELADO' } : p
-        )
-      )
-    }
-  
-return (
-    <VStack w="100%" maxW="container.md" mx="auto" p={4} gap={4}>
+  // B. Leemos el 'state' de la navegación (para el clic normal)
+  const location = useLocation()
+  const pedidoDelState = location.state?.pedido as Pedido | undefined
+
+  // C. Decidimos qué datos usar
+  let pedido: Pedido | undefined = pedidoDelState
+
+  if (pedidoDelState) {
+    // Caso 1: Navegación normal.
+    // Usamos los datos pasados por 'state'. Es instantáneo.
+    console.log("MODO NAVEGACIÓN RÁPIDA: Usando datos de location.state")
+  } else {
+    // Caso 2: El usuario refrescó (F5) o entró a la URL directo.
+    // 'location.state' está vacío.
+    // Simulamos un 'fetch' al backend usando el ID de la URL.
+    console.warn("MODO REFRESH (F5): 'location.state' está vacío. Simulando fetch...")
+    pedido = MOCK_PEDIDOS.find(p => p.id === Number(id))
+  }
+
+  if (!pedido) {
+    return (
+      <VStack p={4} flex={1}>
+        <Heading>Error</Heading>
+        <Text>Pedido con ID "{id}" no encontrado.</Text>
+      </VStack>
+    )
+  }
+
+  // E. Render SIN DISEÑO (como pediste)
+  //    Solo mostramos los datos para probar que la lógica funciona.
+  return (
+    <VStack p={4} flex={1} align="start" gap={4}>
+      <Heading>Detalle del Pedido (ID: {pedido.id})</Heading>
       
-      <Tabs.Root defaultValue="pendientes" variant="line" w="100%">
-        <Tabs.List>
+      <Text fontWeight="bold">
+        Esta página es un placeholder y no tiene diseño.
+      </Text>
+      <Text>
+        (Usará el componente reutilizable de Checkout más adelante).
+      </Text>
 
-          <Tabs.Trigger value="pendientes"><LuUser /> Pendientes</Tabs.Trigger>
-          <Tabs.Trigger value="completados"><LuFolder /> Completados</Tabs.Trigger>
-          <Tabs.Trigger value="cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
-        </Tabs.List>
-        
-        <Tabs.Content value="pendientes">
-          <VStack gap={4} mt={4} align="stretch">
-            {pedidosPendientes.length > 0 ? (
-              pedidosPendientes.map(pedido => (
-                <PedidoCard 
-                  key={pedido.id}
-                  order={pedido}
-                  onCancel={cancelarPedido}
-                />
-              ))
-            ) : (
-              "No tienes pedidos pendientes"
-            )}
-          </VStack>
-        </Tabs.Content>
-
-        <Tabs.Content value="completados">
-          <VStack gap={4} mt={4} align="stretch">
-            {pedidosCompletados.length > 0 ? (
-              pedidosCompletados.map(pedido => (
-                <PedidoCard 
-                  key={pedido.id}
-                  order={pedido}
-                  onCancel={cancelarPedido}
-                />
-              ))
-            ) : (
-              "No tienes pedidos completados"
-            )}
-          </VStack>
-        </Tabs.Content>
-        
-        <Tabs.Content value="cancelados">
-          <VStack gap={4} mt={4} align="stretch">
-            {pedidosCancelados.length > 0 ? (
-              pedidosCancelados.map(pedido => (
-                <PedidoCard 
-                  key={pedido.id}
-                  order={pedido}
-                  onCancel={cancelarPedido}
-                />
-              ))
-            ) : (
-              "No tienes pedidos completados"
-            )}
-          </VStack>
-        </Tabs.Content>
-      </Tabs.Root>
-
+      <Heading size="md" mt={4}>Datos del Pedido (JSON):</Heading>
+      <Box as="pre" bg="gray.100" p={4} borderRadius="md" w="100%">
+        {JSON.stringify(pedido, null, 2)}
+      </Box>
     </VStack>
   )
 }
+
+// No olvides exportarlo si no lo hiciste con 'export const'
+// export default PaginaDetallePedido
