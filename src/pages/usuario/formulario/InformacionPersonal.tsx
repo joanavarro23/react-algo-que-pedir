@@ -3,12 +3,10 @@ import { CampoTexto } from '@/components/label-input/CampoTexto'
 import { useValidacion } from '@/customHooks/useValidacion'
 import { Usuario } from '@/domain/Usuario'
 import { Card, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
-import { preferencias } from '../subrutasPerfil'
+import { preferencias, type Preferencias } from '../subrutasPerfil'
 import { FaChevronRight } from 'react-icons/fa'
-import { useOutlet, useOutletContext } from 'react-router-dom'
 
-export const InformacionPersonal = ({ data, actualizar, navegacion }: { data: Usuario, actualizar: (campo: keyof Usuario, valor: unknown) => void, navegacion: (opcion: { label: string; path: string }) => void}) => {
-    const { data, actualizar, navegacion } = useOutletContext<data: Usuario, actualizar: (campo: keyof Usuario, valor: unknown), navegacion: (opcion: {label: string, path: string })>()
+export const InformacionPersonal = ({ data, actualizar, navegacion }: { data: Usuario, actualizar: (campo: keyof Usuario, valor: unknown) => void, navegacion: (opcion: Preferencias) => void}) => {
     // Validaciones compuestas para los numeros:
     const latitudValidacion = useValidacion(data.latitud, 'valorRequerido') || useValidacion(data.latitud, 'rangoNumerido', {min: -90, max: 90})
     const longitudValidacion = useValidacion(data.longitud, 'valorRequerido') || useValidacion(data.longitud, 'rangoNumerido', {min: -180, max: 180})
