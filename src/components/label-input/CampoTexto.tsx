@@ -1,19 +1,20 @@
+import type { useValidacion } from '@/customHooks/useValidacion'
 import { Field, Input, type InputProps } from '@chakra-ui/react'
 
 interface CampoTextoProps extends InputProps {
-    invalid: boolean
-    required?: boolean
     nombreLabel: string
     nombreTest: string
-    msjError: string
+    validacion: ReturnType<typeof useValidacion>
+    required?: boolean
 }
 
-export const CampoTexto = ({ invalid, required=true, nombreLabel, nombreTest, msjError, ...rest }: CampoTextoProps) => {
+export const CampoTexto = ({ required=true, nombreLabel, nombreTest, validacion, ...rest }: CampoTextoProps) => {
     return (
-        <Field.Root invalid={invalid} required={required}>
+        
+        <Field.Root invalid={!validacion.esValido} required={required} >
             <Field.Label>{nombreLabel}</Field.Label>
             <Input data-testid={`input-${nombreTest}`} {...rest}/>
-            <Field.ErrorText>{msjError}</Field.ErrorText>
+            <Field.ErrorText>{validacion.mensajeError}</Field.ErrorText>
         </Field.Root>
     )
 }
