@@ -54,12 +54,12 @@ class ValorPositivo implements ValidacionStrategy<number> {
 }
 
 class RangoNumerico implements ValidacionStrategy<number> {
-    esValido(valor: number, campo: string, rango: { min: number, max: number }): ValidacionResultado {
+    esValido(valor: number, _campo: string, rango: { min: number, max: number }): ValidacionResultado {
         const dentroDelRango = valor >= rango.min && valor <= rango.max
         return {
             esValido: dentroDelRango,
             mensajeError: !dentroDelRango 
-                ? `El campo: ${campo} debe estar entre ${rango.min} y ${rango.max}` 
+                ? `Debe estar entre ${rango.min} y ${rango.max}` 
                 : undefined
         }
     }
