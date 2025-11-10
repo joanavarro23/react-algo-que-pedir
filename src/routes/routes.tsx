@@ -6,8 +6,8 @@ import { Ingredientes } from '@/pages/usuario/preferencias/ingredientes'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
-import { DetallePedido } from '@/pages/detalle-pedido/DetallePedido'
-import { PaginaDetallePedido } from '@/pages/detalle-pedido/Orders'
+import { DetallePedido } from '@/pages/detalle-pedido/ListaPedidos'
+import { PaginaDetallePedido } from '@/pages/detalle-pedido/DetallePedido'
 
 export const AQPRoutes = () =>
     <Routes>
