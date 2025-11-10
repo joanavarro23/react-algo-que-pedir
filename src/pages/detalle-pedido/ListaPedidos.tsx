@@ -27,9 +27,9 @@ return (
       <Tabs.Root defaultValue="pendientes" variant="line" w="100%">
         <Tabs.List>
 
-          <Tabs.Trigger value="pendientes" data-test-id="test-pendientes"><LuUser /> Pendientes</Tabs.Trigger>
-          <Tabs.Trigger value="completados" data-test-id="test-completados"><LuFolder /> Completados</Tabs.Trigger>
-          <Tabs.Trigger value="cancelados" data-test-id="test-cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
+          <Tabs.Trigger value="pendientes" data-testid="test-pendientes"><LuUser /> Pendientes</Tabs.Trigger>
+          <Tabs.Trigger value="completados" data-testid="test-completados"><LuFolder /> Completados</Tabs.Trigger>
+          <Tabs.Trigger value="cancelados" data-testid="test-cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
         </Tabs.List>
         
         <Tabs.Content value="pendientes">
