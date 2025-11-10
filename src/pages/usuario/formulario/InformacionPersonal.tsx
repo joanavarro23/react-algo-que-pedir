@@ -1,16 +1,17 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { CampoTexto } from '@/components/label-input/CampoTexto'
 import { useValidacion } from '@/customHooks/useValidacion'
 import { Usuario } from '@/domain/Usuario'
 import { Card, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import { preferencias } from '../subrutasPerfil'
 import { FaChevronRight } from 'react-icons/fa'
+import { CompositeValidacion, validacionStrategy } from '@/utils/validacionStrategy'
 
 export const InformacionPersonal = ({ data, actualizar, navegacion }: { data: Usuario, actualizar: (campo: keyof Usuario, valor: unknown) => void, navegacion: (opcion: { label: string; path: string }) => void}) => {
     // Validaciones compuestas para los numeros:
-    const latitudValidacion = useValidacion(data.latitud, 'valorRequerido', 'latitud') //&& useValidacion(data.latitud, 'rangoNumerido', 'latitud', {min: -90, max: 90})
-    const longitudValidacion = useValidacion(data.longitud, 'valorRequerido', 'longitud') //&& useValidacion(data.longitud, 'rangoNumerido', undefined, {min: -180, max: 180})
-
+    const validacionNumerica = new CompositeValidacion()
+    validacionNumerica.agregar(validacionStrategy.valorRequerido)
+    validacionNumerica.agregar(validacionStrategy.rangoNumerido)
+    
     return (
         <Stack>
             <Card.Root variant='outline'>
@@ -32,11 +33,11 @@ export const InformacionPersonal = ({ data, actualizar, navegacion }: { data: Us
                         value={data.ubicacion} onChange={(event) => actualizar('ubicacion', event.target.value)} />
 
                         <Stack direction='row'>
-                            <CampoTexto validacion={latitudValidacion} nombreLabel='Latitud' nombreTest='latitud' placeholder='Ej: -34.61' type='number'
-                            value={data.latitud} onChange={(event) => actualizar('latitud', event.target.value)} />
+                            <CampoTexto validacion={useValidacion(data.latitud, validacionNumerica, 'latitud', {min: -90, max: 90})} nombreLabel='Latitud' nombreTest='latitud' 
+                            placeholder='Ej: -34.61' type='number' value={data.latitud} onChange={(event) => actualizar('latitud', event.target.value)} />
                             
-                            <CampoTexto validacion={longitudValidacion} nombreLabel='Longitud' nombreTest='longitud' placeholder='Ej: 58.38' type='number'
-                            value={data.longitud} onChange={(event) => actualizar('longitud', event.target.value)} />
+                            <CampoTexto validacion={useValidacion(data.longitud, validacionNumerica, 'longitud', {min: -180, max: 180})} nombreLabel='Longitud' nombreTest='longitud' 
+                            placeholder='Ej: 58.38' type='number' value={data.longitud} onChange={(event) => actualizar('longitud', event.target.value)} />
                         </Stack>
                     </Stack>
                 </Card.Body>
