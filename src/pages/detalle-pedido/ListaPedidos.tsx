@@ -7,7 +7,7 @@ import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
 
 export const DetallePedido = () => {
   
-  const [pedidos, setPedidos] = useState<Pedido[]>(MOCK_PEDIDOS)
+  const [pedidos, setPedidos] = useState<Pedido[]>(MOCK_PEDIDOS) //Próximamente esto llegará desde el back
 
   const pedidosPendientes = pedidos.filter(p => p.estadoDelPedido === 'PENDIENTE')
   const pedidosCompletados = pedidos.filter(p => p.estadoDelPedido === 'ENTREGADO')
