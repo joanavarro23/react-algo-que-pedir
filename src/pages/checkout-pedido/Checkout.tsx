@@ -1,8 +1,15 @@
-import './checkout.css'
 import { Button } from '@/components/boton/boton'
 import { Articulo } from '@/components/articulo-checkout/Articulo'
-import { Heading, Stack, IconButton } from '@chakra-ui/react'
+import { Heading, Stack, IconButton, Select, createListCollection, Portal } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
+
+const mediosDePago = createListCollection({
+            items: [
+                { label: 'Tarjeta de crédito', value: 'tarjeta' },
+                { label: 'Efectivo', value: 'efectivo' },
+                { label: 'QR', value: 'qr' }
+            ]
+        }) // Esto supongo que es temporal ya que hay que traer los medios de pago del back
 
 export const CheckoutPedido = () => {
     return(
@@ -45,14 +52,32 @@ export const CheckoutPedido = () => {
                 </article>
             </Stack>
             <Stack as="section" className="container-checkout">
-                <span>Forma de pago</span>
-                <select name="medio-de-pago" id="medio-de-pago">
-                    <option value="efectivo">Efectivo</option>
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="QR">QR</option>
-                </select>
-                <Button>Confirmar pedido</Button>
-                <Button variant="secundario">Limpiar carrito de compras</Button>
+                <Select.Root collection={mediosDePago} size="lg">
+                    <Select.HiddenSelect />
+                    <Select.Label>Forma de pago</Select.Label>
+                    <Select.Control>
+                        <Select.Trigger>
+                            <Select.ValueText placeholder="Selecciona un medio de pago" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                            <Select.Indicator />
+                        </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                        <Select.Positioner>
+                            <Select.Content>
+                                {mediosDePago.items.map((item) => (
+                                    <Select.Item item={item} key={item.value}>
+                                        {item.label}
+                                        <Select.ItemIndicator />
+                                    </Select.Item>
+                                ))}
+                            </Select.Content>
+                        </Select.Positioner>
+                    </Portal>
+                </Select.Root>
+                <Button className='boton-checkout'>Confirmar pedido</Button>
+                <Button variant="secundario" className='boton-checkout'>Limpiar carrito de compras</Button>
             </Stack>
         </main>
     )
