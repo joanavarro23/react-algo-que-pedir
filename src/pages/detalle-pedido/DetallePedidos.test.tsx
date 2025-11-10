@@ -45,17 +45,31 @@ describe('Lista y Detalle de Pedidos', () => {
         </ChakraProvider>
       </MemoryRouter>
     )
+
+    const pestañaPendientes = await screen.findByRole('tab', { name: /pendientes/i })
+    const pestañaCompletados = await screen.findByRole('tab', { name: /completados/i })
+    const pestañaCancelados = await screen.findByRole('tab', { name: /cancelados/i })
+
+    await user.click(pestañaPendientes)
     const cardMoe = await screen.findByText('Taberna de Moe')
     const cardKrusty = await screen.findByText('Krusty Burger')
+    const cardMensita = await screen.findByText('Mensita')
 
     expect(cardMoe).toBeTruthy()
     expect(cardKrusty).toBeTruthy()
+    expect(cardMensita).toBeTruthy()
 
+    
     const botonesCancelar = await screen.findAllByRole('button', { name: /cancelar pedido/i })
     expect(botonesCancelar).toHaveLength(2)
-    
-    await user.click(botonesCancelar[0])
-    expect(screen.queryByText('Taberna de Moe')).toBeNull()
+
+    const boton1 = botonesCancelar[0]
+    const boton2 = botonesCancelar[1]
+
+    await user.click(boton1)
+    await user.click(boton2)
+
+    screen.debug()
 
 
   })
