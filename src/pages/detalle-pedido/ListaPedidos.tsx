@@ -5,7 +5,7 @@ import { MOCK_PEDIDOS } from "@/mocks/pedidosMocks"
 import { PedidoCard } from "../../components/pedido/PedidoCard"
 import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
 
-export const DetallePedido = () => {
+export const ListaPedidos = () => {
   
   const [pedidos, setPedidos] = useState<Pedido[]>(MOCK_PEDIDOS) //Próximamente esto llegará desde el back
 
@@ -27,9 +27,9 @@ return (
       <Tabs.Root defaultValue="pendientes" variant="line" w="100%">
         <Tabs.List>
 
-          <Tabs.Trigger value="pendientes"><LuUser /> Pendientes</Tabs.Trigger>
-          <Tabs.Trigger value="completados"><LuFolder /> Completados</Tabs.Trigger>
-          <Tabs.Trigger value="cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
+          <Tabs.Trigger value="pendientes" data-test-id="test-pendientes"><LuUser /> Pendientes</Tabs.Trigger>
+          <Tabs.Trigger value="completados" data-test-id="test-completados"><LuFolder /> Completados</Tabs.Trigger>
+          <Tabs.Trigger value="cancelados" data-test-id="test-cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
         </Tabs.List>
         
         <Tabs.Content value="pendientes">
@@ -43,7 +43,7 @@ return (
                 />
               ))
             ) : (
-              "No tienes pedidos pendientes"
+              "No tenés pedidos pendientes"
             )}
           </VStack>
         </Tabs.Content>
@@ -59,7 +59,7 @@ return (
                 />
               ))
             ) : (
-              "No tienes pedidos completados"
+              "No tenés pedidos completados"
             )}
           </VStack>
         </Tabs.Content>
@@ -75,7 +75,7 @@ return (
                 />
               ))
             ) : (
-              "No tienes pedidos completados"
+              "No tenés pedidos completados"
             )}
           </VStack>
         </Tabs.Content>

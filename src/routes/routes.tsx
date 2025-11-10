@@ -6,7 +6,7 @@ import { Ingredientes } from '@/pages/usuario/preferencias/ingredientes'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
-import { DetallePedido } from '@/pages/detalle-pedido/ListaPedidos'
+import { ListaPedidos } from '@/pages/detalle-pedido/ListaPedidos'
 import { PaginaDetallePedido } from '@/pages/detalle-pedido/DetallePedido'
 
 export const AQPRoutes = () =>
@@ -19,7 +19,7 @@ export const AQPRoutes = () =>
             <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             <Route path="/crear-pedido" element={<DetalleLocal/>} />
             <Route path="/detalle-pedido">
-                <Route index element={<DetallePedido />} />
+                <Route index element={<ListaPedidos />} />
                 <Route path=":id" element={<PaginaDetallePedido />} />
             </Route>
         </Route>
