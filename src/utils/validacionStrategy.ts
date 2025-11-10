@@ -7,14 +7,21 @@ interface ValidacionStrategy<T> {
 }
 
 // Validacion compuesta
-// export class CompositeValidacion implements ValidacionStrategy<string | number> {
-//     esValido(valor: string | number, rango?: { min: number; max: number }): ValidacionResultado {
-//         return {
-//             esValido: true,
-//             mensajeError: ''
-//         }
-//     }
-// }
+export class CompositeValidacion implements ValidacionStrategy<string | number> {
+    private estrategias: ValidacionStrategy<string | number>[] = []
+
+    esValido(valor: string | number, campo?: string, rango?: { min: number; max: number }): ValidacionResultado {
+        return {
+            esValido: this.estrategias.every((estrategia) => estrategia.esValido(valor, campo, rango).esValido ),
+            mensajeError: this.estrategias
+                .filter((_) => !(_.esValido(valor, campo, rango).esValido))
+                .map((_) => _.esValido(valor, campo, rango).mensajeError)
+                .join('. ')
+        }
+    }
+
+    agregar(nuevaEstrategia: ValidacionStrategy<string | number>) { this.estrategias.push(nuevaEstrategia)}
+}
 
 class TextoRequerido implements ValidacionStrategy<string> {
     esValido(valor: string, campo: string): ValidacionResultado {
