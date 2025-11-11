@@ -5,26 +5,25 @@ import { Button } from '@/components/boton/boton'
 import { Link as RouterLink } from 'react-router-dom'
 import { PasswordInput } from '@/components/ui/password-input'
 
+//Tipamos los inputs que va a recibir el form para el Login
 type LoginForm = {
   username: string
   password: string
 }
 
 export const LoginUsuario = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<LoginForm>({
-    defaultValues: { username: '', password: '' },
-    mode: 'onTouched'
-  })
 
+    /*El useForm recibe default values*/
+    const { control, handleSubmit, formState: { isSubmitting } } = useForm<LoginForm>({
+        defaultValues: { username: '', password: '' },
+        mode: 'onTouched'
+    })
+
+    /*Simulamos una llamada para que no rompa el submit */
     const onSubmit = async (data: LoginForm) => {
-    // simulá tu llamada real
-    await new Promise((r) => setTimeout(r, 800))
-    console.log('login:', data)
-    // await authService.login(data.username, data.password)
+        await new Promise((r) => setTimeout(r, 800))
+        console.log('login:', data)
+        // await authService.login(data.username, data.password)
     }
 
   return (
@@ -71,7 +70,7 @@ export const LoginUsuario = () => {
         </Button>
 
         <Text>
-          ¿No tienes una cuenta?
+          ¿No tenes una cuenta?
           <RouterLink to="/register"> Registrate</RouterLink>
         </Text>
       </Stack>
