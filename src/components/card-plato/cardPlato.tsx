@@ -11,7 +11,7 @@ export const CardPlato = ( {plato, onClickPlato} : CardPlatoProps ) => {
         <Flex w="100%" align="center" py="1" px="0" gap="1.5" onClick={ () => onClickPlato(plato) }>
             
             <VStack align="flex-start" w="70%">
-                {plato.popular && <Tag.Root size="sm" color="parrafos" bg="none" variant="subtle" p="0"><Tag.Label>Popular</Tag.Label></Tag.Root>}
+                {plato.popular && <Tag.Root size="md" variant="subtle" colorPalette="yellow" px="1"><Tag.Label>Popular</Tag.Label></Tag.Root>}
                 
                 <Heading as="h1" size="md" fontWeight="semibold"> {plato.nombre} </Heading>
                 
@@ -19,7 +19,7 @@ export const CardPlato = ( {plato, onClickPlato} : CardPlatoProps ) => {
                 {plato.descripcion}
                 </Text>
                 
-                <Text fontSize="xs" fontWeight="semibold" bgColor="#fcebebff" borderRadius="md" p="1" px="3.5">${plato.precio.toFixed(2)}</Text>
+                <Text fontSize="xs" fontWeight="semibold" bgColor="#f8e6e6ff" borderRadius="md" p="1" px="3.5">${plato.precio.toFixed(2)}</Text>
             </VStack>
 
             <Box w="35%">
