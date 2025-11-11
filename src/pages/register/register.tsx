@@ -5,6 +5,8 @@ import { Usuario } from '@/domain/Usuario'
 import { useState } from 'react'
 import { Button } from '@/components/boton/boton'
 import { Link as RouterLink } from 'react-router-dom'
+import { PasswordInput } from '@/components/ui/password-input'
+
 
 
 export const RegisterUsuario = () => {
@@ -21,6 +23,8 @@ export const RegisterUsuario = () => {
                 nombreTest='Usuario'
                 placeholder='Usuario'
                 value={usuario.username}
+                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { username: e.target.value }))}
+
                 msjError='El campo nombre es requerido'
                 ></CampoTexto>
 
@@ -30,22 +34,25 @@ export const RegisterUsuario = () => {
                 nombreTest='Password'
                 placeholder='Password'
                 value={usuario.password}
+                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { password: e.target.value }))}
                 msjError='El campo nombre es requerido'
                 ></CampoTexto>
 
                 <CampoTexto 
                 invalid={useValidacion(usuario.password, 'textoRequerido')}
                 nombreLabel='Re-ingrese el Password'
-                nombreTest='Password'
-                placeholder='Password'
+                nombreTest='Re-ingrese el Password'
+                placeholder='Re-ingrese el Password'
                 value={usuario.password}
                 msjError='El campo nombre es requerido'
                 ></CampoTexto>
 
+                <PasswordInput></PasswordInput>
+
                 <Button onClick={() => 'TODO()'}>Registrarse</Button>
                 
                 <Text>¿Ya tienes una cuenta? 
-                    <RouterLink to="/login">Inicia Sesión</RouterLink>
+                    <RouterLink to="/login"> Inicia Sesión</RouterLink>
                 </Text>
             </Stack>
         </Stack>
