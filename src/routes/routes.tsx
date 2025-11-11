@@ -6,6 +6,8 @@ import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/pref
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
+import { LoginUsuario } from '@/pages/login/login'
+import { RegisterUsuario } from '@/pages/register/register'
 
 export const AQPRoutes = () =>
     <Routes>
@@ -17,6 +19,8 @@ export const AQPRoutes = () =>
             <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
             <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             <Route path="/crear-pedido" element={<DetalleLocal/>} />
+            <Route path="/login" element={<LoginUsuario/>} />
+            <Route path="/register" element={<RegisterUsuario/>} />
         </Route>
         <Route path="*" element={ <Navigate to={'/'}/> } />
     </Routes>
