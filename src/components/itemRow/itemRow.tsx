@@ -4,15 +4,14 @@ import type { ReactNode } from 'react'
 interface ItemRowProps {
     titulo: string
     subtitulo?: string
-    id?: string | number
     icono?: ReactNode //Iconos de react
     onClick?: () => void
 }
 
-export const ItemRow = ({ titulo, subtitulo, id, icono, onClick }: ItemRowProps ) => {
+export const ItemRow = ({ titulo, subtitulo, icono, onClick }: ItemRowProps ) => {
     return(
         <HStack justifyContent='space-between'>
-            <Stack key={id}>
+            <Stack>
                 <Text>{titulo}</Text>
                 {subtitulo && (
                     <Heading as='p' size='xs'>{subtitulo}</Heading>
