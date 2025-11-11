@@ -4,6 +4,7 @@ export class Usuario {
   constructor(
     public nombre = '',
     public apellido = '',
+    public imagen = '/usuario-chica.png',
     public email = '',
     public direccion = '',
     public ubicacion = '',
