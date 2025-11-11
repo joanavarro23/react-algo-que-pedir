@@ -1,17 +1,24 @@
-import { Button } from '@/components/boton/boton'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { Avatar, Heading, Stack, Text, VStack } from '@chakra-ui/react'
-import { useState } from 'react'
-import { useNavigate, type ErrorResponse } from 'react-router-dom'
-import { InformacionPersonal } from './formulario/InformacionPersonal'
+import { Stack } from '@chakra-ui/react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
+import { Outlet, useNavigate, type ErrorResponse } from 'react-router-dom'
+import type { Preferencias } from './subrutasPerfil'
+
+export type PerfilContextType = {
+    usuario: Usuario
+    setTareas: Dispatch<SetStateAction<Usuario>> //
+    traerUsuario: () => Promise<Usuario> //
+    actualizar: (referencia: keyof Usuario, valor: unknown) => void
+    guardar: () => Promise<Usuario>
+    navigate: ReturnType<typeof useNavigate> //
+    gotoPreferencias: (opcion: Preferencias) => void
+}
 
 export const PerfilUsuario = () => {
-    const imagen = '/usuario-chica.png'
-    // const { id }= useParams()
     const [usuario, setUsuario] = useState<Usuario>(new Usuario())
     
     // Carga de datos inicial
@@ -57,26 +64,13 @@ export const PerfilUsuario = () => {
 
     // Navegación a las preferencias
     const navigate = useNavigate()
-    const gotoPreferencias = (opcion: { label: string; path: string }) => {
+    const gotoPreferencias = (opcion: Preferencias) => {
         navigate(opcion.path)
     }
 
-    return(
+    return <>
         <Stack py='5'>
-           <Heading as='h1' size='md' textAlign="center">Perfil</Heading>
-            {/* Preview de la informacion del usuario */}
-           <VStack py='3'>
-                <Avatar.Root size='2xl'>
-                    <Avatar.Image src={imagen}/>
-                </Avatar.Root> 
-                <Heading as='h2' size='2xl'>{usuario.nombre} {usuario.apellido}</Heading>
-                <Text color='textoSecundario'>{usuario.email}</Text>
-           </VStack>
-
-           {/* Informacion personal */}
-            <InformacionPersonal data={usuario} actualizar={actualizar} navegacion={gotoPreferencias}/>
-
-           <Button onClick={guardar}>Guardar Cambios</Button>
+            <Outlet context={{usuario, setUsuario, traerUsuario, actualizar, guardar, navigate, gotoPreferencias}}/>
         </Stack>
-    )
+    </>           
 }
