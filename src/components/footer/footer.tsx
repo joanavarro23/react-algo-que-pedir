@@ -10,7 +10,7 @@ import './footer.css'
 
 //Hay que agregar las rutas aca y en el routes.tsx
 const linksFooter = [
-    { link: '/', label:'Inicio', icon: home },
+    { link: '/home', label:'Inicio', icon: home },
     { link: '/checkout-pedido', label: 'Pedidos', icon: ticketRecibo },
     { link: '/', label: 'Calificar', icon: estrellaPuntuacion },
     { link: '/perfil-usuario', label: 'Perfil', icon: perfil }  
