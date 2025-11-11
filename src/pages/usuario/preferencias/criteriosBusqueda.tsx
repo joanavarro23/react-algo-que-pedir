@@ -2,19 +2,14 @@ import { Button } from '@/components/boton/boton'
 import { ItemRow } from '@/components/itemRow/itemRow'
 import type { Usuario } from '@/domain/Usuario'
 import { criterios } from '@/pages/usuario/preferencias/criterios'
-import { CheckboxCard, CheckboxGroup, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { CheckboxCard, CheckboxGroup, Heading, HStack, IconButton, Stack } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
 import { MdClose } from 'react-icons/md'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import type { PerfilContextType } from '../Perfil'
 
-type ContextType = {
-    data: Usuario
-    navigate: ReturnType<typeof useNavigate>
-}
-export const CriteriosBusqueda = (
-    // {data, navegacion}: { data: Usuario, navegacion: () => void}
-) => {
-    const { data, navigate } = useOutletContext<ContextType>()
+export const CriteriosBusqueda = () => {
+    const { usuario, navigate } = useOutletContext<PerfilContextType>()
 
     const volver = () => { navigate(-1) }
 

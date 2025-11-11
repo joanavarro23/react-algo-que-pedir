@@ -12,7 +12,7 @@ export type PerfilContextType = {
     usuario: Usuario
     setTareas: Dispatch<SetStateAction<Usuario>> //
     traerUsuario: () => Promise<Usuario> //
-    actualizar: (referencia: keyof typeof Usuario, valor: unknown) => void
+    actualizar: (referencia: keyof Usuario, valor: unknown) => void
     guardar: () => Promise<Usuario>
     navigate: ReturnType<typeof useNavigate> //
     gotoPreferencias: (opcion: Preferencias) => void
