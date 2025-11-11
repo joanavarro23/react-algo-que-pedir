@@ -87,13 +87,16 @@ export const DetalleLocal = () => {
 
 
             {/*--- AUN EN TESTING ---*/}
-            <PlatoModal
+            {platoSeleccionado && (
+                 <PlatoModal
                 open={open}
                 onClose={onClose}
                 plato={platoSeleccionado}
                 cantidadActual={0}
                 onAgregar={() => onClose()} 
-            />
+                />
+            )}
+           
         </Box>
     )
 }
