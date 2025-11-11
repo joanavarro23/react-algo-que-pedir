@@ -9,7 +9,8 @@ export class Usuario {
     public direccion = '',
     public ubicacion = '',
     public latitud = 0,
-    public longitud = 0
+    public longitud = 0,
+    public distancia= 0
   ) {}
 
   validarCambios() {
