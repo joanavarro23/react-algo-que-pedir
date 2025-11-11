@@ -13,7 +13,7 @@ export const AQPRoutes = () =>
         {/* El layout envuelve al resto de las paginas*/ }
         <Route path="/" element={ <AppLayout /> }>
             <Route path="perfil-usuario" element={ <PerfilUsuario/> }>
-                <Route path='perfil-usuario' element={<InformacionPersonal />} />
+                <Route index element={<InformacionPersonal />} />
                 <Route path="criterios-busqueda" element={<CriteriosBusqueda />} />
                 <Route path="ingredientes-preferidos" element={<IngredientesPreferidos />} />
                 <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
