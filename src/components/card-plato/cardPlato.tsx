@@ -3,22 +3,23 @@ import { Box, Flex, Heading, Image, Tag, Text, VStack } from '@chakra-ui/react'
 
 interface CardPlatoProps {
     plato: Plato
+    onClickPlato: (plato : Plato) => void
 }
 
-export const CardPlato = ( {plato} : CardPlatoProps ) => {
+export const CardPlato = ( {plato, onClickPlato} : CardPlatoProps ) => {
     return (
-        <Flex w="100%" align="center" py="1" px="0" gap="1.5">
+        <Flex w="100%" align="center" py="1" px="0" gap="1.5" onClick={ () => onClickPlato(plato) }>
             
             <VStack align="flex-start" w="70%">
                 {plato.popular && <Tag.Root size="sm" color="parrafos" bg="none" variant="subtle" p="0"><Tag.Label>Popular</Tag.Label></Tag.Root>}
                 
                 <Heading as="h1" size="md" fontWeight="semibold"> {plato.nombre} </Heading>
                 
-                <Text textStyle="xs" fontWeight="medium" color="parrafos">
+                <Text fontSize="xs" fontWeight="medium" color="parrafos">
                 {plato.descripcion}
                 </Text>
                 
-                <Text textStyle="xs" fontWeight="semibold" bgColor="#fcebebff" borderRadius="md" p="1" px="3.5">${plato.precio.toFixed(2)}</Text>
+                <Text fontSize="xs" fontWeight="semibold" bgColor="#fcebebff" borderRadius="md" p="1" px="3.5">${plato.precio.toFixed(2)}</Text>
             </VStack>
 
             <Box w="35%">
