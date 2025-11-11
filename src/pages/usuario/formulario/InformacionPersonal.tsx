@@ -1,11 +1,12 @@
 import { CampoTexto } from '@/components/label-input/CampoTexto'
 import { useValidacion } from '@/customHooks/useValidacion'
-import { Avatar, Button, Card, Heading, HStack, IconButton, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Card, Heading, HStack, IconButton, Stack, Text, VStack } from '@chakra-ui/react'
 import { preferencias } from '../subrutasPerfil'
 import { FaChevronRight } from 'react-icons/fa'
 import type { PerfilContextType } from '../Perfil'
 import { useOutletContext } from 'react-router-dom'
 import { CompositeValidacion, validacionStrategy } from '@/utils/validacionStrategy'
+import { Button } from '@/components/boton/boton'
 
 export const InformacionPersonal = () => {
     const { usuario, actualizar, guardar, gotoPreferencias } = useOutletContext<PerfilContextType>()
