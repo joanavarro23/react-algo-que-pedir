@@ -1,17 +1,37 @@
 import { Button } from '@/components/boton/boton'
 import { ItemRow } from '@/components/itemRow/itemRow'
-import type { Usuario } from '@/domain/Usuario'
-import { criterios } from '@/pages/usuario/preferencias/criterios'
+import { CRITERIOS_MOCK } from '@/pages/usuario/preferencias/criterios'
 import { CheckboxCard, CheckboxGroup, Heading, HStack, IconButton, Stack } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
 import { MdClose } from 'react-icons/md'
-import { useNavigate, useOutletContext } from 'react-router-dom'
 import type { PerfilContextType } from '../Perfil'
+import { useOutletContext } from 'react-router-dom'
+import { useState } from 'react'
 
 export const CriteriosBusqueda = () => {
-    const { usuario, navigate } = useOutletContext<PerfilContextType>()
+    const { usuario, setTareas, traerUsuario, actualizar, navigate } = useOutletContext<PerfilContextType>()
+    
+    const [criterios, setCriterios] = useState(CRITERIOS_MOCK)
+    const [seleccionados, setSeleccionados] = useState(
+        criterios.filter((criterio) => criterio.checked).map((criterio) => criterio.value)
+    )
 
+    // seleccionar y agregar criterio
+    const toggleCriterio = (valor: string) => {
+        setCriterios((prev) => prev
+        .map((criterio) => criterio.value === valor
+            ? { ...criterio, checked: !criterio.checked }
+            : criterio
+        ))
+        setSeleccionados((prev) => prev
+        .includes(valor) ? prev.filter((v) => v !== valor) : [...prev, valor] )
+    }
+    
     const volver = () => { navigate(-1) }
+    const guardarCriterios = () => {
+     console.log('Criterios seleccionados:', seleccionados)
+        volver()
+    }
 
     return (
         <Stack py='5'>
@@ -23,7 +43,7 @@ export const CriteriosBusqueda = () => {
             <CheckboxGroup>
                 <Stack gap="2">
                     {criterios.map((criterio) => (
-                        <CheckboxCard.Root key={criterio.value} value={criterio.value} >
+                        <CheckboxCard.Root key={criterio.value} checked={criterio.checked} onCheckedChange={() => toggleCriterio(criterio.value)}>
                             <CheckboxCard.HiddenInput />
                             <CheckboxCard.Control >
                                 <CheckboxCard.Content>
@@ -37,7 +57,7 @@ export const CriteriosBusqueda = () => {
                             {criterio.items && (
                                 <CheckboxCard.Addon>
                                     {criterio.items.map((item) => (
-                                        <ItemRow titulo={item.nombre} subtitulo={item.detalles} id={item.id} icono={<MdClose/>} />
+                                        <ItemRow titulo={item.nombre} subtitulo={item.tiempo} id={item.id} icono={<MdClose/>} />
                                     ))}
                                 </CheckboxCard.Addon>
                             )}    
@@ -46,7 +66,7 @@ export const CriteriosBusqueda = () => {
                 </Stack>
             </CheckboxGroup>
 
-            <Button>Guardar</Button>
+            <Button onClick={guardarCriterios}>Guardar</Button>
         </Stack>
     )
 }
