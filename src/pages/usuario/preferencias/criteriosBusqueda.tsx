@@ -74,6 +74,18 @@ export const CriteriosBusqueda = () => {
                                     </Collapsible.Content>
                                 </Collapsible.Root>
                             )}
+                            {criterio.items && criterio.type === 'palabras' && (
+                                <Collapsible.Root open={criterio.checked}>
+                                    <Collapsible.Trigger display='none'></Collapsible.Trigger> {/* es necesario para el collapsible */}
+                                    <Collapsible.Content>
+                                        <CheckboxCard.Addon>
+                                            {criterio.items.map((item) => (
+                                                <ItemRow titulo={item.nombre} subtitulo={item.tiempo} id={item.id} icono={<MdClose/>} />
+                                            ))}
+                                        </CheckboxCard.Addon>
+                                    </Collapsible.Content>
+                                </Collapsible.Root>
+                            )}
                             {criterio.type === 'distancia' && (
                                 <Collapsible.Root open={criterio.checked}>
                                     <Collapsible.Trigger display='none'></Collapsible.Trigger> {/* es necesario para el collapsible */}
