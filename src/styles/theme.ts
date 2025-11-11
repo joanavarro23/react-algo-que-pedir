@@ -13,7 +13,7 @@ const config = defineConfig({
         textoSecundario: { value: '#9A6E63' },
         bordes: { value: '#eeccbeff' },
         fondo: { value: '#FFF9F8' },
-        parrafos: { value: '#97749d' },
+        parrafos: { value: '#ae5986ff' },
       },
       fonts: {
         body: { value: '"Nata Sans", sans-serif' },
