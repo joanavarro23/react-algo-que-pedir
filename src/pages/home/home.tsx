@@ -1,7 +1,7 @@
 import './home.css'
-import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack } from '@chakra-ui/react'
+import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack, Checkbox } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
-import { FiShoppingCart, FiSearch, FiHome, FiPackage, FiStar, FiUser } from 'react-icons/fi'
+import { FiShoppingCart, FiSearch} from 'react-icons/fi'
 import React from 'react'
 import axios from 'axios'
 
@@ -23,7 +23,7 @@ export const LocalesView = () => {
       try {
         const response = await axios.get<Local[]>('http://localhost:9000/locales')
         setLocales(response.data)
-      }catch (error) {
+      }catch {
         throw new Error('Error al obtener los locales')
       }
     }
@@ -66,20 +66,11 @@ export const LocalesView = () => {
         </Box>
 
         {/* Checkbox de cercania */}
-        <HStack
-          className="nearby-toggle"
-          cursor="pointer"
-          onClick={() => setShowNearby(!showNearby)}
-        >
-          <Box className={`checkbox ${showNearby ? 'checked' : ''}`}>
-            {showNearby && (
-              <Box className="checkbox-inner" />
-            )}
-          </Box>
-          <Text fontSize="sm" color="gray.700">
-            Buscar locales cercanos
-          </Text>
-        </HStack>
+        <Checkbox.Root pt="3" variant="solid" colorPalette="red" onCheckedChange={() => setShowNearby(!showNearby)}>
+          <Checkbox.HiddenInput />
+          <Checkbox.Control />
+          <Checkbox.Label>Buscar locales cercanos</Checkbox.Label>
+        </Checkbox.Root>
       </Box>
 
       {/* Content */}
@@ -96,6 +87,8 @@ export const LocalesView = () => {
               className="local-card"
               cursor="pointer"
               borderRadius="20px" overflow="hidden"
+              transition ="transform 0.2s"
+              _hover={{ transform: 'scale(1.02)' }}
             >
                 <Card.Body gap="0" p="0" >
                     <Box position="relative">
