@@ -6,6 +6,8 @@ import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/pref
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
+import { ListaPedidos } from '@/pages/detalle-pedido/ListaPedidos'
+import { PaginaDetallePedido } from '@/pages/detalle-pedido/DetallePedido'
 import { LocalesView } from '@/pages/home/home'
 import { InformacionPersonal } from '@/pages/usuario/formulario/InformacionPersonal'
 import { LoginUsuario } from '@/pages/login/login'
@@ -23,6 +25,10 @@ export const AQPRoutes = () =>
             </Route>
             <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             <Route path="/crear-pedido" element={<DetalleLocal/>} />
+            <Route path="/detalle-pedido">
+                <Route index element={<ListaPedidos />} />
+                <Route path=":id" element={<PaginaDetallePedido />} />
+            </Route>
             <Route path="/home" element={<LocalesView/>} />
             <Route path="/login" element={<LoginUsuario/>} />
             <Route path="/register" element={<RegisterUsuario/>} />
