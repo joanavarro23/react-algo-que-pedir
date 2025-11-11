@@ -65,6 +65,7 @@ export const LoginUsuario = () => {
           )}
         />
 
+        //El isSubmitting me deshabilita el boton cuando identifica que se ejecuto un onSubmit (evita envios duplicados)
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Ingresando…' : 'Iniciar Sesión'}
         </Button>
