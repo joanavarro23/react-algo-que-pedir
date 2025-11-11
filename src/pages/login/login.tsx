@@ -39,11 +39,10 @@ export const LoginUsuario = () => {
           render={({ field, fieldState }) => (
             <CampoTexto
               {...field}
-              invalid={!!fieldState.error}
+              validacion={{esValido: !!fieldState.error, mensajeError: fieldState.error?.message ?? ''}}
               nombreLabel="Usuario"
               nombreTest="Usuario"
               placeholder="Usuario"
-              msjError={fieldState.error?.message ?? ''}
             />
           )}
         />
