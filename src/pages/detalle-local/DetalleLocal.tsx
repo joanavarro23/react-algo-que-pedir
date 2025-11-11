@@ -44,7 +44,7 @@ export const DetalleLocal = () => {
                 </Flex>
             </VStack>
 
-            <Tabs.Root variant="line" w="100%" defaultValue="menu" px="1rem"> {/* Navbar para tabs de Menu y Reseñas */}
+            <Tabs.Root variant="line" w="100%" defaultValue="menu" px="1rem" marginTop="3"> {/* Navbar para tabs de Menu y Reseñas */}
                 <Tabs.List>
                     <Tabs.Trigger value="menu" fontWeight="semibold"> Menú </Tabs.Trigger>
                     <Tabs.Trigger value="reseñas" fontWeight="semibold"> Reseñas </Tabs.Trigger>
