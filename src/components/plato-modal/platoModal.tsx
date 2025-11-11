@@ -23,7 +23,7 @@ export const PlatoModal = ({
     const [cantidad, setCantidad] = useState(cantidadActual > 0 ? cantidadActual : 1) 
 
     {/*Cada modal arranca con cantidad en 0*/}
-    const resetCantidad = () => setCantidad(cantidadInicial)
+    const resetCantidad = () => setCantidad(cantidadActual)
 
     {/*Funciones para los botones de sumar/restar item*/}
     const incrementaItem = () => setCantidad( numero => numero + 1 )
