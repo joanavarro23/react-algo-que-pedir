@@ -4,6 +4,7 @@ import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { PLATOS_MOCK } from '@/mocks/platosMock'
 import { CardPlato } from '@/components/card-plato/cardPlato'
+import { platoModal } from '@/components/plato-modal/platoModal'
 
 export const DetalleLocal = () => {
     const navigate = useNavigate()
