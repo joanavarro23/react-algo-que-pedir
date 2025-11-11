@@ -5,6 +5,8 @@ export class Usuario {
     public nombre = '',
     public apellido = '',
     public imagen = '',
+    public username = '',
+    public password = '',
     public email = '',
     public direccion = '',
     public ubicacion = '',
@@ -31,6 +33,8 @@ export type UsuarioJSON = {
     id: number
     nombre: string,
     apellido: string,
+    username: string,
+    password: string,
     direccion: string,
     ubicacion: string,
     latitud: number,
