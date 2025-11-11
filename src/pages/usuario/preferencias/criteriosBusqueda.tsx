@@ -7,6 +7,7 @@ import { MdClose } from 'react-icons/md'
 import type { PerfilContextType } from '../Perfil'
 import { useOutletContext } from 'react-router-dom'
 import { useState } from 'react'
+import { toaster } from '@/components/chakra-toaster/toaster'
 
 export const CriteriosBusqueda = () => {
     const { usuario, setTareas, traerUsuario, actualizar, navigate } = useOutletContext<PerfilContextType>()
@@ -29,7 +30,11 @@ export const CriteriosBusqueda = () => {
     
     const volver = () => { navigate(-1) }
     const guardarCriterios = () => {
-     console.log('Criterios seleccionados:', seleccionados)
+        toaster.create({
+            title: 'Criterios seleccionados:',
+            description: seleccionados.join(', '),
+            type: 'info',
+        })
         volver()
     }
 
