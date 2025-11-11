@@ -1,10 +1,17 @@
-import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs } from '@chakra-ui/react'
+import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs, useDisclosure } from '@chakra-ui/react'
 import { FaStar } from 'react-icons/fa'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
-import { PLATOS_MOCK } from '@/mocks/platosMock'
+import { PLATOS_MOCK, type Plato } from '@/mocks/platosMock'
 import { CardPlato } from '@/components/card-plato/cardPlato'
-import { platoModal } from '@/components/plato-modal/platoModal'
+import { PlatoModal } from '@/components/plato-modal/platoModal'
+import { Button } from '@/components/boton/boton'
+import { useState } from 'react'
+
+interface ItemPedido {
+    plato: Plato,
+    cantidad: number
+}
 
 export const DetalleLocal = () => {
     const navigate = useNavigate()
@@ -16,6 +23,16 @@ export const DetalleLocal = () => {
        rating: 4.5,
        reviews: 1200,
        pedidos: 546
+    }
+
+    const { open, onOpen, onClose } = useDisclosure()
+
+    const [platoSeleccionado, setPlatoSeleccionado] = useState<Plato | null>(null)
+    const [pedido, setPedido] = useState<ItemPedido[]>([])
+
+    const handlePlatoClickeado = (plato : Plato) => {
+        setPlatoSeleccionado(plato)
+        onOpen()
     }
 
     return (
@@ -36,7 +53,7 @@ export const DetalleLocal = () => {
                 <Flex direction="column" align="flex-start" gap="0.5rem" px="1rem"> {/* Nombre local + info puntuacion */}
                     <Heading size="xl" fontWeight="bold">{local.nombre}</Heading>
                     
-                    <HStack fontSize="sm" color="textoSecundario">
+                    <HStack fontSize="sm">
                         <FaStar color="#f9d44dff" />
                         <Text>
                             {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
@@ -54,7 +71,7 @@ export const DetalleLocal = () => {
                 <Tabs.Content value="menu">
                     <VStack w="100%" gap="1">
                         {PLATOS_MOCK.map( plato => (
-                            <CardPlato key={plato.id} plato={plato}/>
+                            <CardPlato key={plato.id} plato={plato} onClickPlato={() => handlePlatoClickeado(plato)}/>
                         ))}
                     </VStack>
                 </Tabs.Content>
@@ -64,6 +81,19 @@ export const DetalleLocal = () => {
                 </Tabs.Content>
             </Tabs.Root>
 
+            <Box p="4" bg="white">                                          {/* Boton para ver el detalle del pedido */}
+                <Button colorScheme="red" w="100%"> Ver pedido ()</Button>
+            </Box>
+
+
+            {/*--- AUN EN TESTING ---*/}
+            <PlatoModal
+                open={open}
+                onClose={onClose}
+                plato={platoSeleccionado}
+                cantidadActual={0}
+                onAgregar={() => onClose()} 
+            />
         </Box>
     )
 }
