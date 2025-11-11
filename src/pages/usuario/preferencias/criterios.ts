@@ -19,14 +19,13 @@ export const CRITERIOS_MOCK: {
     value: string
     titulo: string
     descripcion: string
-    type: string
     items?: ContenidoExtra[]
     checked: boolean
 }[] = [
-    { value: 'vegano', titulo: 'Veganos', descripcion: 'Sólo los platos veganos', type: 'simple', checked: true },
-    { value: 'exquisito', titulo: 'Exquisitos', descripcion: 'Sólo platos de autor', type: 'simple', checked: true },
-    { value: 'conservador', titulo: 'Conservadores', descripcion: 'Sólo platos con ingredientes preferidos', type: 'simple', checked: false },
-    { value: 'fiel', titulo: 'Fieles', descripcion: 'Sólo los restaurantes preferidos', type: 'restaurantes', items: restaurantes, checked: false },
-    { value: 'marketing', titulo: 'Marketing', descripcion: 'Filtran platos por palabras buscadas', type: 'palabras', items: palabras, checked: false },
-    { value: 'impaciente', titulo: 'Impacientes', descripcion: 'Dentro de una distancia máxima', type: 'distancia', checked: false },
+    { value: 'vegano', titulo: 'Veganos', descripcion: 'Sólo los platos veganos', checked: true },
+    { value: 'exquisito', titulo: 'Exquisitos', descripcion: 'Sólo platos de autor', checked: true },
+    { value: 'conservador', titulo: 'Conservadores', descripcion: 'Sólo platos con ingredientes preferidos', checked: false },
+    { value: 'fiel', titulo: 'Fieles', descripcion: 'Sólo los restaurantes preferidos', items: restaurantes, checked: false },
+    { value: 'marketing', titulo: 'Marketing', descripcion: 'Filtran platos por palabras buscadas', items: palabras, checked: false },
+    { value: 'impaciente', titulo: 'Impacientes', descripcion: 'Dentro de una distancia máxima', checked: false },
 ]
