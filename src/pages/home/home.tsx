@@ -1,9 +1,11 @@
 import './home.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack, Checkbox } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { FiShoppingCart, FiSearch} from 'react-icons/fi'
 import React from 'react'
 import axios from 'axios'
+import { useOnInit } from '@/customHooks/useOnInit'
+import { REST_SERVER_URL } from '@/services/constants'
 
 interface Local {
   id: number
@@ -18,10 +20,10 @@ export const LocalesView = () => {
   const [locales, setLocales] = useState<Local[]>([])
   const [showNearby, setShowNearby] = useState<boolean>(false)
 
-  useEffect(() => {
+  useOnInit(() => {
     const fetchLocales = async (): Promise<void> => {
       try {
-        const response = await axios.get<Local[]>('http://localhost:9000/locales')
+        const response = await axios.get<Local[]>(`${REST_SERVER_URL}/locales`)
         setLocales(response.data)
       }catch {
         throw new Error('Error al obtener los locales')
@@ -58,7 +60,7 @@ export const LocalesView = () => {
             bg="gray.50"
             border="1px solid"
             borderColor="gray.300"
-            _focus={{ borderColor: 'blue.500', bg: 'white', border: '1px solid' }}
+            _focus={{ bg: 'white', border: '1px solid' }}
           />
           <Box className="search-icon">
             <FiSearch size={20} />
