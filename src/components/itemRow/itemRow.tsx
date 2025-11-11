@@ -11,14 +11,16 @@ interface ItemRowProps {
 
 export const ItemRow = ({ titulo, subtitulo, id, icono, onClick }: ItemRowProps ) => {
     return(
-        <HStack justifyContent='space-between' cursor={onClick ? 'pointer' : 'default'} onClick={onClick}>
+        <HStack justifyContent='space-between'>
             <Stack key={id}>
                 <Text>{titulo}</Text>
                 {subtitulo && (
                     <Heading as='p' size='xs'>{subtitulo}</Heading>
                 )}
             </Stack>
-            {icono && <IconButton variant='ghost' onClick={onClick}>{icono}</IconButton>}
+            {icono && (
+                <IconButton variant='ghost' onClick={onClick}>{icono}</IconButton>
+            )}
         </HStack>
     )
 }
