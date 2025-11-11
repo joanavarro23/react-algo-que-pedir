@@ -1,45 +1,35 @@
 import './home.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack } from '@chakra-ui/react'
-import { useState, type MouseEvent, type ReactNode, type ChangeEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { FiShoppingCart, FiSearch, FiHome, FiPackage, FiStar, FiUser } from 'react-icons/fi'
+import React from 'react'
+import axios from 'axios'
 
 interface Local {
   id: number
   nombre: string
   direccion: string
   urlImagenLocal: string
-  isFavorite: boolean
 }
 
-// Mock data para locales
-const mockLocales: Local[] = [
-  {
-    id: 1,
-    nombre: 'La Cocina de Mama',
-    direccion: 'Calle Principal, 123',
-    urlImagenLocal: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
-    isFavorite: true
-  },
-  {
-    id: 2,
-    nombre: 'El Sabor Autentico',
-    direccion: 'Avenida Central, 456',
-    urlImagenLocal: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop',
-    isFavorite: false
-  },
-  {
-    id: 3,
-    nombre: 'Delicias del Mundo',
-    direccion: 'Plaza Mayor, 789',
-    urlImagenLocal: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop',
-    isFavorite: false
-  }
-]
 
 export const LocalesView = () => {
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [locales, setLocales] = useState<Local[]>(mockLocales)
+  const [locales, setLocales] = useState<Local[]>([])
   const [showNearby, setShowNearby] = useState<boolean>(false)
+
+  useEffect(() => {
+    const fetchLocales = async (): Promise<void> => {
+      try {
+        const response = await axios.get<Local[]>('http://localhost:9000/locales')
+        setLocales(response.data)
+      }catch (error) {
+        throw new Error('Error al obtener los locales')
+      }
+    }
+
+    fetchLocales()
+  })
 
   const filteredLocales: Local[] = locales.filter((local: Local) =>
     local.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -63,7 +53,7 @@ export const LocalesView = () => {
             className="search-input"
             placeholder="Buscá tu local para pedir..."
             value={searchQuery}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
             pr="40px"
             bg="gray.50"
             border="1px solid"
