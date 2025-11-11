@@ -1,5 +1,8 @@
-export const preferencias = [
-    { label: 'Criterios de búsqueda', path: '/perfilUsuario/preferencias/criteriosBusqueda' },
-    { label: 'Ingredientes preferidos', path: '/perfilUsuario/preferencias/ingredientes' },
-    { label: 'Ingredientes a evitar', path: '/perfilUsuario/preferencias/ingredientes' },
+export const preferencias: {
+    label: string
+    path: '/criterios-busqueda' | '/ingredientes-preferidos' | '/ingredientes-evitar'
+}[] = [
+    { label: 'Criterios de búsqueda', path: '/criterios-busqueda' },
+    { label: 'Ingredientes preferidos', path: '/ingredientes-preferidos' },
+    { label: 'Ingredientes a evitar', path: '/ingredientes-evitar' },
 ]
