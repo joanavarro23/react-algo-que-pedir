@@ -1,10 +1,10 @@
-import type { useValidacion } from '@/customHooks/useValidacion'
+import type { validar } from '@/utils/validar'
 import { Field, Input, type InputProps } from '@chakra-ui/react'
 
 interface CampoTextoProps extends InputProps {
     nombreLabel: string
     nombreTest: string
-    validacion: ReturnType<typeof useValidacion>
+    validacion: ReturnType<typeof validar>
     required?: boolean
 }
 

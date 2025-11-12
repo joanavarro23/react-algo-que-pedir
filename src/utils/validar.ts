@@ -1,6 +1,6 @@
 import { validacionStrategy, CompositeValidacion, type Ranges } from '@/utils/validacionStrategy'
 
-export const useValidacion = (
+export const validar = (
     valor: string | number,
     estrategia: keyof typeof validacionStrategy | CompositeValidacion,
     campo?: string,
