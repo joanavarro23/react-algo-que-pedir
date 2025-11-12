@@ -7,7 +7,7 @@ export const getMensajeError = (error: unknown) => {
   }
   if (error instanceof AxiosError) {
     const status = error.response?.status ?? error.status ?? 0
-    errorMessage = status >= 400 && status < 500 ? error.response?.data.message : 'Ocurrió un error al conectarse al backend. Consulte al administrador del sistema'
+    errorMessage = status >= 400 && status < 500 ? error.response?.data.message : 'Ocurrió un error inesperado. Consulte al administrador del sistema'
     console.error(error)
   }
   return errorMessage
