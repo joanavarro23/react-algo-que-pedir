@@ -17,7 +17,7 @@ export const InformacionPersonal = () => {
     validacionNumerica.agregar(validacionStrategy.rangoNumerido)
     
     return (
-        <Stack>
+        <Stack py='5'>
             <Heading as='h1' size='md' textAlign="center">Perfil</Heading>
                         
             {/* Preview de la informacion del usuario */}

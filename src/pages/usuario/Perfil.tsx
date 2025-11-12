@@ -69,8 +69,6 @@ export const PerfilUsuario = () => {
     }
 
     return <>
-        <Stack py='5'>
-            <Outlet context={{usuario, setUsuario, traerUsuario, actualizar, guardar, navigate, gotoPreferencias}}/>
-        </Stack>
+        <Outlet context={{usuario, setUsuario, traerUsuario, actualizar, guardar, navigate, gotoPreferencias}}/>
     </>           
 }
