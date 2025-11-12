@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { getMensajeError } from './errorHandling'
+import { getMensajeError } from '../errorHandling'
 import { AxiosError, type AxiosResponse } from 'axios'
 
 describe('error handling tests', () => {
