@@ -2,15 +2,17 @@ export type ValidacionResultado = {
     esValido: boolean,
     mensajeError?: string
 }
+
+export type Ranges = { min?: number, max?: number } | undefined
 interface ValidacionStrategy<T> {
-    esValido(valor: T, campo?: string, rango?: { min?: number, max?: number }): ValidacionResultado
+    esValido(valor: T, campo?: string, rango?: Ranges): ValidacionResultado
 }
 
 // Validacion compuesta
 export class CompositeValidacion implements ValidacionStrategy<string | number> {
     private estrategias: ValidacionStrategy<string | number>[] = []
 
-    esValido(valor: string | number, campo?: string, rango?: { min: number; max: number }): ValidacionResultado {
+    esValido(valor: string | number, campo?: string, rango?: Ranges): ValidacionResultado {
         return {
             esValido: this.estrategias.every((estrategia) => estrategia.esValido(valor, campo, rango).esValido ),
             mensajeError: this.estrategias
