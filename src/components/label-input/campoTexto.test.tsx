@@ -3,6 +3,7 @@ import { test, describe, expect } from 'vitest'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/styles/theme'
 import { CampoTexto } from './CampoTexto'
+import userEvent from '@testing-library/user-event'
 
 describe('input tests', () => {
     test('deberia mostrar un campo de texto', () => {
@@ -13,16 +14,40 @@ describe('input tests', () => {
         )
         expect(screen.getByTestId('input-nombre')).toBeTruthy()
     })
-
-    test('deberia mostrar el mensaje de error cuando invalid=true', () => {
+    
+    test('no deberia mostrar el mensaje de error inicialmente aunque sea inválido', () => {
         render(
             <ChakraProvider value={theme}>
-                <CampoTexto validacion={{esValido: false, mensajeError: 'Apellido inválido'}} nombreLabel='Apellido' nombreTest='apellido' />
+                <CampoTexto 
+                    validacion={{esValido: false, mensajeError: 'Apellido inválido'}} 
+                    nombreLabel='Apellido' 
+                    nombreTest='apellido' 
+                />
             </ChakraProvider>
         )
         expect(screen.getByTestId('input-apellido')).toBeTruthy()
+        expect(screen.queryByText('Apellido inválido')).toBeNull()
+    })
+
+    test('deberia mostrar el mensaje de error después de onBlur', async () => {
+        const user = userEvent.setup()
+        render(
+            <ChakraProvider value={theme}>
+                <CampoTexto 
+                    validacion={{esValido: false, mensajeError: 'Apellido inválido'}} 
+                    nombreLabel='Apellido' 
+                    nombreTest='apellido' 
+                />
+            </ChakraProvider>
+        )
+        
+        const input = screen.getByTestId('input-apellido')
+        await user.click(input)
+        await user.tab() // Simula blur
+        
         expect(screen.getByText('Apellido inválido')).toBeTruthy()
     })
+
 
     test('no deberia mostrar el mensaje de error cuando invalid=false', () => {
         render(
