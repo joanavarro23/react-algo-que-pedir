@@ -12,7 +12,7 @@ import { RestaurenteItem } from '@/components/perfil-usuario/restauranteItem'
 import { Contador } from '@/components/contador/contador'
 
 export const CriteriosBusqueda = () => {
-    const { usuario, setTareas, traerUsuario, actualizar, navigate } = useOutletContext<PerfilContextType>()
+    const { usuario, setUsuario, traerUsuario, actualizar, navigate } = useOutletContext<PerfilContextType>()
     
     const [criterios, setCriterios] = useState(CRITERIOS_MOCK)
     const [seleccionados, setSeleccionados] = useState(

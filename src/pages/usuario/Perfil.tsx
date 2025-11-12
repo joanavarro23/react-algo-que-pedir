@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
@@ -10,7 +11,7 @@ import type { Preferencias } from './subrutasPerfil'
 
 export type PerfilContextType = {
     usuario: Usuario
-    setTareas: Dispatch<SetStateAction<Usuario>> //
+    setUsuario: Dispatch<SetStateAction<Usuario>> //
     traerUsuario: () => Promise<Usuario> //
     actualizar: (referencia: keyof Usuario, valor: unknown) => void
     guardar: () => Promise<Usuario>
@@ -35,7 +36,7 @@ export const PerfilUsuario = () => {
             })
         }
     }
-    useOnInit(traerUsuario) 
+    useOnInit(traerUsuario)
 
     // Actualización de los campos inputs
     const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
