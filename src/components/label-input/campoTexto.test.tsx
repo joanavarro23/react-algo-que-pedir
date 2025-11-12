@@ -8,7 +8,7 @@ describe('input tests', () => {
     test('deberia mostrar un campo de texto', () => {
         render(
             <ChakraProvider value={theme}>
-                <CampoTexto invalid={false} nombreLabel='Nombre' nombreTest='nombre' msjError='' />
+                <CampoTexto validacion={{esValido: true}} nombreLabel='Nombre' nombreTest='nombre' />
             </ChakraProvider>
         )
         expect(screen.getByTestId('input-nombre')).toBeTruthy()
@@ -17,7 +17,7 @@ describe('input tests', () => {
     test('deberia mostrar el mensaje de error cuando invalid=true', () => {
         render(
             <ChakraProvider value={theme}>
-                <CampoTexto invalid={true} nombreLabel='Apellido' nombreTest='apellido' msjError='Apellido inválido' />
+                <CampoTexto validacion={{esValido: false, mensajeError: 'Apellido inválido'}} nombreLabel='Apellido' nombreTest='apellido' />
             </ChakraProvider>
         )
         expect(screen.getByTestId('input-apellido')).toBeTruthy()
@@ -27,7 +27,7 @@ describe('input tests', () => {
     test('no deberia mostrar el mensaje de error cuando invalid=false', () => {
         render(
             <ChakraProvider value={theme}>
-                <CampoTexto invalid={false} nombreLabel='Nombre' nombreTest='nombre' msjError='Apellido inválido' />
+                <CampoTexto validacion={{esValido: true, mensajeError: 'Apellido inválido'}} nombreLabel='Nombre' nombreTest='nombre' />
             </ChakraProvider>
         )
         expect(screen.getByTestId('input-nombre')).toBeTruthy()
@@ -37,7 +37,7 @@ describe('input tests', () => {
     test('deberia aceptar props de Input como type y value', async () => {
         render(
             <ChakraProvider value={theme}>
-                <CampoTexto invalid={false} nombreLabel='Edad' nombreTest='edad' msjError='' type='number' value={30} />
+                <CampoTexto validacion={{esValido: false}} nombreLabel='Edad' nombreTest='edad' type='number' value={30} />
             </ChakraProvider>
         )
         await waitFor(() => {
