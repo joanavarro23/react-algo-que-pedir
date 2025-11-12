@@ -9,6 +9,6 @@ export const useValidacion = (
     return (
         (estrategia instanceof CompositeValidacion)
         ? estrategia.esValido(valor, campo, rango)
-        : validacionStrategy[estrategia].esValido(valor, campo, rango)
+        : validacionStrategy[estrategia].esValido(valor as never, campo, rango)
     )
 }
