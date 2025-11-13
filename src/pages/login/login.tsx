@@ -1,4 +1,4 @@
-import { Stack, Heading, Text, Field } from '@chakra-ui/react'
+import { Stack, Heading, Text, Field, Input } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
 import { CampoTexto } from '@/components/label-input/CampoTexto'
 import { Button } from '@/components/boton/boton'
@@ -37,13 +37,11 @@ export const LoginUsuario = () => {
           control={control}
           rules={{ required: 'El usuario es obligatorio' }}
           render={({ field, fieldState }) => (
-            <CampoTexto
-              {...field}
-              validacion={{esValido: !!fieldState.error, mensajeError: fieldState.error?.message ?? ''}}
-              nombreLabel="Usuario"
-              nombreTest="Usuario"
-              placeholder="Usuario"
-            />
+            <Field.Root invalid={!!fieldState.error} required>
+              <Field.Label>Usuario</Field.Label>
+              <Input {...field}/>
+              <Field.ErrorText>{fieldState.error?.message}</Field.ErrorText>
+            </Field.Root>
           )}
         />
 
