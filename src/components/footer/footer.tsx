@@ -16,11 +16,11 @@ const linksFooter = [
     { link: '/perfil-usuario', label: 'Perfil', icon: perfil }  
 ]
 
-export const SEPARADOR_FOOTER = '15px'
+export const SEPARADOR_FOOTER = '20px'
 
 export const FooterApp = () => {
     return (
-        <Box as="footer" className="footer-app">
+        <Box as="footer" className="footer-app" bgColor="fondo" position="static" bottom="0" width="100%" p="0.5rem">
             <Flex direction="row" className="rutas-footer" justifyContent="space-around">
                 { linksFooter.map((item) => (
                     <RouterLink to={item.link} key={item.label}>
