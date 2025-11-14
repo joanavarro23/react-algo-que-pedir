@@ -1,6 +1,6 @@
 // --- En src/mocks/pedidos.ts ---
 
-import type { Pedido } from "@/pages/detalle-pedido/Pedido"
+import type { Pedido } from '@/pages/detalle-pedido/Pedido'
 
 export const MOCK_PEDIDOS: Pedido[] = [
   {
