@@ -1,39 +1,57 @@
 import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs, useDisclosure } from '@chakra-ui/react'
 import { FaStar } from 'react-icons/fa'
 import { IoArrowBack } from 'react-icons/io5'
-import { useNavigate } from 'react-router-dom'
-import { PLATOS_MOCK, type Plato } from '@/mocks/platosMock'
+import { useNavigate, useParams } from 'react-router-dom'
+// import { PLATOS_MOCK, type Plato } from '@/mocks/platosMock'
+import type { Plato } from '@/domain/Plato'
+import type { LocalDTO } from '@/services/localServiceTest'
+
 import { CardPlato } from '@/components/card-plato/cardPlato'
 import { PlatoModal } from '@/components/plato-modal/platoModal'
 import { Button } from '@/components/boton/boton'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+import { PlatoService } from '@/services/platoService'
+import { LocalService } from '@/services/localServiceTest'
+
 
 interface ItemPedido {
     plato: Plato,
     cantidad: number
 }
 
+//Datos de manera momentanea
+interface localInfo {
+    nombre: string,
+    imagenUrl: string,
+    rating: number,
+    reviews: number,
+    pedidos: number
+}
+
+
 export const DetalleLocal = () => {
     const navigate = useNavigate()
+    //Uso el useParams para conseguir el id en la url
+    const { idLocal } = useParams<{idLocal: string}>()
+    const localID = Number(idLocal)
 
-    //Datos de manera momentanea
-    const local = {
-       nombre: 'Restaurante Italiano',
-       imagenUrl: './restaurante.png',
-       rating: 4.5,
-       reviews: 1200,
-       pedidos: 546
-    }
-
-    const { open, onOpen, onClose } = useDisclosure()
-
+    //Estados
+    const [local, setLocal] = useState<localInfo | null>(null)
+    const [platos, setPlatos] = useState<Plato[]>([])
+        
     const [platoSeleccionado, setPlatoSeleccionado] = useState<Plato | null>(null)
     const [pedido, setPedido] = useState<ItemPedido[]>([])
+
+    //Para el modal de Plato
+    const { open, onOpen, onClose } = useDisclosure()
 
     const handlePlatoClickeado = (plato : Plato) => {
         setPlatoSeleccionado(plato)
         onOpen()
     }
+
+    //
 
     return (
         <Box className="main-detalleLocal">
