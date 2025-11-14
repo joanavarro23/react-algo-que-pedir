@@ -27,7 +27,7 @@ export const AQPRoutes = () =>
             //Layout compartido entre vista donde se crea el pedido + el checkout
             <Route>
                 {/*La ruta de crear pedido en realidad deberia ser /local/{id} porque estas viendo un local con sus platos*/}
-                <Route path="/crear-pedido" element={<DetalleLocal/>} />
+                <Route path="/local/:idLocal/platos" element={<DetalleLocal/>} />
                 <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
             </Route>
 
