@@ -39,11 +39,10 @@ export const LoginUsuario = () => {
           render={({ field, fieldState }) => (
             <CampoTexto
               {...field}
-              invalid={!!fieldState.error}
+              validacion={{esValido: !!fieldState.error, mensajeError: fieldState.error?.message ?? ''}}
               nombreLabel="Usuario"
               nombreTest="Usuario"
               placeholder="Usuario"
-              msjError={fieldState.error?.message ?? ''}
             />
           )}
         />
@@ -65,7 +64,7 @@ export const LoginUsuario = () => {
           )}
         />
 
-        //El isSubmitting me deshabilita el boton cuando identifica que se ejecuto un onSubmit (evita envios duplicados)
+        {/*El isSubmitting me deshabilita el boton cuando identifica que se ejecuto un onSubmit (evita envios duplicados) */}
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Ingresando…' : 'Iniciar Sesión'}
         </Button>
