@@ -1,19 +1,24 @@
+import type { validar } from '@/utils/validar'
 import { Field, Input, type InputProps } from '@chakra-ui/react'
+import { useState } from 'react'
 
 interface CampoTextoProps extends InputProps {
-    invalid: boolean
-    required?: boolean
     nombreLabel: string
     nombreTest: string
-    msjError: string
+    validacion: ReturnType<typeof validar>
+    required?: boolean
 }
 
-export const CampoTexto = ({ invalid, required=true, nombreLabel, nombreTest, msjError, ...rest }: CampoTextoProps) => {
+export const CampoTexto = ({ required=true, nombreLabel, nombreTest, validacion, ...rest }: CampoTextoProps) => {
+    const [tocado, setTocado] = useState(false)
+    const tieneError = tocado && !validacion.esValido
+    
     return (
-        <Field.Root invalid={invalid} required={required}>
+        
+        <Field.Root invalid={tieneError} required={required} >
             <Field.Label>{nombreLabel}</Field.Label>
-            <Input data-testid={`input-${nombreTest}`} {...rest}/>
-            <Field.ErrorText>{msjError}</Field.ErrorText>
+            <Input data-testid={`input-${nombreTest}`} onBlur={() => setTocado(true)} {...rest}/>
+            <Field.ErrorText>{validacion.mensajeError}</Field.ErrorText>
         </Field.Root>
     )
 }
