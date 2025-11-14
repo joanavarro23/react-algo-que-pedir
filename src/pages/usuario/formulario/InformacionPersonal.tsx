@@ -14,7 +14,7 @@ import { toaster } from '@/components/chakra-toaster/toaster'
 import { getMensajeError } from '@/utils/errorHandling'
 
 export const InformacionPersonal = () => {
-    const { usuario, setUsuario, actualizar, gotoPreferencias } = useOutletContext<PerfilContextType>()
+    const { usuario, setUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
     const [usuarioForm, setUsuarioForm] = useState<Usuario>(usuario)
     
     // Sincroniza el estado local cuando cambia el usuario principal

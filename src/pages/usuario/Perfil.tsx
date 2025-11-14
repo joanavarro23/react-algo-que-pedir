@@ -13,8 +13,6 @@ export type PerfilContextType = {
     usuario: Usuario
     setUsuario: Dispatch<SetStateAction<Usuario>> //
     traerUsuario: () => Promise<Usuario> //
-    actualizar: (referencia: keyof Usuario, valor: unknown) => void
-    guardar: () => Promise<Usuario>
     navigate: ReturnType<typeof useNavigate> //
     gotoPreferencias: (opcion: Preferencias) => void
 }
@@ -38,31 +36,6 @@ export const PerfilUsuario = () => {
     }
     useOnInit(traerUsuario)
 
-    // Actualización de los campos inputs
-    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario(Object.assign(new Usuario(), { ...usuario, [referencia]: valor }))
-    }
-
-    // Se guardan los cambios realizados
-    const guardar = async () => {
-        try {
-            usuario.validarCambios()
-            await usuarioService.actualizar(usuario)
-            toaster.create({
-                title: 'Usuario actualizado',
-                description: 'Los datos se actualizaron con éxito.',
-                type: 'success',
-            })
-        } catch (error: unknown) {
-            const errorMessage = getMensajeError(error)
-            toaster.create({
-                title: 'Error al actualizar usuario',
-                description: errorMessage,
-                type: 'error'
-            })
-        }
-    }
-
     // Navegación a las preferencias
     const navigate = useNavigate()
     const gotoPreferencias = (opcion: Preferencias) => {
@@ -70,6 +43,6 @@ export const PerfilUsuario = () => {
     }
 
     return <>
-        <Outlet context={{usuario, setUsuario, traerUsuario, actualizar, guardar, navigate, gotoPreferencias}}/>
+        <Outlet context={{usuario, setUsuario, traerUsuario, navigate, gotoPreferencias}}/>
     </>           
 }
