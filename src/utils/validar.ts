@@ -1,14 +1,14 @@
-import { validacionStrategy, CompositeValidacion } from '@/utils/validacionStrategy'
+import { validacionStrategy, CompositeValidacion, type Ranges } from '@/utils/validacionStrategy'
 
-export const useValidacion = (
+export const validar = (
     valor: string | number,
     estrategia: keyof typeof validacionStrategy | CompositeValidacion,
     campo?: string,
-    rango?: { min:number, max: number },
+    rango?: Ranges,
 ) => {
     return (
         (estrategia instanceof CompositeValidacion)
         ? estrategia.esValido(valor, campo, rango)
-        : validacionStrategy[estrategia].esValido(valor, campo, rango)
+        : validacionStrategy[estrategia].esValido(valor as never, campo, rango)
     )
 }
