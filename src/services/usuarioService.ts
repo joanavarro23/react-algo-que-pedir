@@ -12,8 +12,10 @@ class UsuarioService {
         return USUARIOS_MOCK[id]
     }
 
-    actualizar(usuario: Usuario) {
-        return axios.put(`${REST_SERVER_URL}/usuario/${usuario.id}`, usuario.toJSON())
+    actualizar(usuarioActualizar: Usuario) {
+        //return axios.put(`${REST_SERVER_URL}/usuario/${usuario.id}`, usuario.toJSON())
+        const usuario = this.getById(usuarioActualizar.id!)
+        return { ...usuario, ...usuarioActualizar}
     }
 }
 

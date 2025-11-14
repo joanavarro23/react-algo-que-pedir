@@ -1,6 +1,6 @@
 import { Box, IconButton, Image, Heading, VStack, Text, Flex, Stack } from '@chakra-ui/react'
 import { CampoTexto } from '@/components/label-input/CampoTexto'
-import { useValidacion } from '@/customHooks/useValidacion'
+import { validar } from '@/utils/validar'
 import { Usuario } from '@/domain/Usuario'
 import { useState } from 'react'
 import { Button } from '@/components/boton/boton'
@@ -18,7 +18,7 @@ export const RegisterUsuario = () => {
             <Heading as="h1" size="3xl">Algo que pedir - REGISTRO</Heading>
             <Stack className="inputs-register">
                 <CampoTexto 
-                invalid={useValidacion(usuario.username, 'textoRequerido')}
+                invalid={validar(usuario.username, 'textoRequerido')}
                 nombreLabel='Usuario'
                 nombreTest='Usuario'
                 placeholder='Usuario'
@@ -29,7 +29,7 @@ export const RegisterUsuario = () => {
                 ></CampoTexto>
 
                 <CampoTexto 
-                invalid={useValidacion(usuario.password, 'textoRequerido')}
+                invalid={validar(usuario.password, 'textoRequerido')}
                 nombreLabel='Password'
                 nombreTest='Password'
                 placeholder='Password'
@@ -39,7 +39,7 @@ export const RegisterUsuario = () => {
                 ></CampoTexto>
 
                 <CampoTexto 
-                invalid={useValidacion(usuario.password, 'textoRequerido')}
+                invalid={validar(usuario.password, 'textoRequerido')}
                 nombreLabel='Re-ingrese el Password'
                 nombreTest='Re-ingrese el Password'
                 placeholder='Re-ingrese el Password'
