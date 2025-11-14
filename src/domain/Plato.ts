@@ -8,3 +8,7 @@ export type PlatoJSON = {
     precioUnitario: number,
     popular?: boolean
 }
+
+export class Plato {
+    
+}
