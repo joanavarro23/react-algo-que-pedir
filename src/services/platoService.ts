@@ -1,7 +1,6 @@
 import type { PlatoJSON } from '@/domain/Plato'
 import { REST_SERVER_URL } from './constants'
 import axios from 'axios'
-import { PLATOS_MOCK } from '@/mocks/platosMock'
 import { getAxiosData } from './common'
 
 
@@ -15,3 +14,5 @@ class PlatoService {
         return getAxiosData(queryPlatos)
     }
 }
+
+export const platoService = new PlatoService()
