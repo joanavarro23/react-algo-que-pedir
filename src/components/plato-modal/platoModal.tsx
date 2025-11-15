@@ -1,4 +1,4 @@
-import { Dialog, VStack, Image, Heading, Text, HStack, IconButton, Flex, Box } from '@chakra-ui/react'
+import { Dialog, VStack, Image, Heading, Text, HStack, Flex } from '@chakra-ui/react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { useState } from 'react'
 import { Plato } from '@/domain/Plato'
@@ -39,8 +39,8 @@ export const PlatoModal = ({
         <Dialog.Root open={open} onOpenChange={onClose} placement="center"> {/* Codigo del modal */}
             <Dialog.Backdrop />
             <Dialog.Positioner>
-                <Dialog.Content px="3" maxW={{ base: '100%', sm:'600px'}}>
-                    <Image src={plato.imagenUrl} alt={plato.nombre} h="200px" objectFit="cover" rounded="xl" mt="2rem"/>    {/*Img del plato*/}
+                <Dialog.Content px="1rem" py="1.5rem" maxW={{ base: '100%', sm:'600px'}}>
+                    <Image src={plato.imagenUrl} alt={plato.nombre} h="200px" objectFit="cover" rounded="xl" />    {/*Img del plato*/}
 
                     <VStack gap="4" w="100%" align="start" p="2">                               {/*Contenedor principal del modal*/}
                         <Dialog.Header p="0">
@@ -73,7 +73,7 @@ export const PlatoModal = ({
                             <Text fontSize="lg">${(plato.precioUnitario * cantidad).toFixed(2)}</Text>
                         </HStack>
 
-                        <Dialog.Footer as={Flex} w="100%" justifyContent="space-between">     {/*Seccion botones para finalizar*/}
+                        <Dialog.Footer as={Flex} w="100%" justifyContent="space-between" p="0">     {/*Seccion botones para finalizar*/}
                             <Button variant="secundario" border="none" color="black" bgColor="gray.100" onClick={onClose}>Cancelar</Button>
                             <Button onClick={botonAgregarItem}>Agregar al Pedido</Button>
                         </Dialog.Footer>
