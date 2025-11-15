@@ -22,7 +22,7 @@ export class Plato {
         this.id = data.id
         this.nombre = data.nombre
         this.descripcion = data.descripcion
-        this.imagenUrl = data.imagenUrl ? `${REST_SERVER_URL}/${data.imagenUrl}` : './pizza-margherita.png'
+        this.imagenUrl = data.imagenUrl ? `${REST_SERVER_URL}/${data.imagenUrl}` : './default-img.png'
         this.precioUnitario = data.precioUnitario
         this.popular = data.popular
     }
