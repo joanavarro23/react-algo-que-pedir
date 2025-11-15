@@ -1,11 +1,4 @@
-export interface Plato {
-    id: number,
-    nombre: string,
-    descripcion: string,
-    imagenUrl: string,
-    popular: boolean,
-    precioUnitario: number
-}
+import { Plato } from '@/domain/Plato'
 
 export const PLATOS_MOCK : Plato[] = [
     {
