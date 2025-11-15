@@ -128,7 +128,7 @@ export const DetalleLocal = () => {
     //--- VISTA /local/{id}/platos ---
     return (
         <Box>
-            <VStack marginTop="0.5rem" align="stretch" gap="2"> {/* Contenedor vertical para toda la pagina */}
+            <VStack marginTop="0.5rem" align="stretch" gap="3"> {/* Contenedor vertical para toda la pagina */}
 
                 <Flex direction="row" justify="space-between" w="100%" align="center" p="">   {/* Barra navegacion para atras */}
                     <IconButton aria-label="Volver atras" onClick={() => navigate(-1)} bg="none" color="black">

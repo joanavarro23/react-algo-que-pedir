@@ -1,7 +1,7 @@
-import { Dialog, VStack, Image, Heading, Text, HStack, IconButton, Flex } from '@chakra-ui/react'
+import { Dialog, VStack, Image, Heading, Text, HStack, IconButton, Flex, Box } from '@chakra-ui/react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { useState } from 'react'
-import type { Plato } from '@/mocks/platosMock'
+import { Plato } from '@/domain/Plato'
 import { Button } from '@/components/boton/boton'
 
 
@@ -39,29 +39,42 @@ export const PlatoModal = ({
         <Dialog.Root open={open} onOpenChange={onClose} placement="center"> {/* Codigo del modal */}
             <Dialog.Backdrop />
             <Dialog.Positioner>
-                <Dialog.Content>
-                    <VStack gap="3" w="100%">
-                        <Image src={plato.imagenUrl} alt={plato.nombre} w="80%" h="200px" objectFit="cover"/>
+                <Dialog.Content px="3" maxW={{ base: '100%', sm:'600px'}}>
+                    <Image src={plato.imagenUrl} alt={plato.nombre} h="200px" objectFit="cover" rounded="xl" mt="2rem"/>    {/*Img del plato*/}
 
-                        <Dialog.Header>
-                            <Heading size="lg" fontWeight="bold">{plato.nombre}</Heading>
+                    <VStack gap="4" w="100%" align="start" p="2">                               {/*Contenedor principal del modal*/}
+                        <Dialog.Header p="0">
+                            <Heading size="lg" fontWeight="bold">{plato.nombre}</Heading>                {/*Nombre del plato*/}
                         </Dialog.Header>
 
-                        <Dialog.Body>
-                            <Text textStyle="sm" fontWeight="medium"> {plato.descripcion} </Text>       {/*Info del plato*/}
-                            <Text textStyle="sm" fontWeight="medium"> Precio unitario: ${plato.precioUnitario.toFixed(2)}</Text>
+                        <Dialog.Body p="0" w="100%">
+                            <VStack gap="2.5" align="start">
+                                <Text textStyle="sm" fontWeight="medium">{plato.descripcion}</Text>       {/*Descripcion + precio del plato*/}
+
+                                <HStack justifyContent="space-between" w="100%" mb="3">
+                                    <Text textStyle="sm" fontWeight="medium">Precio unitario: </Text>   
+                                    <Text textStyle="sm" fontWeight="medium">${plato.precioUnitario.toFixed(2)}</Text>   
+                                </HStack>
+                            </VStack>
                         </Dialog.Body>
 
-                        <HStack>
-                            <IconButton aria-label="Decrementar" onClick={decrementaItem}> <FaMinus/> </IconButton> {/*Seccion boton agregar/sacar item*/}
-                            <Text fontSize="md" fontWeight="bold" px="5"> {cantidad} </Text>
-                            <IconButton aria-label="Incrementar" onClick={incrementaItem}> <FaPlus/> </IconButton>
+                        <HStack w="100%" justifyContent="space-between" bg="fondo">
+                            <Button m="0" w="50px" h="40px" maxW="70px" aria-label="Decrementar" onClick={decrementaItem}> <FaMinus/> </Button>       {/*Seccion boton agregar/sacar item*/}
+                            
+                            <Flex direction="row" w="100%" maxW="70px" fontSize="md" fontWeight="bold" justifyContent="center" alignItems="center">
+                                {cantidad}
+                            </Flex>
+
+                            <Button m="0" w="50px" h="40px"  aria-label="Incrementar" onClick={incrementaItem}> <FaPlus/> </Button>
                         </HStack>
 
-                        <Text fontSize="lg"> Precio total: ${(plato.precioUnitario * cantidad).toFixed(2)}</Text> {/*Precio final calculado*/}
+                        <HStack w="100%" justifyContent="space-between">                        {/*Precio final calculado*/}
+                            <Text fontSize="lg"> Precio total:</Text> 
+                            <Text fontSize="lg">${(plato.precioUnitario * cantidad).toFixed(2)}</Text>
+                        </HStack>
 
-                        <Dialog.Footer as={Flex} w="100%" justifyContent="space-around">     {/*Seccion botones para finalizar*/}
-                            <Button onClick={onClose}>Cancelar</Button>
+                        <Dialog.Footer as={Flex} w="100%" justifyContent="space-between">     {/*Seccion botones para finalizar*/}
+                            <Button variant="secundario" border="none" color="black" bgColor="gray.100" onClick={onClose}>Cancelar</Button>
                             <Button onClick={botonAgregarItem}>Agregar al Pedido</Button>
                         </Dialog.Footer>
                     </VStack>
