@@ -6,8 +6,6 @@ import ticketRecibo from '/ticketRecibo.svg'
 import perfil from '/perfil.svg'
 import estrellaPuntuacion  from '/estrellaPuntuacion.svg'
 
-import './footer.css'
-
 //Hay que agregar las rutas aca y en el routes.tsx
 const linksFooter = [
     { link: '/home', label:'Inicio', icon: home },
@@ -16,11 +14,11 @@ const linksFooter = [
     { link: '/perfil-usuario', label: 'Perfil', icon: perfil }  
 ]
 
-export const SEPARADOR_FOOTER = '20px'
+export const SEPARADOR_FOOTER = '5rem'
 
 export const FooterApp = () => {
     return (
-        <Box as="footer" className="footer-app" bgColor="fondo" position="static" bottom="0" width="100%" p="0.5rem">
+        <Box as="footer" bgColor="fondo" position="fixed" bottom="0" width="100%" p="0.5rem" borderTop="1px solid" borderColor="red.100">
             <Flex direction="row" className="rutas-footer" justifyContent="space-around">
                 { linksFooter.map((item) => (
                     <RouterLink to={item.link} key={item.label}>

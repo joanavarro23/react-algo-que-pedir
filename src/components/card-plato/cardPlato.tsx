@@ -1,4 +1,4 @@
-import type { Plato } from  '@/mocks/platosMock'
+import type { Plato } from  '@/domain/Plato'
 import { Box, Flex, Heading, Image, Tag, Text, VStack } from '@chakra-ui/react'
 
 interface CardPlatoProps {
@@ -19,7 +19,7 @@ export const CardPlato = ( {plato, onClickPlato} : CardPlatoProps ) => {
                 {plato.descripcion}
                 </Text>
                 
-                <Text fontSize="xs" fontWeight="semibold" bgColor="#f8e6e6ff" borderRadius="md" p="1" px="3.5">${plato.precio.toFixed(2)}</Text>
+                <Text fontSize="xs" fontWeight="semibold" bgColor="#f8e6e6ff" borderRadius="md" p="1" px="3.5">${plato.precioUnitario.toFixed(2)}</Text>
             </VStack>
 
             <Box w="35%">

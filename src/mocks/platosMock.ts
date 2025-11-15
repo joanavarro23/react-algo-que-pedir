@@ -4,7 +4,7 @@ export interface Plato {
     descripcion: string,
     imagenUrl: string,
     popular: boolean,
-    precio: number
+    precioUnitario: number
 }
 
 export const PLATOS_MOCK : Plato[] = [
@@ -14,7 +14,7 @@ export const PLATOS_MOCK : Plato[] = [
         descripcion: 'Classic pizza with tomato sauce, mozzarella, and basil',
         imagenUrl: '/pizza-margherita.png',
         popular: true,
-        precio: 12.99
+        precioUnitario: 12.99
     },
         {
         id: 2,
@@ -22,7 +22,7 @@ export const PLATOS_MOCK : Plato[] = [
         descripcion: 'Fettuccine with creamy Alfredo sauce',
         imagenUrl: '/fettuccine-alfredo.png',
         popular: false,
-        precio: 14.50
+        precioUnitario: 14.50
     },
         {
         id: 3,
@@ -30,7 +30,7 @@ export const PLATOS_MOCK : Plato[] = [
         descripcion: 'Pizza with tomato sauce, mozzarella, and pepperoni',
         imagenUrl: '/pizza-pepperoni.png',
         popular: true,
-        precio: 13.99
+        precioUnitario: 13.99
     },
         {
         id: 4,
@@ -38,6 +38,6 @@ export const PLATOS_MOCK : Plato[] = [
         descripcion: 'Spaghetti with creamy sauce, bacon, and parmesan cheese',
         imagenUrl: 'spaghetti-carbonara.png',
         popular: false,
-        precio: 14.99
+        precioUnitario: 14.99
     }
 ]

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { Plato } from '@/mocks/platosMock'
 import { Button } from '@/components/boton/boton'
 
+
 interface PlatoModalProps {
     plato: Plato
     open: boolean
@@ -48,7 +49,7 @@ export const PlatoModal = ({
 
                         <Dialog.Body>
                             <Text textStyle="sm" fontWeight="medium"> {plato.descripcion} </Text>       {/*Info del plato*/}
-                            <Text textStyle="sm" fontWeight="medium"> Precio unitario: ${plato.precio.toFixed(2)}</Text>
+                            <Text textStyle="sm" fontWeight="medium"> Precio unitario: ${plato.precioUnitario.toFixed(2)}</Text>
                         </Dialog.Body>
 
                         <HStack>
@@ -57,7 +58,7 @@ export const PlatoModal = ({
                             <IconButton aria-label="Incrementar" onClick={incrementaItem}> <FaPlus/> </IconButton>
                         </HStack>
 
-                        <Text fontSize="lg"> Precio total: ${(plato.precio * cantidad).toFixed(2)}</Text> {/*Precio final calculado*/}
+                        <Text fontSize="lg"> Precio total: ${(plato.precioUnitario * cantidad).toFixed(2)}</Text> {/*Precio final calculado*/}
 
                         <Dialog.Footer as={Flex} w="100%" justifyContent="space-around">     {/*Seccion botones para finalizar*/}
                             <Button onClick={onClose}>Cancelar</Button>
