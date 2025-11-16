@@ -249,7 +249,7 @@ export const DetalleLocal = () => {
             </Tabs.Root>
 
             <Box p="4" bg="white">                                          {/* Boton para ver el detalle del pedido */}
-                <Button colorScheme="red" w="100%"> Ver pedido ({pedido.length})</Button>
+                <Button colorScheme="red" w="100%"> Ver pedido ({pedido.items.length})</Button>
             </Box>
 
 
