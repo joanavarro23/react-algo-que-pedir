@@ -28,7 +28,7 @@ export const CheckoutPedido = () => {
     
     const traerPedido = async () => {
         try {
-            const pedido = await pedidoService.getPedidoById(pedidoID) //+id!
+            const pedido = await pedidoService.getPedidoById(pedidoID)
             setPedido(pedido)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
