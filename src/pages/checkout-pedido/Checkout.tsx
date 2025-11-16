@@ -6,18 +6,10 @@ import { useState } from 'react'
 import { Pedido } from '@/domain/Pedido'
 import { pedidoService } from '@/services/pedidoService'
 import { useParams, type ErrorResponse } from 'react-router-dom'
-import { Plato } from '@/domain/Plato'
 import { getMensajeError } from '@/utils/errorHandling'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
-
-const mediosDePago = createListCollection({
-            items: [
-                { label: 'Tarjeta de crédito', value: 'tarjeta' },
-                { label: 'Efectivo', value: 'efectivo' },
-                { label: 'QR', value: 'qr' }
-            ]
-        }) // Esto supongo que es temporal ya que hay que traer los medios de pago del back
+import { medioDePagoLabels, type MediosDePago } from '@/services/localServiceTest'
 
 export const CheckoutPedido = () => {
     //Temporalmente uso el id de la url para traer el pedido
@@ -25,11 +17,19 @@ export const CheckoutPedido = () => {
     const pedidoID = Number(idPedido)
     
     const [pedido, setPedido] = useState<Pedido>(new Pedido())
+    const [mediosDePago, setMediosDePago] = useState<MediosDePago[]>([])
+    const [medioSeleccionado, setMedioSeleccionado] = useState<MediosDePago | null>(null)
     
     const traerPedido = async () => {
         try {
             const pedido = await pedidoService.getPedidoById(pedidoID)
             setPedido(pedido)
+            if (pedido.local?.mediosDePago) {
+                setMediosDePago(pedido.local.mediosDePago)
+            }
+            if (!medioSeleccionado) {
+                setMedioSeleccionado('EFECTIVO')
+            }
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
             toaster.create({
@@ -48,6 +48,12 @@ export const CheckoutPedido = () => {
             return `Envío $${pedido.tarifaEntrega.toFixed(2)}`
         }
     }
+
+    const collection = createListCollection({
+        items: mediosDePago.map((medio) => ({ 
+            label: medioDePagoLabels[medio], 
+            value: medio }))
+    })
 
     return(
         <main className="main-checkout">
@@ -89,7 +95,12 @@ export const CheckoutPedido = () => {
                 </article>
             </Stack>
             <Stack as="section" className="container-checkout">
-                <Select.Root collection={mediosDePago} size="lg">
+                <Select.Root collection={collection} size="lg" value={medioSeleccionado ? [medioSeleccionado] : []}
+                    onValueChange={(details) => {
+                        const seleccionado = details.value[0] as MediosDePago | undefined
+                        setMedioSeleccionado(seleccionado ?? null)
+                    }}
+                >
                     <Select.HiddenSelect />
                     <Select.Label>Forma de pago</Select.Label>
                     <Select.Control>
@@ -103,7 +114,7 @@ export const CheckoutPedido = () => {
                     <Portal>
                         <Select.Positioner>
                             <Select.Content>
-                                {mediosDePago.items.map((item) => (
+                                {collection.items.map((item) => (
                                     <Select.Item item={item} key={item.value}>
                                         {item.label}
                                         <Select.ItemIndicator />
