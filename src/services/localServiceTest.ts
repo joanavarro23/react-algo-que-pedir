@@ -4,11 +4,19 @@ import axios from 'axios'
 import { REST_SERVER_URL } from './constants'
 import { getAxiosData } from './common'
 
+export type MediosDePago = 'EFECTIVO' | 'QR' | 'TARJETA'
+
+export const medioDePagoLabels: Record<MediosDePago, string> = {
+  EFECTIVO: 'Efectivo',
+  TARJETA: 'Tarjeta',
+  QR: 'QR',
+}
 
 export type LocalJSON = {
     idLocal: number,
     nombre: string,
     urlImagenLocal: string,
+    mediosDePago: MediosDePago[],
     rating: number,
     reviews: String
 }
