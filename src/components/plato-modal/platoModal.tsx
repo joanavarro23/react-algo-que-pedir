@@ -1,6 +1,6 @@
 import { Dialog, VStack, Image, Heading, Text, HStack, Flex } from '@chakra-ui/react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plato } from '@/domain/Plato'
 import { Button } from '@/components/boton/boton'
 
@@ -23,8 +23,14 @@ export const PlatoModal = ({
     {/*Entiendo que muestra lo que agregas o 1 si es por 1era vez*/}
     const [cantidad, setCantidad] = useState(cantidadActual > 0 ? cantidadActual : 1) 
 
-    {/*Cada modal arranca con cantidad en 0*/}
-    const resetCantidad = () => setCantidad(cantidadActual)
+    {/*Cada modal arranca con cantidad en 1 para permitirte elegir, si volves a abrir
+    el modal de un mismo plato, te muestra la cantidad que ya agregaste al pedido */}
+    useEffect( () => {
+        if(open){
+            setCantidad(cantidadActual > 0 ? cantidadActual : 1)
+        }
+    }, [open, cantidadActual])
+
 
     {/*Funciones para los botones de sumar/restar item*/}
     const incrementaItem = () => setCantidad( numero => numero + 1 )
