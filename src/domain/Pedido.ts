@@ -13,7 +13,7 @@ export class Pedido {
     id?: number
 
     constructor(
-        public local: Local | null = null,
+        public local: LocalJSON | null = null,
         public fechaPedido: String = '',
         public platosDelPedido: Plato[] | null = null,
         public cantidadDePlatos: number = 0,
@@ -26,7 +26,7 @@ export class Pedido {
 
     static fromJson(pedidoJSON: PedidoJSON): Pedido {
        const pedido = Object.assign(new Pedido(), pedidoJSON, {
-            platosDelPedido: pedidoJSON.platosDelPedidio.map(platoJSON => Plato.fromJSON(platoJSON))
+            platosDelPedido: pedidoJSON.platosDelPedido.map(platoJSON => Plato.fromJSON(platoJSON)),
        })
        return pedido
     }
@@ -36,7 +36,7 @@ export type PedidoJSON = {
     id: number
     local: LocalJSON
     fechaPedido: String
-    platosDelPedidio: PlatoJSON[]
+    platosDelPedido: PlatoJSON[]
     cantidadDePlatos: number
     medioDePago: MedioDePago
     costoSubtotalPedido: number
