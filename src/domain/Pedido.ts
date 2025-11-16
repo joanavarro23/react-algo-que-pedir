@@ -15,6 +15,7 @@ export class Pedido {
     constructor(
         public local: LocalJSON | null = null,
         public fechaPedido: String = '',
+        public distancia: String = '',
         public platosDelPedido: Plato[] | null = null,
         public cantidadDePlatos: number = 0,
         public medioDePago: MedioDePago | null = null,
@@ -36,6 +37,7 @@ export type PedidoJSON = {
     id: number
     local: LocalJSON
     fechaPedido: String
+    distancia: String
     platosDelPedido: PlatoJSON[]
     cantidadDePlatos: number
     medioDePago: MedioDePago
