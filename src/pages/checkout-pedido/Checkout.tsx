@@ -61,7 +61,7 @@ export const CheckoutPedido = () => {
                     <img className="imagen-restaurante" src={pedido.local?.urlImagenLocal} alt='Imágen del restaurante'/>
                     <Stack as='figcaption' gap={0}>
                         <h3>{pedido.local?.nombre}</h3>
-                        <span className='texto-secundario-checkout'>{pedido.local?.rating.toFixed(1)} · Distancia · {displayEnvio()}</span>
+                        <span className='texto-secundario-checkout'>{pedido.local?.rating.toFixed(1)} · {pedido.distancia} · {displayEnvio()}</span>
                     </Stack>
                 </figure>
             </Stack>
@@ -81,10 +81,10 @@ export const CheckoutPedido = () => {
                         <span className="texto-secundario-checkout">Total</span>
                     </Stack>
                     <Stack>
-                        <span className="precio-resumen">{pedido.costoSubtotalPedido.toFixed(2)}</span>
-                        <span className="precio-resumen">{pedido.recargoMedioDePago.toFixed(2)}</span>
-                        <span className="precio-resumen">{pedido.tarifaEntrega.toFixed(2)}</span>
-                        <span className="precio-resumen">{pedido.costoTotalPedido.toFixed(2)}</span>
+                        <span className="precio-resumen">${pedido.costoSubtotalPedido.toFixed(2)}</span>
+                        <span className="precio-resumen">${pedido.recargoMedioDePago.toFixed(2)}</span>
+                        <span className="precio-resumen">${pedido.tarifaEntrega.toFixed(2)}</span>
+                        <span className="precio-resumen">${pedido.costoTotalPedido.toFixed(2)}</span>
                     </Stack>
                 </article>
             </Stack>
