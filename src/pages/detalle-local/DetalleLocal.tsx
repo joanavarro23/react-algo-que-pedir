@@ -142,16 +142,7 @@ export const DetalleLocal = () => {
 
         //Valida el id del local que viene de la url    
         if (!localID || Number.isNaN(localID)) {
-            const mensajeError = 'El id del local es invalido!'
-            setErrorCarga(mensajeError)         //Marca que hubo error porque el id de la url o no esta o es invalido 
-
-            toaster.create({
-                title: 'Error de navegación',
-                description: mensajeError,
-                type: 'error',
-                duration: 3000
-            })
-
+            setErrorCarga('El id del local es invalido!')         //Marca que hubo error porque el id de la url o no esta o es invalido 
             setEstaCargando(false)
             return
         }
@@ -191,7 +182,7 @@ export const DetalleLocal = () => {
         return (<LoadingSpinner mensaje="platos del local" />)
     }
 
-    //Mensaje de error con boton para volver al Home (si falla la carga o si el local es null)
+    //Mensaje de error con boton para volver al Home (si falla la carga o si el local es null/invalido)
     if (errorCarga || !local) {
         return (
             <Flex direction="column" gap="4" align="center" justify="center" minH="100vh" width="100%">
