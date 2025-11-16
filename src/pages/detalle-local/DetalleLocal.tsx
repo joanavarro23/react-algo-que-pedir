@@ -10,19 +10,29 @@ import { PlatoModal } from '@/components/plato-modal/platoModal'
 import { Button } from '@/components/boton/boton'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 import { toaster } from '@/components/chakra-toaster/toaster'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { platoService } from '@/services/platoService'
 import { localService } from '@/services/localServiceTest'
 import { useOnInit } from '@/customHooks/useOnInit'
 
-
+//Minima interface para un item de un pedido
 interface ItemPedido {
     plato: Plato,
     cantidad: number
 }
 
-//Datos de manera momentanea
+//Minima interface para un Pedido
+interface Pedido {
+    id: number,
+    items: ItemPedido[]
+    //fechaCreacion: Date,
+    //costoTotal: number,
+    //etc
+}
+
+
+//Datos de manera momentanea hasta que haya una class Local
 interface localInfo {
     nombre: string,
     urlImagenLocal: string,
@@ -34,32 +44,98 @@ interface localInfo {
 
 export const DetalleLocal = () => {
     const navigate = useNavigate()
+    
+    const volverAlHome = () => {
+        navigate('/home')
+    }
+    
     //Uso el useParams para conseguir el id en la url
     const { idLocal } = useParams<{ idLocal: string }>()
     const localID = Number(idLocal)
 
-    //Estados
+    // --- ESTADOS ---
     const [local, setLocal] = useState<localInfo | null>(null)
     const [estaCargando, setEstaCargando] = useState(true)             //estados para diferenciar si el local esta cargando
     const [errorCarga, setErrorCarga] = useState<string | null>(null)   //o si fallo en la carga
 
     const [platos, setPlatos] = useState<Plato[]>([])
     const [platoSeleccionado, setPlatoSeleccionado] = useState<Plato | null>(null)
-    const [pedido, setPedido] = useState<ItemPedido[]>([])
 
-    //Para el modal de Plato
+    //Estado para el Pedido que arma la vista   
+    const [pedido, setPedido] = useState<Pedido>({
+        id: 1,
+        items: []
+    })       
+
+    // ----- testeo de como se agregan los platos en consola!!!!!------
+    useEffect(() => {
+        console.log('--- ESTADO ACTUAL DEL PEDIDO ---')
+        console.log('ID del Pedido:', pedido.id || 'No Asignado')
+        
+        if (pedido.items.length === 0) {
+            console.log('El pedido está vacío.')
+        } else {
+            console.log(`Total de Items Únicos: ${pedido.items.length}`)
+            
+            pedido.items.forEach(item => {
+                console.log(`- Plato ID: ${item.plato.id}, Nombre: ${item.plato.nombre}, Cantidad: ${item.cantidad}`)
+            })
+        }
+        console.log('-------------------------------')
+    }, [pedido])
+
+
+    //--- MODAL DE PLATO ---
     const { open, onOpen, onClose } = useDisclosure()
 
+    //Abre el modal
     const handlePlatoClickeado = (plato: Plato) => {
         setPlatoSeleccionado(plato)
         onOpen()
     }
 
-    const volverAlHome = () => {
-        navigate('/home')
+    // --- AGREGAR PLATO AL PEDIDO ---
+    const handleAgregarPlato = (plato : Plato, cantidad : number) => {
+        setPedido( pedidoActual => {
+            //Accedo a la lista de platos del Pedido
+            const pedidoItems = pedidoActual.items
+
+            //Match de id de plato para saber si ya existe en mi pedido
+            const idPlatoItem = pedidoItems.findIndex( item => item.plato.id === plato.id)
+            
+            //Si no matchea, es un plato nuevo. Agrego la cantidad elegida y retorna el pedido
+            if(idPlatoItem !== -1) {
+                const nuevoPedidoItems = [...pedidoItems]
+                nuevoPedidoItems[idPlatoItem] = { plato, cantidad}
+                return {
+                    ...pedidoActual,
+                    items: nuevoPedidoItems
+                }
+            }
+            
+            //Y si era el mismo plato, se reactualiza la cantidad
+            return {
+                ...pedidoActual,
+                items: [...pedidoItems, {plato, cantidad}]
+            }
+        })
+        onClose()
+
+        toaster.create({
+            title: 'Plato agregado exitosamente!',
+            description: `${cantidad} de ${plato.nombre} agregado(s) al pedido`,
+            type: 'success',
+            duration: 1500
+        })
     }
 
-    //Para la carga de platos del local
+    const obtenerCantidadActual = (plato : Plato) => {
+        const item = pedido.items.find(item => item.plato.id === plato.id)
+        return item ? item.cantidad : 0
+    }
+
+
+    //--- CARGA DE PLATOS DEL LOCAL ---
     const cargarDatos = async () => {
         setEstaCargando(true)           //el local esta cargando
         setErrorCarga(null)
@@ -67,7 +143,7 @@ export const DetalleLocal = () => {
         //Valida el id del local que viene de la url    
         if (!localID || Number.isNaN(localID)) {
             const mensajeError = 'El id del local es invalido!'
-            setErrorCarga(mensajeError)         //Marca que hubo error porque el id de la url o no esta o es invalido
+            setErrorCarga(mensajeError)         //Marca que hubo error porque el id de la url o no esta o es invalido 
 
             toaster.create({
                 title: 'Error de navegación',
@@ -100,7 +176,7 @@ export const DetalleLocal = () => {
         } catch (error) {
             console.error('Error cargando los platos del local', error)
 
-            setErrorCarga('No se pudieron cargar los platos del local')
+            setErrorCarga('No se pudo cargar los platos del local')
         } finally {
             setEstaCargando(false)
         }
@@ -124,6 +200,7 @@ export const DetalleLocal = () => {
             </Flex>
         )
     }
+
 
     //--- VISTA /local/{id}/platos ---
     return (
@@ -182,8 +259,8 @@ export const DetalleLocal = () => {
                     open={open}
                     onClose={onClose}
                     plato={platoSeleccionado}
-                    cantidadActual={0}
-                    onAgregar={() => onClose()}
+                    cantidadActual={obtenerCantidadActual(platoSeleccionado)}
+                    onAgregar={handleAgregarPlato}
                 />
             )}
 
