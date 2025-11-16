@@ -2,6 +2,14 @@ import { Button } from '@/components/boton/boton'
 import { Articulo } from '@/components/articulo-checkout/Articulo'
 import { Heading, Stack, IconButton, Select, createListCollection, Portal } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
+import { useState } from 'react'
+import { Pedido } from '@/domain/Pedido'
+import { pedidoService } from '@/services/pedidoService'
+import { useParams, type ErrorResponse } from 'react-router-dom'
+import { Plato } from '@/domain/Plato'
+import { getMensajeError } from '@/utils/errorHandling'
+import { toaster } from '@/components/chakra-toaster/toaster'
+import { useOnInit } from '@/customHooks/useOnInit'
 
 const mediosDePago = createListCollection({
             items: [
@@ -12,6 +20,35 @@ const mediosDePago = createListCollection({
         }) // Esto supongo que es temporal ya que hay que traer los medios de pago del back
 
 export const CheckoutPedido = () => {
+    //Temporalmente uso el id de la url para traer el pedido
+    const { idPedido } = useParams<{ idPedido: string }>()
+    const pedidoID = Number(idPedido)
+    
+    const [pedido, setPedido] = useState<Pedido>(new Pedido())
+    
+    const traerPedido = async () => {
+        try {
+            const pedido = await pedidoService.getPedidoById(pedidoID) //+id!
+            setPedido(pedido)
+        } catch (error: unknown) {
+            const mensajeError = getMensajeError(error as ErrorResponse)
+            toaster.create({
+                title: 'No se puede cargar el pedido',
+                description: mensajeError,
+                type: 'error',
+            })
+        }
+    }
+    useOnInit(traerPedido)
+
+    const displayEnvio = () => {
+        if (pedido.tarifaEntrega == 0){
+            return 'Envío Gratis'
+        } else {
+            return `Envío $${pedido.tarifaEntrega.toFixed(2)}`
+        }
+    }
+
     return(
         <main className="main-checkout">
             <Heading as="header" className="checkout-header">
@@ -21,18 +58,18 @@ export const CheckoutPedido = () => {
             <Stack as="section" className="container-checkout">
                 <Heading as="h2">Restaurante</Heading>
                 <figure className="restaurante-figure">
-                    <img className="imagen-restaurante" src='/restaurante.png' alt='Imágen del restaurante'/>
+                    <img className="imagen-restaurante" src={pedido.local?.urlImagenLocal} alt='Imágen del restaurante'/>
                     <Stack as='figcaption' gap={0}>
-                        <h3>Nombre restaurante</h3>
-                        <span className='texto-secundario-checkout'>Puntuacion + Distancia + Envio</span>
+                        <h3>{pedido.local?.nombre}</h3>
+                        <span className='texto-secundario-checkout'>{pedido.local?.rating.toFixed(1)} · Distancia · {displayEnvio()}</span>
                     </Stack>
                 </figure>
             </Stack>
             <Stack as="section" className="container-checkout">
                 <Heading as="h2">Artículos</Heading>
-                <Articulo nombre="Hamburguesa" cantidad={1} precioUnitario={29.99}/>
-                <Articulo nombre="Quesadillas de Pollo" cantidad={2} precioUnitario={7.99} />
-                <Articulo nombre="Guacamole con Totopos" cantidad={1} precioUnitario={8.50} />
+                {pedido.platosDelPedido?.map((plato) => (
+                    <Articulo key={plato.id} nombre={plato.nombre} cantidad={1} precioUnitario={plato.precioUnitario} />
+                ))}
             </Stack>
             <Stack as="section" className="container-checkout">
                 <Heading as="h2">Resumen</Heading>
@@ -44,10 +81,10 @@ export const CheckoutPedido = () => {
                         <span className="texto-secundario-checkout">Total</span>
                     </Stack>
                     <Stack>
-                        <span className="precio-resumen">$37.47</span>
-                        <span className="precio-resumen">$2.62</span>
-                        <span className="precio-resumen">$0.00</span>
-                        <span className="precio-resumen">$42.22</span>
+                        <span className="precio-resumen">{pedido.costoSubtotalPedido.toFixed(2)}</span>
+                        <span className="precio-resumen">{pedido.recargoMedioDePago.toFixed(2)}</span>
+                        <span className="precio-resumen">{pedido.tarifaEntrega.toFixed(2)}</span>
+                        <span className="precio-resumen">{pedido.costoTotalPedido.toFixed(2)}</span>
                     </Stack>
                 </article>
             </Stack>
