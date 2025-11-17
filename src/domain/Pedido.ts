@@ -1,13 +1,6 @@
-import { type Local } from '@/pages/detalle-pedido/Pedido'
 import { Plato } from './Plato'
 import { type PlatoJSON } from './Plato'
-import type { LocalJSON } from '@/services/localServiceTest'
-
-export enum MedioDePago {
-    EFECTIVO = 'Efectivo',
-    QR = 'QR',
-    TARJETA = 'Tarjeta'
-}
+import type { LocalJSON, MedioDePago } from '@/services/localServiceTest'
 
 export class Pedido {
     id?: number
@@ -30,6 +23,22 @@ export class Pedido {
             platosDelPedido: pedidoJSON.platosDelPedido.map(platoJSON => Plato.fromJSON(platoJSON)),
        })
        return pedido
+    }
+
+    toJSON(): PedidoJSON {
+        return {
+            id: this.id!,
+            local: this.local!,
+            fechaPedido: this.fechaPedido,
+            distancia: this.distancia,
+            platosDelPedido: this.platosDelPedido?.map(plato => plato.toJSON()) ?? [],
+            cantidadDePlatos: this.cantidadDePlatos,
+            medioDePago: this.medioDePago ?? 'EFECTIVO',
+            costoSubtotalPedido: this.costoSubtotalPedido,
+            recargoMedioDePago: this.recargoMedioDePago,
+            tarifaEntrega: this.tarifaEntrega,
+            costoTotalPedido: this.costoTotalPedido
+        }
     }
 }
 
