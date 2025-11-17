@@ -9,7 +9,7 @@ import { useParams, type ErrorResponse } from 'react-router-dom'
 import { getMensajeError } from '@/utils/errorHandling'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
-import { medioDePagoLabels, type MediosDePago } from '@/services/localServiceTest'
+import { medioDePagoLabels, type MedioDePago } from '@/services/localServiceTest'
 
 export const CheckoutPedido = () => {
     //Temporalmente uso el id de la url para traer el pedido
@@ -17,8 +17,8 @@ export const CheckoutPedido = () => {
     const pedidoID = Number(idPedido)
     
     const [pedido, setPedido] = useState<Pedido>(new Pedido())
-    const [mediosDePago, setMediosDePago] = useState<MediosDePago[]>([])
-    const [medioSeleccionado, setMedioSeleccionado] = useState<MediosDePago | null>(null)
+    const [mediosDePago, setMediosDePago] = useState<MedioDePago[]>([])
+    const [medioSeleccionado, setMedioSeleccionado] = useState<MedioDePago | null>(null)
     
     const traerPedido = async () => {
         try {
@@ -48,12 +48,30 @@ export const CheckoutPedido = () => {
             return `Envío $${pedido.tarifaEntrega.toFixed(2)}`
         }
     }
-
+ 
     const collection = createListCollection({
         items: mediosDePago.map((medio) => ({ 
             label: medioDePagoLabels[medio], 
             value: medio }))
     })
+
+    const actualizarPedidoCheckout = async (medio: MedioDePago) => {
+        try {
+            const pedidioEnviado = Object.assign(new Pedido(), pedido, {
+                medioDePago: medio
+            })
+
+            const pedidoActualizado = await pedidoService.actualizarPedidoCheckout(pedidioEnviado)
+            setPedido(pedidoActualizado)
+        } catch (error: unknown) {
+            const mensajeError = getMensajeError(error as ErrorResponse)
+            toaster.create({
+                title: 'No se puede actualizar el pedido',
+                description: mensajeError,
+                type: 'error',
+            })
+        }
+    }
 
     return(
         <main className="main-checkout">
@@ -96,9 +114,14 @@ export const CheckoutPedido = () => {
             </Stack>
             <Stack as="section" className="container-checkout">
                 <Select.Root collection={collection} size="lg" value={medioSeleccionado ? [medioSeleccionado] : []}
-                    onValueChange={(details) => {
-                        const seleccionado = details.value[0] as MediosDePago | undefined
-                        setMedioSeleccionado(seleccionado ?? null)
+                    onValueChange={async (details) => {
+                        const seleccionado = details.value[0] as MedioDePago | undefined
+                        const nuevoMedioDePago = seleccionado ?? null
+                        setMedioSeleccionado(nuevoMedioDePago)
+
+                        if (nuevoMedioDePago) {
+                            await actualizarPedidoCheckout(nuevoMedioDePago)
+                        }
                     }}
                 >
                     <Select.HiddenSelect />
