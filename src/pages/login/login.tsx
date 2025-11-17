@@ -1,6 +1,5 @@
-import { Stack, Heading, Text, Field, Input } from '@chakra-ui/react'
+import { Stack, Heading, Text, Field, Input, Flex, Image, Link } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
-import { CampoTexto } from '@/components/label-input/CampoTexto'
 import { Button } from '@/components/boton/boton'
 import { Link as RouterLink } from 'react-router-dom'
 import { PasswordInput } from '@/components/ui/password-input'
@@ -27,10 +26,13 @@ export const LoginUsuario = () => {
     }
 
   return (
-    <Stack className="login-container" as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Heading as="h1" size="3xl">Algo que pedir - LOGIN</Heading>
+    <Stack p="3rem" gap="3" as="form" onSubmit={handleSubmit(onSubmit)}>
+      <Flex justifyContent="center" alignItems="center" gap="2rem">
+        <Image src="./logo.svg" alt="Logo app" p="1" w="45px" h="45px" borderRadius="full" bgColor="red"/>
+        <Heading as="h1" size="3xl">Algo que pedir</Heading>
+      </Flex>
 
-      <Stack className="inputs-login">
+      <Stack gap="5">
         {/* Usuario */}
         <Controller
           name="username"
@@ -38,7 +40,7 @@ export const LoginUsuario = () => {
           rules={{ required: 'El usuario es obligatorio' }}
           render={({ field, fieldState }) => (
             <Field.Root invalid={!!fieldState.error} required>
-              <Field.Label>Usuario</Field.Label>
+              <Field.Label>Usuario*</Field.Label>
               <Input {...field}/>
               <Field.ErrorText>{fieldState.error?.message}</Field.ErrorText>
             </Field.Root>
@@ -55,7 +57,7 @@ export const LoginUsuario = () => {
           }}
           render={({ field, fieldState }) => (
             <Field.Root invalid={!!fieldState.error} required>
-              <Field.Label>Password</Field.Label>
+              <Field.Label>Password*</Field.Label>
               <PasswordInput {...field} />
               <Field.ErrorText>{fieldState.error?.message}</Field.ErrorText>
             </Field.Root>
@@ -63,13 +65,13 @@ export const LoginUsuario = () => {
         />
 
         {/*El isSubmitting me deshabilita el boton cuando identifica que se ejecuto un onSubmit (evita envios duplicados) */}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting} p="2" mt="1rem" borderRadius="full">
           {isSubmitting ? 'Ingresando…' : 'Iniciar Sesión'}
         </Button>
 
-        <Text>
+        <Text textAlign="center">
           ¿No tenes una cuenta?
-          <RouterLink to="/register"> Registrate</RouterLink>
+          <Link textDecoration="underline" mx="1"> <RouterLink to="/register"> Registrate</RouterLink></Link>
         </Text>
       </Stack>
     </Stack>
