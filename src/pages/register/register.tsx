@@ -33,6 +33,12 @@ export const RegisterUsuario = () => {
                     <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
                 </Field.Root>
 
+                 <Field.Root invalid required>
+                    <Field.Label>Re-ingrese su Password*</Field.Label>
+                    <PasswordInput/>
+                    <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
+                </Field.Root>
+
                 <Button p="2" mt="1rem" borderRadius="full" onClick={() => 'TODO()'}>Registrarse</Button>
 
                 <Text textAlign="center">¿Ya tienes una cuenta?
