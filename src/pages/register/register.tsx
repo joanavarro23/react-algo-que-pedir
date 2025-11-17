@@ -17,7 +17,7 @@ export const RegisterUsuario = () => {
 
             <Flex justifyContent="center" alignItems="center" gap="2rem">
                 <Image src="./logo.svg" alt="Logo app" p="1" w="45px" h="45px" borderRadius="full" bgColor="red" />
-                <Heading as="h1" size="3xl">Algo que pedir</Heading>
+                <Heading as="h1" size="3xl">Crea tu cuenta</Heading>
             </Flex>
 
             <Stack gap="5">
