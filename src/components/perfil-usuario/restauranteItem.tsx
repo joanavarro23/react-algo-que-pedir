@@ -14,8 +14,8 @@ export const RestaurenteItem = ({ id, nombre, puntuacion, tiempo, precio, onElim
         <HStack>
             <Image src='/restaurante.png' objectFit='cover' overflow='hidden' boxSize='2.5rem'/>
             <Stack>
-                <Text>{nombre}</Text>
-                <Text>{puntuacion} {tiempo} {precio}</Text>
+                <Text fontSize='md'>{nombre}</Text>
+                <Text fontSize='sm'>{puntuacion} {tiempo} {precio}</Text>
             </Stack>
         </HStack>
     )
