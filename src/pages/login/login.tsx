@@ -53,7 +53,6 @@ export const LoginUsuario = () => {
           control={control}
           rules={{
             required: 'La contraseña es obligatoria',
-            minLength: { value: 6, message: 'Debe tener un mínimo de 6 caracteres' }
           }}
           render={({ field, fieldState }) => (
             <Field.Root invalid={!!fieldState.error} required>
