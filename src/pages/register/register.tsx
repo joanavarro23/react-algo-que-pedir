@@ -1,16 +1,17 @@
 import { Image, Heading, Text, Flex, Stack, Link, Field, Input } from '@chakra-ui/react'
-import { Usuario } from '@/domain/Usuario'
+import { toaster } from '@/components/chakra-toaster/toaster'
 import { useState } from 'react'
 import { Button } from '@/components/boton/boton'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { PasswordInput } from '@/components/ui/password-input'
+import { registro } from '@/services/authService'
 import React from 'react'
 
 //Tipado para los inputs
 type InputsRegistro = {
-    username: string,
+    usuario: string,
     password: string,
-    rePassword: string
+    confirmarPassword: string
 }
 
 //Tipado para objeto de errores con Partial de TS que hace ? a todos los atributos idem InputsRegistro
@@ -21,43 +22,67 @@ export const RegisterUsuario = () => {
 
     //Estado para manejar las validaciones de los inputs
     const [values, setValues] = useState<InputsRegistro>({
-        username: '',
+        usuario: '',
         password: '',
-        rePassword: ''
+        confirmarPassword: ''
     })
 
     //El flag de enviado viene en false y el objeto de errores vacio x default 
     const [submitted, setSubmitted] = useState(false)
-    const [errors, setErrors] = useState<ErroresForm>({})    
+    const [errors, setErrors] = useState<ErroresForm>({})
 
     //Maneja los cambios en cualquier input del form
-    const manejoCambiosEnInput = (e : React.ChangeEvent<HTMLInputElement>, field: keyof InputsRegistro) => {
-        const  { value } = e.target
-        setValues( (datosPrevios) => ({
+    const manejoCambiosEnInput = (e: React.ChangeEvent<HTMLInputElement>, field: keyof InputsRegistro) => {
+        const { value } = e.target
+        setValues((datosPrevios) => ({
             ...datosPrevios,
             [field]: value
-        }) )
+        }))
     }
 
     //Funcion para validar desde el front los requeridos y coincidencia
-    const validarFormulario = (data: InputsRegistro) : boolean => {
-        const posiblesErrores : ErroresForm = {}
+    const validarFormulario = (data: InputsRegistro): boolean => {
+        const posiblesErrores: ErroresForm = {}
 
-        if(!data.username) posiblesErrores.username = 'El usuario es obligatorio'
-        if(!data.password) posiblesErrores.password = 'La contraseña es obligatoria'
-        if(!data.rePassword) posiblesErrores.rePassword = 'Debe re-ingresar la contraseña'
+        if (!data.usuario) posiblesErrores.usuario = 'El usuario es obligatorio'
+        if (!data.password) posiblesErrores.password = 'La contraseña es obligatoria'
+        if (!data.confirmarPassword) posiblesErrores.confirmarPassword = 'Debe re-ingresar la contraseña'
 
-        if(data.password && data.rePassword && data.password !== data.rePassword) {
-            posiblesErrores.rePassword = 'Las contraseñas no coinciden'
+        if (data.password && data.confirmarPassword && data.password !== data.confirmarPassword) {
+            posiblesErrores.confirmarPassword = 'Las contraseñas no coinciden'
         }
 
         setErrors(posiblesErrores)
         return Object.keys(posiblesErrores).length === 0 //si no hay ningun error, retorna true
     }
 
-    const guardarUsuario = (nuevoUsuario : Usuario) => {
-        
+    const guardarUsuario = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setSubmitted(true)
+        if (validarFormulario(values)) {
+            try {
+                await registro({
+                    usuario: values.usuario,
+                    password: values.password,
+                    confirmarPassword: values.confirmarPassword
+                })
+
+                navigate('/loginUsuario')
+            } catch (error) {
+                const mensajeError = 'El usuario que tratas de ingresar ya existe'
+                console.error(error)
+                toaster.create({
+                    title: 'Ocurrio un error en tu registro!',
+                    description: mensajeError,
+                    type: 'error',
+                    duration: 2500
+                })
+            }
+        }
     }
+
+
+
 
     return (
         <Stack p="3rem" gap="3" as="form">
@@ -68,28 +93,28 @@ export const RegisterUsuario = () => {
             </Flex>
 
             <Stack gap="5">
-                <Field.Root required>
+                <Field.Root required invalid={!!errors.usuario}>
                     <Field.Label>Usuario*</Field.Label>
-                    <Input placeholder="Ingresa tu usuario" />
-                    <Field.ErrorText>El usuario es obligatorio</Field.ErrorText>
+                    <Input placeholder="Ingresa tu usuario" value={values.usuario} onChange={ (e) => manejoCambiosEnInput(e, 'usuario')}/>
+                    <Field.ErrorText>{errors.usuario}</Field.ErrorText>
                 </Field.Root>
 
-                <Field.Root required>
+                <Field.Root required invalid={!!errors.password}>
                     <Field.Label>Password*</Field.Label>
-                    <PasswordInput/>
-                    <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
+                    <PasswordInput value={values.password} onChange={ (e) => manejoCambiosEnInput(e, 'password')}/>
+                    <Field.ErrorText>{errors.password}</Field.ErrorText>
                 </Field.Root>
 
-                 <Field.Root required>
+                <Field.Root required invalid={!!errors.confirmarPassword}>
                     <Field.Label>Re-ingrese su Password*</Field.Label>
-                    <PasswordInput/>
-                    <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
+                    <PasswordInput value={values.confirmarPassword} onChange={ (e) => manejoCambiosEnInput(e, 'confirmarPassword')}/>
+                    <Field.ErrorText>{errors.confirmarPassword}</Field.ErrorText>
                 </Field.Root>
 
-                <Button p="2" mt="1rem" borderRadius="full" onClick={() => 'TODO()'}>Registrarse</Button>
+                <Button p="2" mt="1rem" borderRadius="full" onClick={guardarUsuario} type="submit">Registrarse</Button>
 
                 <Text textAlign="center">¿Ya tienes una cuenta?
-                    <Link textDecoration="underline" mx="1"> <RouterLink to="/login"> Inicia Sesión</RouterLink></Link>
+                    <Link textDecoration="underline" mx="1"> <RouterLink to="/loginUsuario"> Inicia Sesión</RouterLink></Link>
                 </Text>
             </Stack>
         </Stack>
