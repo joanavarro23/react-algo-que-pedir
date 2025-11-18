@@ -1,11 +1,16 @@
 import { IoMdArrowBack } from 'react-icons/io'
-import { Heading, VStack, HStack, IconButton, Text, Image } from '@chakra-ui/react'
 import { Button } from '@/components/boton/boton'
+import { useNavigate } from 'react-router-dom'
+import { Articulo } from '../articulo-checkout/Articulo'
+import { Heading, VStack, HStack, IconButton, Text, Image } from '@chakra-ui/react'
+
+
+
 
 interface Restaurante {
   nombre: string
   urlImagen: string
-  puntuacion: string // Ej: "⭐ 4.5 • 1 km • Envío gratis"
+  rating: string
 }
 
 interface Articulo {
@@ -15,34 +20,39 @@ interface Articulo {
 }
 
 interface PedidoDetalleProps {
-  restaurante?: Restaurante
-  articulos?: Articulo[]
-  subtotal?: number
-  recargo?: number
-  tarifaEntrega?: number
-  total?: number
-  mostrarFormaDePago?: boolean // para Checkout vs Detalle
+  restaurante: Restaurante
+  articulos: Articulo[]
+  subtotal: number
+  recargo: number
+  tarifaEntrega: number
+  distancia:string
+  total: number
+  mostrarFormaDePago?: boolean
   medioDePago?: string
   onVolver?: () => void
 }
-
 export const PedidoDetalle = ({
   restaurante,
   articulos,
   subtotal,
   recargo,
   tarifaEntrega,
+  distancia,
   total,
   mostrarFormaDePago = false,
-  medioDePago,
-  onVolver,
+  medioDePago
 }: PedidoDetalleProps) => {
+
+  const navigate = useNavigate()
+
+  const volver = ()  => {
+    navigate(-1)
+  }
 
   return (
     <VStack className="main-checkout" align="stretch" w="100%" p={4}>
-      
       <HStack as="header" justify="start" align="center" mb={6}>
-        <IconButton aria-label="Volver" variant="ghost" onClick={onVolver}>
+        <IconButton aria-label="Volver" variant="ghost" onClick={volver}>
           <IoMdArrowBack />
         </IconButton>
         <Heading as="h1" size="md">Tu pedido</Heading>
@@ -60,17 +70,19 @@ export const PedidoDetalle = ({
           />
           <VStack align="start">
             <Text fontWeight="bold">{restaurante.nombre}</Text>
-            <Text fontSize="sm" color="gray.600">{restaurante.puntuacion}</Text>
+            <Text fontSize="sm" color="gray.600">
+              Puntuación: ⭐{restaurante.rating} - {distancia} -
+              Envío ${tarifaEntrega.toFixed(2)}</Text>
           </VStack>
         </HStack>
       </VStack>
 
       <VStack align="stretch" mb={6}>
         <Heading as="h2" size="sm" mb={3}>Artículos</Heading>
-        {articulos.map((art, idx) => (
-          <HStack key={idx} justify="space-between" align="center" mb={2}>
-            <Text>{art.nombre} x{art.cantidad}</Text>
-            <Text fontWeight="bold">${(art.precioUnitario * art.cantidad).toFixed(2)}</Text>
+        {articulos.map((articulo, idArt) => (
+          <HStack key={idArt} justify="space-between" align="center" mb={2}>
+            <Text>{articulo.nombre} x{articulo.cantidad}</Text>
+            <Text fontWeight="bold">${(articulo.precioUnitario * articulo.cantidad).toFixed(2)}</Text>
           </HStack>
         ))}
       </VStack>

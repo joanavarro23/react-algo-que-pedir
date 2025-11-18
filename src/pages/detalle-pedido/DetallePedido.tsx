@@ -46,14 +46,14 @@ export const PaginaDetallePedido = () => {
       </VStack>
     )
   }
-
   return (
     <PedidoDetalle
-    restaurante={pedido.local.nombre}
+    restaurante={pedido.local}
     articulos={pedido.platosDelPedido}
     subtotal={pedido.costoSubtotalPedido}
     recargo={pedido.recargoMedioDePago}
     tarifaEntrega={pedido.tarifaEntrega}
+    distancia={pedido.distancia}
     total={pedido.costoTotalPedido}
     mostrarFormaDePago={false}>
     </PedidoDetalle>
