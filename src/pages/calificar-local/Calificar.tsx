@@ -10,10 +10,8 @@ interface LocalAPuntuar {
   local: {
     idLocal: number
     nombre: string
-    direccion: {
-      calle: string
-      altura: number
-    }
+    direccion: string
+    altura: number
     urlImagenLocal: string
   }
   fechaLimite: string
@@ -42,7 +40,7 @@ export const CalificacionesView = () => {
         const localesTransformados: LocalConPuntuacion[] = response.data.map((item: LocalAPuntuar) => ({
           idLocal: item.local.idLocal,
           nombre: item.local.nombre,
-          direccion: `${item.local.direccion.calle} ${item.local.direccion.altura}`,
+          direccion: `${item.local.direccion} ${item.local.altura}`,
           urlImagenLocal: item.local.urlImagenLocal,
           puntuacion: undefined,
           fechaLimite: item.fechaLimite
