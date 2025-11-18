@@ -1,6 +1,5 @@
-import { Box, IconButton, Image, Heading, VStack, Text, Flex, Stack } from '@chakra-ui/react'
-import { CampoTexto } from '@/components/label-input/CampoTexto'
-import { validar } from '@/utils/validar'
+import { Image, Heading, Text, Flex, Stack, Link, Field, Input } from '@chakra-ui/react'
+import { useValidacion } from '@/customHooks/useValidacion'
 import { Usuario } from '@/domain/Usuario'
 import { useState } from 'react'
 import { Button } from '@/components/boton/boton'
@@ -14,45 +13,36 @@ export const RegisterUsuario = () => {
 
 
     return (
-        <Stack className="register-container">
-            <Heading as="h1" size="3xl">Algo que pedir - REGISTRO</Heading>
-            <Stack className="inputs-register">
-                <CampoTexto 
-                invalid={validar(usuario.username, 'textoRequerido')}
-                nombreLabel='Usuario'
-                nombreTest='Usuario'
-                placeholder='Usuario'
-                value={usuario.username}
-                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { username: e.target.value }))}
+        <Stack p="3rem" gap="3" as="form">
 
-                msjError='El campo nombre es requerido'
-                ></CampoTexto>
+            <Flex justifyContent="center" alignItems="center" gap="2rem">
+                <Image src="./logo.svg" alt="Logo app" p="1" w="45px" h="45px" borderRadius="full" bgColor="red" />
+                <Heading as="h1" size="3xl">Crea tu cuenta</Heading>
+            </Flex>
 
-                <CampoTexto 
-                invalid={validar(usuario.password, 'textoRequerido')}
-                nombreLabel='Password'
-                nombreTest='Password'
-                placeholder='Password'
-                value={usuario.password}
-                onChange={(e) => setUsuario((prev) => Object.assign(new Usuario(), prev, { password: e.target.value }))}
-                msjError='El campo nombre es requerido'
-                ></CampoTexto>
+            <Stack gap="5">
+                <Field.Root invalid>
+                    <Field.Label>Usuario*</Field.Label>
+                    <Input placeholder="Ingresa tu usuario" />
+                    <Field.ErrorText>El usuario es obligatorio</Field.ErrorText>
+                </Field.Root>
 
-                <CampoTexto 
-                invalid={validar(usuario.password, 'textoRequerido')}
-                nombreLabel='Re-ingrese el Password'
-                nombreTest='Re-ingrese el Password'
-                placeholder='Re-ingrese el Password'
-                value={usuario.password}
-                msjError='El campo nombre es requerido'
-                ></CampoTexto>
+                <Field.Root invalid required>
+                    <Field.Label>Password*</Field.Label>
+                    <PasswordInput/>
+                    <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
+                </Field.Root>
 
-                <PasswordInput></PasswordInput>
+                 <Field.Root invalid required>
+                    <Field.Label>Re-ingrese su Password*</Field.Label>
+                    <PasswordInput/>
+                    <Field.ErrorText>La contraseña es obligatoria</Field.ErrorText>
+                </Field.Root>
 
-                <Button onClick={() => 'TODO()'}>Registrarse</Button>
-                
-                <Text>¿Ya tienes una cuenta? 
-                    <RouterLink to="/login"> Inicia Sesión</RouterLink>
+                <Button p="2" mt="1rem" borderRadius="full" onClick={() => 'TODO()'}>Registrarse</Button>
+
+                <Text textAlign="center">¿Ya tienes una cuenta?
+                    <Link textDecoration="underline" mx="1"> <RouterLink to="/login"> Inicia Sesión</RouterLink></Link>
                 </Text>
             </Stack>
         </Stack>
