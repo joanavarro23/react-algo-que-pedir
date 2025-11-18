@@ -39,14 +39,14 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
           <GridItem gridRow="1 / 4" gridColumn="2 / 3" p={2} display="flex" alignItems="center">
             <VStack align="start" gap={0}>
               <Card.Title fontSize="sm" mb={0}> {order.local.nombre} </Card.Title>
-              <Card.Description fontSize="s" color="gray.600">Total: ${order.costoTotalPedido.toFixed(2)} </Card.Description>
-              <Card.Description fontSize="s" color="gray.600">{order.fechaPedido} - {order.platosDelPedido.length} artículos </Card.Description>
+              <Card.Description fontSize="s" color="gray.600">Total: ${order.precioTotal.toFixed(2)} </Card.Description>
+              <Card.Description fontSize="s" color="gray.600">{order.hora} - {order.items} artículos </Card.Description>
             </VStack>
           </GridItem>
 
           <GridItem gridRow="1 / 4" gridColumn="3 / 4" display="flex" alignItems="center" justifyContent="center" p={3}>
 
-            {order.estadoDelPedido !== 'ENTREGADO' && order.estadoDelPedido !== 'CANCELADO' && (
+            {order.estadoPedido !== 'ENTREGADO' && order.estadoPedido !== 'CANCELADO' && (
               <Button size="sm" variant="ghost" colorScheme="red" aria-label="Cancelar pedido" onClick={cancelarPedido}>
                 <LuX size={20} />
               </Button>
