@@ -59,25 +59,18 @@ export const RegisterUsuario = () => {
 
     const guardarUsuario = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsLoading(true)
+        
         if (validarFormulario(values)) {
+            setIsLoading(true)              //Activa el spinner
             try {
                 await registro({
                     usuario: values.usuario,
                     password: values.password,
                     confirmarPassword: values.confirmarPassword
                 })
-
                 navigate('/loginUsuario')       //Redirige a login si todo salio OK
             } catch (error) {
-                const mensajeError = 'El usuario que tratas de ingresar ya existe'
-                console.error(error)
-                toaster.create({
-                    title: 'Ocurrio un error en tu registro!',
-                    description: mensajeError,
-                    type: 'error',
-                    duration: 2500
-                })
+                setIsLoading(false)
             }
         }
     }

@@ -20,15 +20,36 @@ export const registro = async (data: RegisterData) : Promise<AuthResponseUsuario
 
     try {
         const response = await axios.post<AuthResponseUsuario>(url, data)
-        return response.data
-    } catch(error){
-        const errorMessage = e.response?.data?.message || 'Error de conexion al servidor'
+
         toaster.create({
-            title: 'Error!',
+            title: 'Exito!',
+            description: 'Usuario registrado exitosamente!',
+            type: 'success',
+            duration: 4000
+        })
+
+        return response.data
+
+    } catch(error){
+        let errorMessage = 'Ocurrio un error inesperado'
+
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                errorMessage = error.response.data.message || 'Error en la solicitud'
+            } else if (error.request) {
+                errorMessage = 'No se pudo conectar con el servidor. Intente más tarde.'
+            } else {
+                errorMessage = error.message
+            }
+        }
+
+        toaster.create({
+            title: 'Ocurrio un error!',
             description: errorMessage,
             type: 'error',
-            duration: 2500
+            duration: 4000
         })
+
         throw new Error(errorMessage)
     }
 }
