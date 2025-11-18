@@ -28,7 +28,7 @@ export const AQPRoutes = () =>
             <Route>
                 {/*La ruta de crear pedido en realidad deberia ser /local/{id} porque estas viendo un local con sus platos*/}
                 <Route path="/local/:idLocal/platos" element={<DetalleLocal/>} />
-                <Route path="/checkout-pedido" element={<CheckoutPedido/>}> </Route>
+                <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido/>}> </Route>
             </Route>
 
             <Route path="/detalle-pedido">

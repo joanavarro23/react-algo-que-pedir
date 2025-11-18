@@ -30,4 +30,15 @@ export class Plato {
     static fromJSON(platoJSON : PlatoJSON) : Plato {
         return new Plato(platoJSON)
     }
+
+    toJSON(): PlatoJSON {
+        return {
+            id: this.id ?? undefined,
+            nombre: this.nombre,
+            descripcion: this.descripcion,
+            imagenUrl: this.imagenUrl,
+            precioUnitario: this.precioUnitario,
+            popular: this.popular
+        }
+    }
 }
