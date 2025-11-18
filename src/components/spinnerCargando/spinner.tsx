@@ -1,7 +1,7 @@
 import { Flex, Spinner, Text } from '@chakra-ui/react'
 
 interface SpinnerProps {
-    mensaje: string
+    mensaje?: string
 }
 
 export const LoadingSpinner = ({
