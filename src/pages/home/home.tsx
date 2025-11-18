@@ -58,7 +58,9 @@ export const LocalesView = () => {
           <Heading size="md">Delivery</Heading>
           <IconButton variant="ghost" size="lg">
             <FiShoppingCart />
-            <IoIosLogOut onClick={handleLogOut}/>
+          </IconButton>
+          <IconButton variant="ghost" size="lg" onClick={handleLogOut}>
+            <IoIosLogOut />
           </IconButton>
         </HStack>
 
