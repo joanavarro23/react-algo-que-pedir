@@ -33,7 +33,7 @@ interface Pedido {
 
 
 //Datos de manera momentanea hasta que haya una class Local
-interface localInfo {
+interface LocalInfo {
     nombre: string,
     urlImagenLocal: string,
     rating: number,
@@ -54,7 +54,7 @@ export const DetalleLocal = () => {
     const localID = Number(idLocal)
 
     // --- ESTADOS ---
-    const [local, setLocal] = useState<localInfo | null>(null)
+    const [local, setLocal] = useState<LocalInfo | null>(null)
     const [estaCargando, setEstaCargando] = useState(true)             //estados para diferenciar si el local esta cargando
     const [errorCarga, setErrorCarga] = useState<string | null>(null)   //o si fallo en la carga
 
