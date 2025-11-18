@@ -1,5 +1,4 @@
 import { Image, Heading, Text, Flex, Stack, Link, Field, Input } from '@chakra-ui/react'
-import { toaster } from '@/components/chakra-toaster/toaster'
 import { useState } from 'react'
 import { Button } from '@/components/boton/boton'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
@@ -57,6 +56,7 @@ export const RegisterUsuario = () => {
         return Object.keys(posiblesErrores).length === 0 //si no hay ningun error, retorna true
     }
 
+    //Funcion que llama al AUTH SERVICE
     const guardarUsuario = async (e: React.FormEvent) => {
         e.preventDefault()
         
@@ -75,9 +75,8 @@ export const RegisterUsuario = () => {
         }
     }
 
-    if(isLoading) {
-        return <LoadingSpinner/>
-    }
+    //Renderizado del spinner de acuerdo a si esta cargando la pagina post registro
+    if(isLoading) {return <LoadingSpinner/>}
 
 
     return (
