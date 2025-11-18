@@ -70,7 +70,7 @@ export const LoginUsuario = () => {
 
         <Text textAlign="center">
           ¿No tenes una cuenta?
-          <Link textDecoration="underline" mx="1"> <RouterLink to="/register"> Registrate</RouterLink></Link>
+          <Link textDecoration="underline" mx="1"> <RouterLink to="/registroUsuario"> Registrate</RouterLink></Link>
         </Text>
       </Stack>
     </Stack>

@@ -36,8 +36,8 @@ export const AQPRoutes = () =>
                 <Route path=":id" element={<PaginaDetallePedido />} />
             </Route>
             <Route path="/home" element={<LocalesView/>} />
-            <Route path="/login" element={<LoginUsuario/>} />
-            <Route path="/register" element={<RegisterUsuario/>} />
+            <Route path="/loginUsuario" element={<LoginUsuario/>} />
+            <Route path="/registroUsuario" element={<RegisterUsuario/>} />
         </Route>
         <Route path="*" element={ <Navigate to={'/'}/> } />
     </Routes>
