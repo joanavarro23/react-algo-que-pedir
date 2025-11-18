@@ -3,7 +3,6 @@ import { CheckoutPedido } from '@/pages/checkout-pedido/Checkout'
 import { PerfilUsuario } from '@/pages/usuario/Perfil'
 import { CriteriosBusqueda } from '@/pages/usuario/preferencias/criteriosBusqueda'
 import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/ingredientes'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
 import { ListaPedidos } from '@/pages/detalle-pedido/ListaPedidos'
@@ -13,33 +12,51 @@ import { InformacionPersonal } from '@/pages/usuario/formulario/InformacionPerso
 import { LoginUsuario } from '@/pages/login/login'
 import { RegisterUsuario } from '@/pages/register/register'
 
+import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
+
+const ProtectedRoute = () => {
+    const estaLogueado = !!localStorage.getItem('usuario')
+
+    return estaLogueado ? <Outlet /> : <Navigate to="/loginUsuario" replace />
+}
+
+
 export const AQPRoutes = () =>
     <Routes>
-        {/* El layout envuelve al resto de las paginas*/ }
-        <Route path="/" element={ <AppLayout /> }>
-            <Route path="perfil-usuario" element={ <PerfilUsuario/> }>
-                <Route index element={<InformacionPersonal />} />
-                <Route path="criterios-busqueda" element={<CriteriosBusqueda />} />
-                <Route path="ingredientes-preferidos" element={<IngredientesPreferidos />} />
-                <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
-            </Route>
+        {/*Son las RUTAS PUBLICAS para el usuario*/}
+        <Route path="/loginUsuario" element={<LoginUsuario />} />
+        <Route path="/registroUsuario" element={<RegisterUsuario />} />
 
-            //Layout compartido entre vista donde se crea el pedido + el checkout
-            <Route>
-                {/*La ruta de crear pedido en realidad deberia ser /local/{id} porque estas viendo un local con sus platos*/}
-                <Route path="/local/:idLocal/platos" element={<DetalleLocal/>} />
-                <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido/>}> </Route>
-            </Route>
+        {/*RUTAS PRIVADAS que solo podes ver si estas logueado*/}
+        <Route element={<ProtectedRoute />}>
+            {/* El layout envuelve al resto de las paginas*/}
+            <Route path="/" element={<AppLayout />}>
+                <Route index element={<Navigate to={"/home"} replace />} />
+                {/* <Route path="*" element={<Navigate to={'/home'} replace/>} />                            */}
+                <Route path="home" element={<LocalesView />} />                    {/* Home */}
 
-            <Route path="/detalle-pedido">
-                <Route index element={<ListaPedidos />} />
-                <Route path=":id" element={<PaginaDetallePedido />} />
+                <Route path="perfil-usuario" element={<PerfilUsuario />}>              {/* Pags de Usuario */}
+                    <Route index element={<InformacionPersonal />} />
+                    <Route path="criterios-busqueda" element={<CriteriosBusqueda />} />
+                    <Route path="ingredientes-preferidos" element={<IngredientesPreferidos />} />
+                    <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
+                </Route>
+
+                //Layout compartido entre vista donde se crea el pedido + el checkout
+                <Route>                                                         {/* Armado y checkout del pedido */}
+                    <Route path="/local/:idLocal/platos" element={<DetalleLocal />} />
+                    <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido />}> </Route>
+                </Route>
+
+                <Route path="/detalle-pedido">                  {/* Detalle del pedido */}
+                    <Route index element={<ListaPedidos />} />
+                    <Route path=":id" element={<PaginaDetallePedido />} />
+                </Route>
             </Route>
-            <Route path="/home" element={<LocalesView/>} />
-            <Route path="/loginUsuario" element={<LoginUsuario/>} />
-            <Route path="/registroUsuario" element={<RegisterUsuario/>} />
+            
+            <Route path="*" element={<Navigate to="/loginUsuario" replace />} />
         </Route>
-        <Route path="*" element={ <Navigate to={'/'}/> } />
+
     </Routes>
 
 export const AlgoQuePedirRouter = () =>
