@@ -1,9 +1,9 @@
-import { LuX } from "react-icons/lu" 
+import { LuX } from "react-icons/lu"
 import { useNavigate } from "react-router-dom"
 import type { Pedido } from "@/pages/detalle-pedido/Pedido"
+import { ConfirmDrawer } from "../confirm-modal/ConfirmModal"
 import { useConfirmModal } from "@/customHooks/useConfirmModal"
 import { Button, Card, Image, Grid, GridItem, VStack } from "@chakra-ui/react"
-import { ConfirmDrawer } from "../confirm-modal/ConfirmModal"
 
 interface PedidoCardProps {
   order: Pedido
@@ -12,8 +12,7 @@ interface PedidoCardProps {
 
 export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
   const navigate = useNavigate()
-
-  const { isOpen, ask, confirm, cancel } = useConfirmModal()
+  const { isOpen, ask, cancel: closeDrawer } = useConfirmModal()
 
   const clickearCard = () => {
     navigate(`/detalle-pedido/${order.id}`, { state: { pedido: order } })
@@ -21,16 +20,12 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
 
   const cancelarPedido = (e: React.MouseEvent) => {
     e.stopPropagation()
-    ask(() => onCancel(order.id))
+    ask(() => onCancel(order.id)) // solo pasamos el ID
   }
 
   return (
     <>
-      <Card.Root
-        w="100%"
-        variant="elevated"
-        overflow="hidden"
-      >
+      <Card.Root w="100%" variant="elevated" overflow="hidden">
         <Card.Body p={0}>
           <Grid
             templateColumns="100px 1fr auto"
@@ -83,9 +78,12 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
 
       <ConfirmDrawer
         open={isOpen}
-        onConfirm={confirm}
-        onCancel={cancel}
-        message="¿Está seguro de que desea cancelar el pedido?"
+        onConfirm={() => {
+          onCancel(order.id)
+          closeDrawer()
+        }}
+        onCancel={closeDrawer}
+        message="¿Estás seguro que querés cancelar este pedido?"
       />
     </>
   )
