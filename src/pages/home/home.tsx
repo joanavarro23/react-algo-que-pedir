@@ -11,7 +11,7 @@ import { logout } from '@/services/authService'
 import { useNavigate } from 'react-router-dom'
 
 interface Local {
-  id: number
+  idLocal: number
   nombre: string
   direccion: string
   urlImagenLocal: string
@@ -29,6 +29,7 @@ export const LocalesView = () => {
     const fetchLocales = async (): Promise<void> => {
       try {
         const response = await axios.get<Local[]>(`${REST_SERVER_URL}/locales`)
+        console.log('API Response:', response.data)
         setLocales(response.data)
       } catch {
         throw new Error('Error al obtener los locales')
@@ -102,10 +103,11 @@ export const LocalesView = () => {
           {filteredLocales.map((local) => (
             <Card.Root
               variant={'outline'}
-              key={local.id}
+              key={local.idLocal}
               className="local-card"
               cursor="pointer"
               borderRadius="20px" overflow="hidden"
+              onClick= { () => window.location.href = `/local/${local.idLocal}/platos` }
               transition="transform 0.2s"
               _hover={{ transform: 'scale(1.02)' }}
             >
