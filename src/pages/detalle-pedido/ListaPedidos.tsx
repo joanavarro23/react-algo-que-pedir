@@ -1,21 +1,21 @@
 import axios from "axios"
 import { useState } from "react"
 import type { Pedido } from "./Pedido"
-import { VStack, Heading, Spinner, Tabs } from "@chakra-ui/react"
-import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
-import { PedidoCard } from "../../components/pedido/PedidoCard"
-import { toaster } from "@/components/chakra-toaster/toaster"
 import { useOnInit } from "@/customHooks/useOnInit"
+import { toaster } from "@/components/chakra-toaster/toaster"
+import { PedidoCard } from "../../components/pedido/PedidoCard"
+import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
+import { VStack, Heading, Spinner, Tabs } from "@chakra-ui/react"
 
 const API_URL = 'http://localhost:9000/pedidos'
 
 export const ListaPedidos = () => {
-  const [pedidosPendientes, setPedidosPendientes] = useState<Pedido[]>([])
-  const [pedidosCompletados, setPedidosCompletados] = useState<Pedido[]>([])
-  const [pedidosCancelados, setPedidosCancelados] = useState<Pedido[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [tabActual, setTabActual] = useState('pendientes')
+  const [pedidosCancelados, setPedidosCancelados] = useState<Pedido[]>([])
+  const [pedidosPendientes, setPedidosPendientes] = useState<Pedido[]>([])
+  const [pedidosCompletados, setPedidosCompletados] = useState<Pedido[]>([])
 
   const cargarPedidosPorEstados = async (estados: string[], setter: (p: Pedido[]) => void) => {
     try {
@@ -57,9 +57,9 @@ export const ListaPedidos = () => {
     }
   }
 
-  const cargarPendientes = () => cargarPedidosPorEstados(["PENDIENTE", "PREPARADO"], setPedidosPendientes)
-  const cargarCompletados = () => cargarPedidosPorEstados(["ENTREGADO"], setPedidosCompletados)
   const cargarCancelados = () => cargarPedidosPorEstados(["CANCELADO"], setPedidosCancelados)
+  const cargarCompletados = () => cargarPedidosPorEstados(["ENTREGADO"], setPedidosCompletados)
+  const cargarPendientes = () => cargarPedidosPorEstados(["PENDIENTE", "PREPARADO"], setPedidosPendientes)
 
   useOnInit(() => {
     cargarPendientes()

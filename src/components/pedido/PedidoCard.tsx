@@ -20,7 +20,7 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
 
   const cancelarPedido = (e: React.MouseEvent) => {
     e.stopPropagation()
-    ask(() => onCancel(order.id)) // solo pasamos el ID
+    ask(() => onCancel(order.id))
   }
 
   return (
