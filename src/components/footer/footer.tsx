@@ -10,8 +10,8 @@ import estrellaPuntuacion  from '/estrellaPuntuacion.svg'
 const linksFooter = [
     { link: '/home', label:'Inicio', icon: home },
     { link: '/checkout-pedido', label: 'Pedidos', icon: ticketRecibo },
-    { link: '/', label: 'Calificar', icon: estrellaPuntuacion },
-    { link: '/perfil-usuario', label: 'Perfil', icon: perfil }  
+    { link: '/calificar-local  ', label: 'Calificar', icon: estrellaPuntuacion },
+    { link: '/perfil-usuario', label: 'Perfil', icon: perfil }
 ]
 
 export const SEPARADOR_FOOTER = '5rem'

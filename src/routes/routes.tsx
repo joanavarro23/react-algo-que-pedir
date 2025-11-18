@@ -12,6 +12,7 @@ import { LocalesView } from '@/pages/home/home'
 import { InformacionPersonal } from '@/pages/usuario/formulario/InformacionPersonal'
 import { LoginUsuario } from '@/pages/login/login'
 import { RegisterUsuario } from '@/pages/register/register'
+import { CalificacionesView } from '@/pages/calificar-local/Calificar'
 
 export const AQPRoutes = () =>
     <Routes>
@@ -30,7 +31,7 @@ export const AQPRoutes = () =>
                 <Route path="/local/:idLocal/platos" element={<DetalleLocal/>} />
                 <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido/>}> </Route>
             </Route>
-
+            <Route path="/calificar-local" element={ <CalificacionesView/> } />
             <Route path="/detalle-pedido">
                 <Route index element={<ListaPedidos />} />
                 <Route path=":id" element={<PaginaDetallePedido />} />
