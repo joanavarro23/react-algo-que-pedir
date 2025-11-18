@@ -7,7 +7,6 @@ import { login } from '@/services/authService'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 
 
-
 //Tipamos los inputs que va a recibir el form para el Login
 type LoginForm = {
   usuario: string
@@ -33,7 +32,7 @@ export const LoginUsuario = () => {
 
       navigate('/home')
     } catch (error) {
-        console.error('ERROR - falta toast')
+        console.error('Error al iniciar sesión')
     }
   }
 
@@ -84,7 +83,7 @@ export const LoginUsuario = () => {
 
         <Text textAlign="center">
           ¿No tenes una cuenta?
-          <Link textDecoration="underline" mx="1"> <RouterLink to="/registroUsuario"> Registrate</RouterLink></Link>
+          <Link textDecoration="underline" mx="1"> <RouterLink to="/registroUsuario"> Registrate </RouterLink></Link>
         </Text>
       </Stack>
     </Stack>
