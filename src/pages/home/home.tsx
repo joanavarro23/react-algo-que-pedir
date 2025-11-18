@@ -2,10 +2,13 @@ import './home.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack, Checkbox } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FiShoppingCart, FiSearch} from 'react-icons/fi'
+import { IoIosLogOut } from 'react-icons/io'
 import React from 'react'
 import axios from 'axios'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { REST_SERVER_URL } from '@/services/constants'
+import { logout } from '@/services/authService'
+import { useNavigate } from 'react-router-dom'
 
 interface Local {
   id: number
@@ -16,6 +19,8 @@ interface Local {
 
 
 export const LocalesView = () => {
+  const navigate = useNavigate()
+
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [locales, setLocales] = useState<Local[]>([])
   const [showNearby, setShowNearby] = useState<boolean>(false)
@@ -33,6 +38,13 @@ export const LocalesView = () => {
     fetchLocales()
   })
 
+  //Agrego fx que llama al logout del service para asociar la accion con el icono del /home
+  const handleLogOut = () => {
+    logout()
+    navigate('/loginUsuario', { replace: true })
+  }
+
+
   const filteredLocales: Local[] = locales.filter((local: Local) =>
     local.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
     local.direccion.toLowerCase().includes(searchQuery.toLowerCase())
@@ -46,6 +58,7 @@ export const LocalesView = () => {
           <Heading size="md">Delivery</Heading>
           <IconButton variant="ghost" size="lg">
             <FiShoppingCart />
+            <IoIosLogOut onClick={handleLogOut}/>
           </IconButton>
         </HStack>
 
