@@ -1,7 +1,6 @@
 import './calificaciones.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FiHome, FiPackage, FiStar, FiUser } from 'react-icons/fi'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { REST_SERVER_URL } from '@/services/constants'
 import axios from 'axios'
