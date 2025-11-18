@@ -32,7 +32,7 @@ export const AQPRoutes = () =>
         <Route element={<ProtectedRoute />}>
             {/* El layout envuelve al resto de las paginas*/}
             <Route path="/" element={<AppLayout />}>
-                <Route index element={<Navigate to={"/home"} replace />} />
+                <Route index element={<Navigate to={'/home'} replace />} />
                 {/* <Route path="*" element={<Navigate to={'/home'} replace/>} />                            */}
                 <Route path="home" element={<LocalesView />} />                    {/* Home */}
 
