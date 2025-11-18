@@ -47,6 +47,17 @@ export const login = async (data: LoginData): Promise<AuthResponseUsuario> => {
     }
 }
 
+export const logout = () => {
+    localStorage.removeItem('usuario')
+
+    toaster.create({
+        title: 'Sesión cerrada',
+        description: 'Has cerrado la sesion correctamente',
+        type: 'info',
+        duration: 3000
+    })
+}
+
 export const registro = async (data: RegisterData): Promise<AuthResponseUsuario> => {
     const url = `${REST_SERVER_URL}/api/registro`
 
