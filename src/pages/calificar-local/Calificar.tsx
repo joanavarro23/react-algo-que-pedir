@@ -1,4 +1,4 @@
-import './calificaciones.css'
+import './calificar.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack } from '@chakra-ui/react'
 import { useState } from 'react'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
@@ -8,7 +8,7 @@ import { useOnInit } from '@/customHooks/useOnInit'
 
 interface LocalAPuntuar {
   local: {
-    id: number
+    idLocal: number
     nombre: string
     direccion: {
       calle: string
@@ -20,7 +20,7 @@ interface LocalAPuntuar {
 }
 
 interface LocalConPuntuacion {
-  id: number
+  idLocal: number
   nombre: string
   direccion: string
   urlImagenLocal: string
@@ -34,13 +34,13 @@ export const CalificacionesView = () => {
   const idUser = 1
 
   useOnInit(() => {
-    const fetchLocalesAPuntuar = async (): Promise<void> => {
+    const fetchLocalesAPuntuar = async () => {
       try {
         setLoading(true)
         const response = await axios.get<LocalAPuntuar[]>(`${REST_SERVER_URL}/usuario/${idUser}/locales-a-puntuar`)
         
         const localesTransformados: LocalConPuntuacion[] = response.data.map((item: LocalAPuntuar) => ({
-          id: item.local.id,
+          idLocal: item.local.idLocal,
           nombre: item.local.nombre,
           direccion: `${item.local.direccion.calle} ${item.local.direccion.altura}`,
           urlImagenLocal: item.local.urlImagenLocal,
@@ -61,16 +61,14 @@ export const CalificacionesView = () => {
     }
   })
 
-  const handleRate = async (localId: number, puntuacion: number): Promise<void> => {
+  const handleRate = async (localId: number, puntuacion: number) => {
     try {
-      await axios.post(`${REST_SERVER_URL}/usuario/${idUser}/puntuar-local/${localId}`, {
-        puntuacion
-      })
+      await axios.post(`${REST_SERVER_URL}/usuario/${idUser}/puntuar-local/${localId}`, { puntuacion })
       
       // Update estado de local para mostrar puntuacion
       setLocales((prev: LocalConPuntuacion[]) => 
         prev.map((local: LocalConPuntuacion) => 
-          local.id === localId 
+          local.idLocal === localId 
             ? { ...local, puntuacion }
             : local
         )
@@ -79,7 +77,7 @@ export const CalificacionesView = () => {
       // Luego de 2 segundos, remover el local de la lista
       setTimeout(() => {
         setLocales((prev: LocalConPuntuacion[]) => 
-          prev.filter((local: LocalConPuntuacion) => local.id !== localId)
+          prev.filter((local: LocalConPuntuacion) => local.idLocal !== localId)
         )
       }, 2000)
     } catch (error) {
@@ -94,7 +92,7 @@ export const CalificacionesView = () => {
         <IconButton
           key={i}
           aria-label={`${i} estrellas`}
-          size="sm"
+          size="md"
           variant="ghost"
           color={i <= (currentRating || 0) ? 'yellow.400' : 'gray.300'}
           onClick={(e) => {
@@ -102,7 +100,7 @@ export const CalificacionesView = () => {
             handleRate(localId, i)
           }}
         >
-            {i <= (currentRating || 0) ? <AiFillStar size={24} /> : <AiOutlineStar size={24} />}
+            {i <= (currentRating || 0) ? <AiFillStar size={50} /> : <AiOutlineStar size={50} />}
         </IconButton>
       )
     }
@@ -137,7 +135,7 @@ export const CalificacionesView = () => {
             <SimpleGrid columns={2} gap={4}>
               {locales.map((local: LocalConPuntuacion) => (
                 <Card.Root
-                  key={local.id}
+                  key={local.idLocal}
                   className="local-card"
                   cursor="pointer"
                 >
@@ -157,9 +155,9 @@ export const CalificacionesView = () => {
                         {local.direccion}
                       </Card.Description>
                       
-                      {/* Rating Stars */}
-                      <HStack gap={1} justify="center" mt={2}>
-                        {renderStars(local.id, local.puntuacion)}
+                      {/* Estrellas */}
+                      <HStack gap={0.5} justify="center" mt={1}>
+                        {renderStars(local.idLocal, local.puntuacion)}
                       </HStack>
                       
                       {local.puntuacion && (
