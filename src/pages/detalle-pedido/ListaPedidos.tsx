@@ -4,13 +4,10 @@ import type { Pedido } from "./Pedido"
 import { useOnInit } from "@/customHooks/useOnInit"
 import { toaster } from "@/components/chakra-toaster/toaster"
 import { PedidoCard } from "../../components/pedido/PedidoCard"
-import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
+import { LuCheck, LuClock, LuCircleX } from "react-icons/lu"
 import { VStack, Heading, Spinner, Tabs } from "@chakra-ui/react"
 import { cancelarPedidoService } from "@/services/detallePedidoService"
 import { getPedidosPorEstados } from "@/services/detallePedidoService"
-
-/* Las llamadas que las haga el service */
-const API_URL = 'http://localhost:9000/pedidos'
 
 export const ListaPedidos = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -102,9 +99,9 @@ export const ListaPedidos = () => {
         w="100%"
       >
         <Tabs.List>
-          <Tabs.Trigger value="pendientes" data-testid="test-pendientes"><LuUser /> Pendientes</Tabs.Trigger>
-          <Tabs.Trigger value="completados" data-testid="test-completados"><LuFolder /> Completados</Tabs.Trigger>
-          <Tabs.Trigger value="cancelados" data-testid="test-cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
+          <Tabs.Trigger value="pendientes" data-testid="test-pendientes"><LuClock /> Pendientes</Tabs.Trigger>
+          <Tabs.Trigger value="completados" data-testid="test-completados"><LuCheck /> Completados</Tabs.Trigger>
+          <Tabs.Trigger value="cancelados" data-testid="test-cancelados"><LuCircleX /> Cancelados</Tabs.Trigger>
         </Tabs.List>
 
         {/* Se puede componentizar o achicar el código*/}
