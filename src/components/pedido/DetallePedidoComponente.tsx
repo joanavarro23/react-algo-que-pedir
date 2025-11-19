@@ -1,10 +1,8 @@
 import { IoMdArrowBack } from 'react-icons/io'
-import { Button } from '@/components/boton/boton'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/boton/boton'
 import { Articulo } from '../articulo-checkout/Articulo'
 import { Heading, VStack, HStack, IconButton, Text, Image } from '@chakra-ui/react'
-
-
 
 
 interface Restaurante {
@@ -29,7 +27,7 @@ interface PedidoDetalleProps {
   total: number
   mostrarFormaDePago?: boolean
   medioDePago?: string
-  onVolver?: () => void
+  isCheckout: boolean
 }
 export const PedidoDetalle = ({
   restaurante,
@@ -40,7 +38,8 @@ export const PedidoDetalle = ({
   distancia,
   total,
   mostrarFormaDePago = false,
-  medioDePago
+  medioDePago,
+  isCheckout
 }: PedidoDetalleProps) => {
 
   const navigate = useNavigate()
@@ -71,7 +70,7 @@ export const PedidoDetalle = ({
           <VStack align="start">
             <Text fontWeight="bold">{restaurante.nombre}</Text>
             <Text fontSize="sm" color="gray.600">
-              Puntuación: ⭐{restaurante.rating} - {distancia} -
+              Puntuación: 🍽️{restaurante.rating} - {distancia} -
               Envío ${tarifaEntrega.toFixed(2)}</Text>
           </VStack>
         </HStack>
@@ -86,7 +85,7 @@ export const PedidoDetalle = ({
           </HStack>
         ))}
       </VStack>
-
+        {/* Hacer componentes con el código repetido */}
       <VStack align="stretch" mb={6}>
         <Heading as="h2" size="sm" mb={3}>Resumen</Heading>
         <HStack justify="space-between" mb={1}>
@@ -107,17 +106,24 @@ export const PedidoDetalle = ({
         </HStack>
       </VStack>
 
-      {mostrarFormaDePago && medioDePago && (
-        <VStack align="stretch" mb={6}>
-          <Text>Forma de pago: {medioDePago}</Text>
-        </VStack>
-      )}
-
+      <Text>Forma de Pago</Text>
       <VStack align="stretch">
-        <Button mb={2}>Confirmar pedido</Button>
-        <Button variant="secundario">Limpiar carrito de compras</Button>
-      </VStack>
+        {isCheckout ?
+          <select name="medio-de-pago" id="medio-de-pago">
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="QR">QR</option>
+          </select> : <p>{medioDePago}</p>}
 
+        {isCheckout &&
+          <>
+            <Button mb={2}>Confirmar pedido</Button>
+            <Button variant="secundario">Limpiar carrito de compras</Button>
+          </>
+        }
+          </VStack>
+
+      
     </VStack>
   )
 }

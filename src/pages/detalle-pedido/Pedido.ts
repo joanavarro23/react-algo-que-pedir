@@ -11,7 +11,7 @@ export interface Pedido {
   id: number
   local: Local
   estadoPedido: EstadoPedido
-  hora: string
+  fecha: string
   platosDelPedido: any[] //Ups, juro cambiar este any
   items: number,
   precioTotal: number

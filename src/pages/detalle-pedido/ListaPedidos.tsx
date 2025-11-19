@@ -7,6 +7,7 @@ import { PedidoCard } from "../../components/pedido/PedidoCard"
 import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
 import { VStack, Heading, Spinner, Tabs } from "@chakra-ui/react"
 
+/* Las llamadas que las haga el service */
 const API_URL = 'http://localhost:9000/pedidos'
 
 export const ListaPedidos = () => {
@@ -44,13 +45,13 @@ export const ListaPedidos = () => {
         nuevoEstado: "CANCELADO",
       })
 
-      if (response.status === 200) {
-        setPedidosPendientes(prev => prev.filter(p => p.id !== id))
-        setPedidosCancelados(prev => [...prev, { ...pedido, estadoPedido: "CANCELADO" }])
-        toaster.create({ description: "El pedido se canceló correctamente", type: "success" })
-      } else {
-        toaster.create({ description: "No se pudo cancelar el pedido", type: "error" })
-      }
+      // if (response.status === 200) {
+      setPedidosPendientes(prev => prev.filter(p => p.id !== id))
+      // setPedidosCancelados(prev => [...prev, { ...pedido, estadoPedido: "CANCELADO" }])
+      toaster.create({ description: "El pedido se canceló correctamente", type: "success" })
+      // } else {
+      //   toaster.create({ description: "No se pudo cancelar el pedido", type: "error" })
+      // }
     } catch (error) {
       console.error(error)
       toaster.create({ description: "No se pudo cancelar el pedido", type: "error" })
@@ -65,6 +66,7 @@ export const ListaPedidos = () => {
     cargarPendientes()
   })
 
+  /* Spinner dentro de la página, que se sigan visualizando los tabs */
   if (isLoading) return (
     <VStack flex={1} justify="center">
       <Spinner size="xl" />
@@ -99,6 +101,7 @@ export const ListaPedidos = () => {
           <Tabs.Trigger value="cancelados" data-testid="test-cancelados"><LuSquareCheck /> Cancelados</Tabs.Trigger>
         </Tabs.List>
 
+        {/* Se puede componentizar o achicar el código*/}
         <Tabs.Content value="pendientes">
           <VStack gap={4} mt={4} align="stretch">
             {pedidosPendientes.length > 0 ? (
@@ -120,7 +123,6 @@ export const ListaPedidos = () => {
                 <PedidoCard
                   key={pedido.id}
                   order={pedido}
-                  onCancel={cancelarPedidoBackend}
                 />
               ))
             ) : "No tenés pedidos completados"}
@@ -134,7 +136,6 @@ export const ListaPedidos = () => {
                 <PedidoCard
                   key={pedido.id}
                   order={pedido}
-                  onCancel={cancelarPedidoBackend}
                 />
               ))
             ) : "No tenés pedidos cancelados"}

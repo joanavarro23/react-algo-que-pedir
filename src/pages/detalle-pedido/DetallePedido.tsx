@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { VStack, Spinner, Box, Heading, Text } from '@chakra-ui/react'
 import { PedidoDetalle } from '@/components/pedido/DetallePedidoComponente'
 
-
+/* Pasar las acciones al service */
 const API_URL = 'http://localhost:9000/checkout-pedido'
 
 export const PaginaDetallePedido = () => {
@@ -55,7 +55,9 @@ export const PaginaDetallePedido = () => {
     tarifaEntrega={pedido.tarifaEntrega}
     distancia={pedido.distancia}
     total={pedido.costoTotalPedido}
-    mostrarFormaDePago={false}>
+    medioDePago={pedido.medioDePago}
+    isCheckout={false}
+    >
     </PedidoDetalle>
   )
 }
