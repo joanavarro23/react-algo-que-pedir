@@ -33,7 +33,7 @@ export interface DetallePedidoResponse {
 }
 
 export async function obtenerDetallePedido(id: number): Promise<DetallePedidoResponse> {
-  const response = await axios.get(`DETALLE_PEDIDOS_URL/${id}`);
+  const response = await axios.get(`${DETALLE_PEDIDOS_URL}/${id}`);
   return response.data;
 }
 

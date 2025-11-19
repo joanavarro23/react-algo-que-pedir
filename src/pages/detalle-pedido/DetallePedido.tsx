@@ -6,13 +6,22 @@ import { obtenerDetallePedido } from '@/services/detallePedidoService'
 
 export const PaginaDetallePedido = () => {
   const { id } = useParams()
+  const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [pedido, setPedido] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 
-  if (!pedido && !loading && id) {
+  if (!init && id) {
+    setInit(true)
     setLoading(true)
-    obtenerDetallePedido(+id)
+
+    obtenerDetallePedido(Number(id))
+      .then(data => setPedido(data))
+      .catch(err => {
+        console.error(err)
+        setError("Error al obtener el pedido")
+      })
+      .finally(() => setLoading(false))
   }
 
   if (loading) {
@@ -40,18 +49,18 @@ export const PaginaDetallePedido = () => {
       </VStack>
     )
   }
+
   return (
     <PedidoDetalle
-    restaurante={pedido.local}
-    articulos={pedido.platosDelPedido}
-    subtotal={pedido.costoSubtotalPedido}
-    recargo={pedido.recargoMedioDePago}
-    tarifaEntrega={pedido.tarifaEntrega}
-    distancia={pedido.distancia}
-    total={pedido.costoTotalPedido}
-    medioDePago={pedido.medioDePago}
-    isCheckout={false}
-    >
-    </PedidoDetalle>
+      restaurante={pedido.local}
+      articulos={pedido.platosDelPedido}
+      subtotal={pedido.costoSubtotalPedido}
+      recargo={pedido.recargoMedioDePago}
+      tarifaEntrega={pedido.tarifaEntrega}
+      distancia={pedido.distancia}
+      total={pedido.costoTotalPedido}
+      medioDePago={pedido.medioDePago}
+      isCheckout={false}
+    />
   )
 }
