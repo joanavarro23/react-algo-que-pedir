@@ -7,7 +7,7 @@ import { Heading, VStack, HStack, IconButton, Text, Image } from '@chakra-ui/rea
 
 interface Restaurante {
   nombre: string
-  urlImagen: string
+  urlImagenLocal: string
   rating: string
 }
 
@@ -61,7 +61,7 @@ export const PedidoDetalle = ({
         <Heading as="h2" size="sm" mb={3}>Restaurante</Heading>
         <HStack align="center">
           <Image
-            src={restaurante.urlImagen}
+            src={restaurante.urlImagenLocal}
             alt={`Imagen de ${restaurante.nombre}`}
             boxSize="100px"
             objectFit="cover"

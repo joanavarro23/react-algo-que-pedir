@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { obtenerDetallePedido } from '@/services/detallePedidoService'
 import { VStack, Spinner, Box, Heading, Text } from '@chakra-ui/react'
 import { PedidoDetalle } from '@/components/pedido/DetallePedidoComponente'
-import { obtenerDetallePedido } from '@/services/detallePedidoService'
 
 export const PaginaDetallePedido = () => {
   const { id } = useParams()
