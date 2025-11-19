@@ -1,11 +1,8 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { VStack, Spinner, Box, Heading, Text } from '@chakra-ui/react'
 import { PedidoDetalle } from '@/components/pedido/DetallePedidoComponente'
-
-/* Pasar las acciones al service */
-const API_URL = 'http://localhost:9000/checkout-pedido'
+import { obtenerDetallePedido } from '@/services/detallePedidoService'
 
 export const PaginaDetallePedido = () => {
   const { id } = useParams()
@@ -15,10 +12,7 @@ export const PaginaDetallePedido = () => {
 
   if (!pedido && !loading && id) {
     setLoading(true)
-    axios.get(`${API_URL}/${id}`)
-      .then(res => setPedido(res.data))
-      .catch(err => setError('Error al cargar el pedido'))
-      .finally(() => setLoading(false))
+    obtenerDetallePedido(+id)
   }
 
   if (loading) {

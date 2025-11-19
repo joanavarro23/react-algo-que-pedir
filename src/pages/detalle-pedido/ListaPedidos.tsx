@@ -6,6 +6,8 @@ import { toaster } from "@/components/chakra-toaster/toaster"
 import { PedidoCard } from "../../components/pedido/PedidoCard"
 import { LuFolder, LuSquareCheck, LuUser } from "react-icons/lu"
 import { VStack, Heading, Spinner, Tabs } from "@chakra-ui/react"
+import { cancelarPedidoService } from "@/services/detallePedidoService"
+import { getPedidosPorEstados } from "@/services/detallePedidoService"
 
 /* Las llamadas que las haga el service */
 const API_URL = 'http://localhost:9000/pedidos'
@@ -18,18 +20,19 @@ export const ListaPedidos = () => {
   const [pedidosPendientes, setPedidosPendientes] = useState<Pedido[]>([])
   const [pedidosCompletados, setPedidosCompletados] = useState<Pedido[]>([])
 
-  const cargarPedidosPorEstados = async (estados: string[], setter: (p: Pedido[]) => void) => {
+  const cargarPedidosPorEstados = async (
+    estados: string[],
+    setter: (p: Pedido[]) => void
+  ) => {
     try {
       setIsLoading(true)
       setError(null)
-      const responses = await Promise.all(
-        estados.map(estado => axios.get(API_URL, { params: { estado } }))
-      )
-      const pedidos = responses.flatMap(r => r.data)
+
+      const pedidos = await getPedidosPorEstados(estados)
       setter(pedidos)
+
     } catch (err) {
-      console.error(err)
-      setError("Error al cargar pedidos")
+      setError((err as Error).message)
     } finally {
       setIsLoading(false)
     }
@@ -40,21 +43,24 @@ export const ListaPedidos = () => {
     if (!pedido) return
 
     try {
-      const response = await axios.patch(`${API_URL}`, {
-        id,
-        nuevoEstado: "CANCELADO",
+      await cancelarPedidoService(id)
+
+      // Esto es para sacar el pedido cancelado de la lista de pendientes
+      // sin tener que actualizar la página ni volver a pegarle al backend
+      setPedidosPendientes(prev => prev.filter(p => p.id !== id))
+
+      toaster.create({
+        description: "El pedido se canceló correctamente",
+        type: "success"
       })
 
-      // if (response.status === 200) {
-      setPedidosPendientes(prev => prev.filter(p => p.id !== id))
-      // setPedidosCancelados(prev => [...prev, { ...pedido, estadoPedido: "CANCELADO" }])
-      toaster.create({ description: "El pedido se canceló correctamente", type: "success" })
-      // } else {
-      //   toaster.create({ description: "No se pudo cancelar el pedido", type: "error" })
-      // }
     } catch (error) {
       console.error(error)
-      toaster.create({ description: "No se pudo cancelar el pedido", type: "error" })
+
+      toaster.create({
+        description: "No se pudo cancelar el pedido",
+        type: "error"
+      })
     }
   }
 
