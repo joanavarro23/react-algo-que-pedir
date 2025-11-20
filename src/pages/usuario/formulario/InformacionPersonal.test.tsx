@@ -71,8 +71,6 @@ describe('InformacionPersonal', () => {
             expect(apellido).toBe('Rodriguez')
             const direccion = (screen.getByTestId('input-direccion') as HTMLInputElement).value
             expect(direccion).toBe('Calle Falsa')
-            const ubicacion = (screen.getByTestId('input-ubicacion') as HTMLInputElement).value
-            expect(ubicacion).toBe('Disneylandia')
             const latitud = (screen.getByTestId('input-latitud') as HTMLInputElement).value
             expect(latitud).toBe('-3.3')
             const longitud = (screen.getByTestId('input-longitud') as HTMLInputElement).value

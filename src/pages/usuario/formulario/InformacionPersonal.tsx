@@ -85,9 +85,6 @@ export const InformacionPersonal = () => {
                         <CampoTexto validacion={validar(usuarioForm.direccion, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
                         value={usuarioForm.direccion} onChange={(event) => actualizarForm('direccion', event.target.value)} />
 
-                        <CampoTexto validacion={validar(usuarioForm.ubicacion, 'textoRequerido', 'ubicacion')} nombreLabel='Ubicación' nombreTest='ubicacion' placeholder='Ciudad, Provincia'
-                        value={usuarioForm.ubicacion} onChange={(event) => actualizarForm('ubicacion', event.target.value)} />
-
                         <Stack direction='row'>
                             <CampoTexto validacion={validar(usuarioForm.latitud, validacionNumerica, 'latitud', {min: -90, max: 90})} nombreLabel='Latitud' nombreTest='latitud' 
                             placeholder='Ej: -34.61' type='number' value={usuarioForm.latitud} onChange={(event) => actualizarForm('latitud', event.target.value)} />

@@ -9,7 +9,6 @@ export class Usuario {
     public password = '',
     public email = '',
     public direccion = '',
-    public ubicacion = '',
     public latitud = 0,
     public longitud = 0,
     public distancia= 0
@@ -36,7 +35,6 @@ export type UsuarioJSON = {
     username: string,
     password: string,
     direccion: string,
-    ubicacion: string,
     latitud: number,
     longitud: number
 }
