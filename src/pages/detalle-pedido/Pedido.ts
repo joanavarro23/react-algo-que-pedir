@@ -10,8 +10,9 @@ export interface Local {
 export interface Pedido {
   id: number
   local: Local
-  estadoDelPedido: EstadoPedido
-  fechaPedido: string
+  estadoPedido: EstadoPedido
+  hora: string
   platosDelPedido: any[] //Ups, juro cambiar este any
-  costoTotalPedido: number
+  items: number,
+  precioTotal: number
 }

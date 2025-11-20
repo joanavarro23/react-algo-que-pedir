@@ -1,41 +1,61 @@
-import { MOCK_PEDIDOS } from "@/mocks/pedidosMocks"
-import { useLocation, useParams } from 'react-router-dom'
-import type { Pedido } from "@/pages/detalle-pedido/Pedido"
-import { Box, Heading, Text, VStack } from '@chakra-ui/react'
+import axios from 'axios'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { VStack, Spinner, Box, Heading, Text } from '@chakra-ui/react'
+import { PedidoDetalle } from '@/components/pedido/DetallePedidoComponente'
+
+
+const API_URL = 'http://localhost:9000/checkout-pedido'
 
 export const PaginaDetallePedido = () => {
-
   const { id } = useParams()
+  const [loading, setLoading] = useState(false)
+  const [pedido, setPedido] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const location = useLocation()
-  const pedidoDelState = location.state?.pedido as Pedido | undefined
+  if (!pedido && !loading && id) {
+    setLoading(true)
+    axios.get(`${API_URL}/${id}`)
+      .then(res => setPedido(res.data))
+      .catch(err => setError('Error al cargar el pedido'))
+      .finally(() => setLoading(false))
+  }
 
-  let pedido: Pedido | undefined = pedidoDelState
+  if (loading) {
+    return (
+      <VStack p={4} flex={1}>
+        <Spinner size="xl" />
+        <Text>Cargando pedido...</Text>
+      </VStack>
+    )
+  }
 
-  if (pedidoDelState) {
-    console.log("MODO NAVEGACIÓN RÁPIDA: Usando datos de location.state")
-  } else {
-    console.warn("MODO REFRESH (F5): 'location.state' está vacío. Simulando fetch...")
-    pedido = MOCK_PEDIDOS.find(p => p.id === Number(id))
-  } //Esto lo hizo la IA
+  if (error) {
+    return (
+      <VStack p={4} flex={1}>
+        <Heading>Error</Heading>
+        <Text>{error}</Text>
+      </VStack>
+    )
+  }
 
   if (!pedido) {
     return (
       <VStack p={4} flex={1}>
-        <Heading>Error</Heading>
-        <Text>Pedido con ID "{id}" no encontrado.</Text>
+        <Text>No se encontró el pedido con ID "{id}"</Text>
       </VStack>
     )
   }
 
   return (
-    <VStack p={4} flex={1} align="start" gap={4}>
-      <Heading>Detalle del Pedido (ID: {pedido.id})</Heading>
-      
-      <Heading size="md" mt={4}>Datos del Pedido (JSON):</Heading>
-      <Box as="pre" bg="gray.100" p={4} borderRadius="md" w="100%">
-        {JSON.stringify(pedido, null, 2)}
-      </Box>
-    </VStack>
+    <PedidoDetalle
+    restaurante={pedido.local.nombre}
+    articulos={pedido.platosDelPedido}
+    subtotal={pedido.costoSubtotalPedido}
+    recargo={pedido.recargoMedioDePago}
+    tarifaEntrega={pedido.tarifaEntrega}
+    total={pedido.costoTotalPedido}
+    mostrarFormaDePago={false}>
+    </PedidoDetalle>
   )
 }

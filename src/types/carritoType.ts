@@ -1,4 +1,4 @@
-import type { Plato } from '@/mocks/platosMock'
+import { Plato } from '@/domain/Plato'
 
 export type ItemCarrito = {
     plato: Plato,
