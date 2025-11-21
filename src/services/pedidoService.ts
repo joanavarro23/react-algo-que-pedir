@@ -15,6 +15,11 @@ class PedidoService {
         const query = () => axios.post<PedidoJSON>(`${REST_SERVER_URL}/checkout-pedido`, pedido.toJSON())
         const pedidoJSON = await getAxiosData(query)
         return Pedido.fromJson(pedidoJSON)
+    } //queda en desuso probablemente
+
+    async crearPedido(pedido: Pedido) {
+        const query = () => axios.post<PedidoJSON>(`${REST_SERVER_URL}/pedidos`, pedido.toJSON())
+        return getAxiosData(query)
     }
 }
 
