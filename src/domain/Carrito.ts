@@ -10,10 +10,10 @@ export class ItemPedido {
 export class Carrito {
     constructor(
         public items: ItemPedido[] = [],
-        public localId: number | null = null //esto capaz lo necesita para manejar errores pero no estoy seguro
+        public localId: number | null = null 
     ) {}
 
-    setPlatoCantidad(plato: Plato, cantidad: number): Carrito {
+    setPlatoCantidad(plato: Plato, cantidad: number, idLocal: number): Carrito {
         let itemPlato: ItemPedido[]
 
         const platoYaExiste = this.items.find(item => item.plato.id === plato.id) //Me fijo si el plato ya está en el carrito
@@ -26,17 +26,18 @@ export class Carrito {
             itemPlato = [...this.items, new ItemPedido(plato, cantidad)] //Si el plato no existe, agrego un nuevo item al carrito
         }
         itemPlato = itemPlato.filter(item => item.cantidad > 0) //Filter para dejar solos los items que tengan cantidad > 0
+        const nuevoLocalId = itemPlato.length > 0 ? idLocal : null //Si el carrito queda vacío, reseteo el localId a null
 
-        return new Carrito(itemPlato)
+        return new Carrito(itemPlato, nuevoLocalId)
     }
 
     decrementarCantidad(platoId: number): Carrito { //Este es un método para el checkout, para que decremente de a 1 con la cruz
         const itemPlato = this.items.find(item => item.plato.id === platoId)
-        if (!itemPlato) {
+        if (!itemPlato || this.localId === null) {
             return this
         }
         const cantidadActual = itemPlato.cantidad
-        return this.setPlatoCantidad(itemPlato.plato, cantidadActual - 1)
+        return this.setPlatoCantidad(itemPlato.plato, cantidadActual - 1, this.localId)
     }
 
     limpiarCarrito(): Carrito {

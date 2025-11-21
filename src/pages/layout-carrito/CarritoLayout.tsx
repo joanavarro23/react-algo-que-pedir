@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom'
 //Lo que le pasamos a la vistas por el outlet
 export type CarritoContext = {
     carrito: Carrito
-    setPlatoCantidad: (plato: Plato, cantidad: number) => void
+    setPlatoCantidad: (plato: Plato, cantidad: number, idLocal: number) => void
     decrementarPlato: (platoId: number) => void
     limpiarCarrito: () => void
 }
@@ -15,8 +15,8 @@ export type CarritoContext = {
 export const CarritoLayout = () => {
     const [carrito, setCarrito] = useState<Carrito>(new Carrito())
 
-    const setPlatoCantidad = (plato: Plato, cantidad: number) => {
-        setCarrito(prev => prev.setPlatoCantidad(plato, cantidad))
+    const setPlatoCantidad = (plato: Plato, cantidad: number, idLocal: number) => {
+        setCarrito(prev => prev.setPlatoCantidad(plato, cantidad, idLocal))
         toaster.create({
             title: 'Carrito actualizado',
             description: `${cantidad > 0 ? `${cantidad} de ${plato.nombre} agregado(s)` : `${plato.nombre} eliminado`}`,
