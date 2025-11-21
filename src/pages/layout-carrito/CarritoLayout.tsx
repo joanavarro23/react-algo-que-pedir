@@ -26,11 +26,11 @@ export const CarritoLayout = () => {
     }
 
     const decrementarPlato = (platoId: number) => {
-        setCarrito(prev => prev.decrementarCantidad(platoId))
+        setCarrito((prev: Carrito) => prev.decrementarPlato(platoId))
     }
 
     const limpiarCarrito = () => {
-        setCarrito(prev => prev.limpiarCarrito())
+        setCarrito((prev: Carrito) => prev.limpiarCarrito())
     }
 
     const contextValue: CarritoContext = {
