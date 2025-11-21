@@ -1,24 +1,8 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from './constants'
 import { toaster } from '@/components/chakra-toaster/toaster'
+import type { RegisterData, LoginData, AuthResponseUsuario } from '@/types/UsuarioTypes'
 
-
-type RegisterData = {
-    usuario: string,
-    password: string,
-    confirmarPassword: string
-}
-
-type LoginData = {
-    usuario: string,
-    password: string
-}
-
-type AuthResponseUsuario = {
-    success: boolean,
-    message: string,
-    usuario?: string
-}
 
 export const login = async (data: LoginData): Promise<AuthResponseUsuario> => {
     const url = `${REST_SERVER_URL}/api/login`
@@ -26,16 +10,16 @@ export const login = async (data: LoginData): Promise<AuthResponseUsuario> => {
     try {
         const response = await axios.post<AuthResponseUsuario>(url, data)
 
-        //Si el back responde todo OK --> login exitoso con el setItem del Local Storage
-        if (response.data.success) {
-            if (response.data.usuario) {
-                localStorage.setItem('usuario', response.data.usuario)
-            }
+        //Si el back responde todo OK --> login exitoso con el setItem del Local Storage de id y nombre
+        if (response.data.success && response.data.usuario) {
+            localStorage.setItem('idUsuario', response.data.usuario.id.toString())
+            localStorage.setItem('nombreUsuario', response.data.usuario.nombre)
+          
         }
 
         toaster.create({
             title: 'Bienvenido a Algo que Pedir',
-            description: `Hola, ${response.data.usuario}!`,
+            description: `Hola, ${response.data.usuario.nombre}!`,
             type: 'success',
             duration: 3000
         })
@@ -48,7 +32,8 @@ export const login = async (data: LoginData): Promise<AuthResponseUsuario> => {
 }
 
 export const logout = () => {
-    localStorage.removeItem('usuario')
+    localStorage.removeItem('idUsuario')
+    localStorage.removeItem('nombreUsuario')
 
     toaster.create({
         title: 'Sesión cerrada',
