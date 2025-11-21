@@ -18,7 +18,9 @@ export type LocalJSON = {
     urlImagenLocal: string,
     mediosDePago: MedioDePago[],
     rating: number,
-    reviews: String
+    reviews: String,
+    tarifaEntrega: number,
+    recargosMedioDePago: Record<MedioDePago, number>
 }
 
 class LocalService {
