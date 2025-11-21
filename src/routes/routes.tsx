@@ -14,6 +14,7 @@ import { RegisterUsuario } from '@/pages/register/register'
 import { CalificacionesView } from '@/pages/calificar-local/Calificar'
 
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
+import { CarritoLayout } from '@/pages/layout-carrito/CarritoLayout'
 
 const ProtectedRoute = () => {
     const estaLogueado = !!localStorage.getItem('usuario')
