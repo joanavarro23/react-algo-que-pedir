@@ -31,7 +31,7 @@ export class Carrito {
         return new Carrito(itemPlato, nuevoLocalId)
     }
 
-    decrementarCantidad(platoId: number): Carrito { //Este es un método para el checkout, para que decremente de a 1 con la cruz
+    decrementarPlato(platoId: number): Carrito { //Este es un método para el checkout, para que decremente de a 1 con la cruz
         const itemPlato = this.items.find(item => item.plato.id === platoId)
         if (!itemPlato || this.localId === null) {
             return this
