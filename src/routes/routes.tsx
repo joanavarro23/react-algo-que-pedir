@@ -16,7 +16,7 @@ import { CalificacionesView } from '@/pages/calificar-local/Calificar'
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedRoute = () => {
-    const estaLogueado = !!localStorage.getItem('usuario')
+    const estaLogueado = !!localStorage.getItem('idUsuario')
 
     return estaLogueado ? <Outlet /> : <Navigate to="/loginUsuario" replace />
 }
