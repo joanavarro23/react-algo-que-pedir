@@ -10,10 +10,10 @@ export class ItemPedido {
 export class Carrito {
     constructor(
         public items: ItemPedido[] = [],
-        public localId: number | null = null
+        public localId: number | null = null //esto capaz lo necesita para manejar errores pero no estoy seguro
     ) {}
 
-    setCantidad(plato: Plato, cantidad: number): Carrito {
+    setPlatoCantidad(plato: Plato, cantidad: number): Carrito {
         let itemPlato: ItemPedido[]
 
         const platoYaExiste = this.items.find(item => item.plato.id === plato.id) //Me fijo si el plato ya está en el carrito
@@ -36,7 +36,7 @@ export class Carrito {
             return this
         }
         const cantidadActual = itemPlato.cantidad
-        return this.setCantidad(itemPlato.plato, cantidadActual - 1)
+        return this.setPlatoCantidad(itemPlato.plato, cantidadActual - 1)
     }
 
     limpiarCarrito(): Carrito {
