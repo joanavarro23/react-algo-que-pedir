@@ -43,10 +43,10 @@ export const AQPRoutes = () =>
                     <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
                 </Route>
 
-                //Layout compartido entre vista donde se crea el pedido + el checkout
-                <Route>                                                         {/* Armado y checkout del pedido */}
+                {/* Layout compartido entre vista donde se crea el pedido + el checkout */}
+                <Route element={<CarritoLayout />}>                                                         {/* Armado y checkout del pedido */}
                     <Route path="/local/:idLocal/platos" element={<DetalleLocal />} />
-                    <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido />}> </Route>
+                    <Route path="/checkout-pedido/" element={<CheckoutPedido />}> </Route>
                 </Route>
               
                 <Route path="/calificar-local" element={ <CalificacionesView/> } />
