@@ -64,12 +64,6 @@ export const DetalleLocal = () => {
     // --- AGREGAR PLATO AL PEDIDO ---
     const handleAgregarPlato = (plato : Plato, cantidad : number) => {
         setPlatoCantidad(plato, cantidad, localID)
-        toaster.create({
-            title: '¡Plato agregado!',
-            description: `Se han agregado ${cantidad} de ${plato.nombre} al pedido.`,
-            type: 'success',
-            duration: 1500
-        })
         onClose()
     }
            
