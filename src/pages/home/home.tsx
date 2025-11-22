@@ -9,6 +9,8 @@ import { useOnInit } from '@/customHooks/useOnInit'
 import { REST_SERVER_URL } from '@/services/constants'
 import { logout } from '@/services/authService'
 import { useNavigate } from 'react-router-dom'
+import { toaster } from '@/components/chakra-toaster/toaster'
+
 
 interface Local {
   idLocal: number
@@ -30,7 +32,7 @@ export const LocalesView = () => {
   useOnInit(() => {
     //Recupero el nombre con el localStorage y lo seteo con useState
     const nombreActual = localStorage.getItem('nombreUsuario')
-    if(nombreActual){ setNombreUsuario(nombreActual) }
+    if (nombreActual) { setNombreUsuario(nombreActual) }
 
     const fetchLocales = async (): Promise<void> => {
       try {
@@ -48,6 +50,14 @@ export const LocalesView = () => {
   //Agrego fx que llama al logout del service para asociar la accion con el icono del /home
   const handleLogOut = () => {
     logout()
+
+    toaster.create({
+      title: 'Sesión cerrada',
+      description: 'Has cerrado la sesion correctamente',
+      type: 'info',
+      duration: 2000
+    })
+
     navigate('/loginUsuario', { replace: true })
   }
 
@@ -111,7 +121,7 @@ export const LocalesView = () => {
               className="local-card"
               cursor="pointer"
               borderRadius="20px" overflow="hidden"
-              onClick= { () => window.location.href = `/local/${local.idLocal}/platos` }
+              onClick={() => window.location.href = `/local/${local.idLocal}/platos`}
               transition="transform 0.2s"
               _hover={{ transform: 'scale(1.02)' }}
             >
