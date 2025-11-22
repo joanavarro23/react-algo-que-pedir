@@ -149,7 +149,7 @@ export const CheckoutPedido = () => {
                     <img className="imagen-restaurante" src={local.urlImagenLocal} alt='Imágen del restaurante'/>
                     <Stack as='figcaption' gap={0}>
                         <h3>{local.nombre}</h3>
-                        <span className='texto-secundario-checkout'>{local.rating.toFixed(1)} ★ · {distancia} · {tarifaEntregaMonto}</span>
+                        <span className='texto-secundario-checkout'>{local.rating.toFixed(1)} ★ · {distancia} · {tarifaEntregaMonto.toFixed(2)}</span>
                     </Stack>
                 </figure>
             </Stack>
