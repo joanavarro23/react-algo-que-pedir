@@ -12,6 +12,9 @@ import { useOnInit } from '@/customHooks/useOnInit'
 import { localService, medioDePagoLabels, type LocalJSON, type MedioDePago } from '@/services/localServiceTest'
 import type { CarritoContext } from '../layout-carrito/CarritoLayout'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
+import type { Usuario } from '@/domain/Usuario'
+import { usuarioService } from '@/services/usuarioService'
+import { distanciaService } from '@/services/distanciaService'
 
 
 export const CheckoutPedido = () => {
@@ -19,30 +22,51 @@ export const CheckoutPedido = () => {
     const { carrito, decrementarPlato, limpiarCarrito } = useOutletContext<CarritoContext>()
     
     const [local, setLocal] = useState<LocalJSON | null>(null)
+    const [usuario, setUsuario] = useState<Usuario | null>(null)
     const [medioSeleccionado, setMedioSeleccionado] = useState<MedioDePago>('EFECTIVO')
     
     const [tarifaEntregaMonto, setTarifaEntregaMonto] = useState(0)
     const [recargo, setRecargo] = useState(0)
     const [total, setTotal] = useState(0)
+    const [distancia, setDistancia] = useState<string | null>(null)
 
     const [estaCargando, setEstaCargando] = useState(true)
     
     
     useOnInit(async () => {
-        if (carrito.localId) {
-            try {
-                const localData = await localService.obtenerLocalPorId(carrito.localId)
-                setLocal(localData)
-            } catch (error) {
-                console.error('Error al cargar la información del local:', error)
-                toaster.create({ title: 'Error', description: 'No se pudo cargar la información del local.', type: 'error' })
-                navigate('/home')
-            } finally {
-                setEstaCargando(false)
+        const username = localStorage.getItem('usuario')
+        if (!carrito.localId) {
+            setEstaCargando(false)
+            return
+        }
+        
+        if (!username) {
+            toaster.create({ title: 'Error', description: 'Usuario no autenticado.', type: 'error' })
+            navigate('/loginUsuario')
+            setEstaCargando(false)
+            return
+        }
+
+        try {
+            const [localData, userData] = await Promise.all([
+                localService.obtenerLocalPorId(carrito.localId),
+                usuarioService.getByUsername(username)
+            ])
+            setLocal(localData)
+            setUsuario(userData)
+
+            if (localData && userData) {
+                const distanciaCalculada = await distanciaService.obtenerDistancia(localData.idLocal, userData.id!)
+                setDistancia(distanciaCalculada)
             }
-        } else {
+        } catch (error) {
+            console.error('Error al cargar la información:', error)
+            toaster.create({ title: 'Error', description: 'No se pudo cargar la información.', type: 'error' })
+            navigate('/home')
+        } finally {
             setEstaCargando(false)
         }
+        setEstaCargando(false)
     })
 
     useEffect(() => { //Recalcula valores cuando cambia medio de pago
@@ -67,7 +91,7 @@ export const CheckoutPedido = () => {
         if (!local) return
 
         const fechaPedido = new Date()
-        const pedido = Pedido.fromCarrito(carrito, local, medioSeleccionado, total, fechaPedido)
+        const pedido = Pedido.fromCarrito(carrito, local, medioSeleccionado, total, fechaPedido, usuario!)
 
         try {
             await pedidoService.crearPedido(pedido)
@@ -124,7 +148,7 @@ export const CheckoutPedido = () => {
                     <img className="imagen-restaurante" src={local.urlImagenLocal} alt='Imágen del restaurante'/>
                     <Stack as='figcaption' gap={0}>
                         <h3>{local.nombre}</h3>
-                        <span className='texto-secundario-checkout'>{local.rating.toFixed(1)} ★</span>
+                        <span className='texto-secundario-checkout'>{local.rating.toFixed(1)} ★ · {distancia} · {tarifaEntregaMonto}</span>
                     </Stack>
                 </figure>
             </Stack>
