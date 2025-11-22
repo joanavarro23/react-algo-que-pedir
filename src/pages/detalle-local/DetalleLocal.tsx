@@ -1,7 +1,7 @@
 import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs, useDisclosure } from '@chakra-ui/react'
 import { FaStar } from 'react-icons/fa'
 import { IoArrowBack } from 'react-icons/io5'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 
 import { Plato, type PlatoJSON } from '@/domain/Plato'
 
@@ -15,22 +15,7 @@ import { useState, useEffect } from 'react'
 import { platoService } from '@/services/platoService'
 import { localService } from '@/services/localServiceTest'
 import { useOnInit } from '@/customHooks/useOnInit'
-
-//Minima interface para un item de un pedido
-interface ItemPedido {
-    plato: Plato,
-    cantidad: number
-}
-
-//Minima interface para un Pedido
-interface Pedido {
-    id: number,
-    items: ItemPedido[]
-    //fechaCreacion: Date,
-    //costoTotal: number,
-    //etc
-}
-
+import type { CarritoContext } from '../layout-carrito/CarritoLayout'
 
 //Datos de manera momentanea hasta que haya una class Local
 interface LocalInfo {
@@ -45,8 +30,14 @@ interface LocalInfo {
 export const DetalleLocal = () => {
     const navigate = useNavigate()
     
+    const { carrito, setPlatoCantidad } = useOutletContext<CarritoContext>()  //Accedo al carrito del contexto
+
     const volverAlHome = () => {
         navigate('/home')
+    }
+
+    const irAlCheckout = () => {
+        navigate('/checkout-pedido')
     }
     
     //Uso el useParams para conseguir el id en la url
@@ -57,37 +48,13 @@ export const DetalleLocal = () => {
     const [local, setLocal] = useState<LocalInfo | null>(null)
     const [estaCargando, setEstaCargando] = useState(true)             //estados para diferenciar si el local esta cargando
     const [errorCarga, setErrorCarga] = useState<string | null>(null)   //o si fallo en la carga
-
+    
     const [platos, setPlatos] = useState<Plato[]>([])
     const [platoSeleccionado, setPlatoSeleccionado] = useState<Plato | null>(null)
-
-    //Estado para el Pedido que arma la vista   
-    const [pedido, setPedido] = useState<Pedido>({
-        id: 1,
-        items: []
-    })       
-
-    // ----- testeo de como se agregan los platos en consola!!!!!------
-    useEffect(() => {
-        console.log('--- ESTADO ACTUAL DEL PEDIDO ---')
-        console.log('ID del Pedido:', pedido.id || 'No Asignado')
-        
-        if (pedido.items.length === 0) {
-            console.log('El pedido está vacío.')
-        } else {
-            console.log(`Total de Items Únicos: ${pedido.items.length}`)
-            
-            pedido.items.forEach(item => {
-                console.log(`- Plato ID: ${item.plato.id}, Nombre: ${item.plato.nombre}, Cantidad: ${item.cantidad}`)
-            })
-        }
-        console.log('-------------------------------')
-    }, [pedido])
-
-
+    
     //--- MODAL DE PLATO ---
     const { open, onOpen, onClose } = useDisclosure()
-
+    
     //Abre el modal
     const handlePlatoClickeado = (plato: Plato) => {
         setPlatoSeleccionado(plato)
@@ -96,45 +63,14 @@ export const DetalleLocal = () => {
 
     // --- AGREGAR PLATO AL PEDIDO ---
     const handleAgregarPlato = (plato : Plato, cantidad : number) => {
-        setPedido( pedidoActual => {
-            //Accedo a la lista de platos del Pedido
-            const pedidoItems = pedidoActual.items
-
-            //Match de id de plato para saber si ya existe en mi pedido
-            const idPlatoItem = pedidoItems.findIndex( item => item.plato.id === plato.id)
-            
-            //Si no matchea, es un plato nuevo. Agrego la cantidad elegida y retorna el pedido
-            if(idPlatoItem !== -1) {
-                const nuevoPedidoItems = [...pedidoItems]
-                nuevoPedidoItems[idPlatoItem] = { plato, cantidad}
-                return {
-                    ...pedidoActual,
-                    items: nuevoPedidoItems
-                }
-            }
-            
-            //Y si era el mismo plato, se reactualiza la cantidad
-            return {
-                ...pedidoActual,
-                items: [...pedidoItems, {plato, cantidad}]
-            }
-        })
+        setPlatoCantidad(plato, cantidad, localID)
         onClose()
-
-        toaster.create({
-            title: 'Plato agregado exitosamente!',
-            description: `${cantidad} de ${plato.nombre} agregado(s) al pedido`,
-            type: 'success',
-            duration: 1500
-        })
     }
-
-    const obtenerCantidadActual = (plato : Plato) => {
-        const item = pedido.items.find(item => item.plato.id === plato.id)
-        return item ? item.cantidad : 0
+           
+    const obtenerCantidadActual = (plato: Plato) => {
+        return carrito.cantidadPorPlato(plato.id)
     }
-
-
+        
     //--- CARGA DE PLATOS DEL LOCAL ---
     const cargarDatos = async () => {
         setEstaCargando(true)           //el local esta cargando
@@ -142,6 +78,7 @@ export const DetalleLocal = () => {
 
         //Valida el id del local que viene de la url    
         if (!localID || Number.isNaN(localID)) {
+            toaster.create({ title: 'Error', description: 'El id del local es invalido!', type: 'error' })
             setErrorCarga('El id del local es invalido!')         //Marca que hubo error porque el id de la url o no esta o es invalido 
             setEstaCargando(false)
             return
@@ -166,7 +103,7 @@ export const DetalleLocal = () => {
             setPlatos(platosData.map((plato: PlatoJSON) => Plato.fromJSON(plato)))
         } catch (error) {
             console.error('Error cargando los platos del local', error)
-
+            toaster.create({ title: 'Error', description: 'No se pudieron cargar los platos del local.', type: 'error' })
             setErrorCarga('No se pudo cargar los platos del local')
         } finally {
             setEstaCargando(false)
@@ -214,7 +151,7 @@ export const DetalleLocal = () => {
                     <HStack fontSize="sm">
                         <FaStar color="#f9d44dff" />
                         <Text>
-                            {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
+                            {`${local.rating.toFixed(2)} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
                         </Text>
                     </HStack>
                 </Flex>
@@ -240,7 +177,7 @@ export const DetalleLocal = () => {
             </Tabs.Root>
 
             <Box p="4" bg="white">                                          {/* Boton para ver el detalle del pedido */}
-                <Button colorScheme="red" w="100%"> Ver pedido ({pedido.items.length})</Button>
+                <Button colorScheme="red" w="100%" onClick={irAlCheckout}> Ver pedido ({carrito.cantidadTotal})</Button>
             </Box>
 
 
