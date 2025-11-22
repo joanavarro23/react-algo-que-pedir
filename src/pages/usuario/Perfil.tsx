@@ -7,23 +7,31 @@ import { getMensajeError } from '@/utils/errorHandling'
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import { Outlet, useNavigate, type ErrorResponse } from 'react-router-dom'
 import type { Preferencias } from './subrutasPerfil'
+import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 
 export type PerfilContextType = {
     usuario: Usuario
     setUsuario: Dispatch<SetStateAction<Usuario>> //
+    cargando: boolean
+    guardando: boolean
     guardarUsuario: (usuarioActualizado: Usuario) => void
     navigate: ReturnType<typeof useNavigate>
     gotoPreferencias: (opcion: Preferencias) => void
 }
 
+const USUARIO_ID = 0
+
 export const PerfilUsuario = () => {
     const [usuario, setUsuario] = useState<Usuario>(new Usuario())
+    const [cargando, setCargando] = useState(true)
+    const [guardando, setGuardando] = useState(false)
     const navigate = useNavigate()
     
     // Carga de datos inicial
     const traerUsuario = async () => {
         try {
-            const usuario = await usuarioService.getById(0) //+id!
+            setCargando(true)
+            const usuario = await usuarioService.getById(USUARIO_ID) //+id!
             setUsuario(usuario)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
@@ -32,13 +40,14 @@ export const PerfilUsuario = () => {
                 description: mensajeError,
                 type: 'error',
             })
-        }
+        } finally { setCargando(false) }
     }
     useOnInit(traerUsuario)
 
     // Guardar y actualizar el usuario
     const guardarUsuario = async (usuarioActualizado: Usuario) => {
         try {
+            setGuardando(true)
             usuarioActualizado.validarCambios()
             const usuarioGuardado = await usuarioService.actualizar(usuarioActualizado)
             setUsuario(usuarioGuardado)
@@ -55,12 +64,16 @@ export const PerfilUsuario = () => {
                 description: errorMessage,
                 type: 'error'
             })
-        }
+        } finally { setGuardando(false) }
     }
 
     // Navegación a las preferencias
     const gotoPreferencias = (opcion: Preferencias) => {
         navigate(opcion.path)
+    }
+
+    if (cargando) {
+        return <LoadingSpinner mensaje='perfil'/>
     }
 
     return <>
