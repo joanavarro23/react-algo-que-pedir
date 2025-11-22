@@ -1,7 +1,9 @@
+import { Local, type LocalJSON } from './LocalCriterio'
+
 export class Criterio {
   constructor(
     public tipo: TipoCriterio = 'GENERAL',
-    public localesPreferidos: number[] = [], // para fieles
+    public localesPreferidos: Local[] = [], // para fieles
     public palabrasClave: string[] = [],  // para marketing
     public subCriterios: Criterio[] = []  // para combinados
   ) {}
@@ -11,7 +13,7 @@ export class Criterio {
   static fromJSON(criterioJSON: CriterioJSON): Criterio {
     return new Criterio(
       criterioJSON.tipo,
-      criterioJSON.localesPreferidos ?? [],
+      criterioJSON.localesPreferidos?.map(local => Local.fromJSON(local)) ?? [],
       criterioJSON.palabrasClave ?? [],
       criterioJSON.subCriterios?.map(criterio => Criterio.fromJSON(criterio)) ?? [],
     )
@@ -24,7 +26,7 @@ export class Criterio {
       json.subCriterios = this.subCriterios.map(subCriterio => subCriterio.toJSON())
     }
     if (this.tipo === 'FIEL' && this.localesPreferidos.length > 0) {
-      json.localesPreferidos = this.localesPreferidos
+      json.localesPreferidos = this.localesPreferidos.map(local => local.toJSON())
     }
     if (this.tipo === 'MARKETING') {
       json.palabrasClave = this.palabrasClave
@@ -40,7 +42,7 @@ export type TipoCriterio =
 
 export type CriterioJSON = {
   tipo: TipoCriterio
-  localesPreferidos?: number[]
+  localesPreferidos?: LocalJSON[]
   palabrasClave?: string[]
   subCriterios?: CriterioJSON[]
 }
