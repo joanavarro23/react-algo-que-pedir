@@ -34,13 +34,14 @@ export const CheckoutPedido = () => {
     
     
     useOnInit(async () => {
-        const username = localStorage.getItem('usuario')
+        const idLocalStorage = localStorage.getItem('idUsuario')
+        const userId = idLocalStorage !== null ? Number(idLocalStorage) : null
         if (!carrito.localId) {
             setEstaCargando(false)
             return
         }
         
-        if (!username) {
+        if (!userId) {
             toaster.create({ title: 'Error', description: 'Usuario no autenticado.', type: 'error' })
             navigate('/loginUsuario')
             setEstaCargando(false)
@@ -50,7 +51,7 @@ export const CheckoutPedido = () => {
         try {
             const [localData, userData] = await Promise.all([
                 localService.obtenerLocalPorId(carrito.localId),
-                usuarioService.getByUsername(username)
+                usuarioService.getById(userId)
             ])
             setLocal(localData)
             setUsuario(userData)
