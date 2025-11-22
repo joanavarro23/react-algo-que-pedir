@@ -151,7 +151,7 @@ export const DetalleLocal = () => {
                     <HStack fontSize="sm">
                         <FaStar color="#f9d44dff" />
                         <Text>
-                            {`${local.rating} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
+                            {`${local.rating.toFixed(2)} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
                         </Text>
                     </HStack>
                 </Flex>
