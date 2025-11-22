@@ -6,20 +6,8 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { PasswordInput } from '@/components/ui/password-input'
 import { registro } from '@/services/authService'
 import React from 'react'
+import { obtenerErroresRegistro, type InputsRegistro, type ErroresForm } from '@/utils/validacionRegistro'
 
-//Tipado para los inputs
-type InputsRegistro = {
-    nombre: string,
-    apellido: string,
-    usuario: string,
-    password: string,
-    confirmarPassword: string,
-    calle: string,
-    altura: string
-}
-
-//Tipado para objeto de errores con Partial de TS que hace ? a todos los atributos idem InputsRegistro
-type ErroresForm = Partial<InputsRegistro>
 
 export const RegisterUsuario = () => {
     const navigate = useNavigate()
@@ -34,10 +22,12 @@ export const RegisterUsuario = () => {
         calle: '',
         altura: ''
     })
+    
 
     //El flag de enviado viene en false y el objeto de errores vacio x default 
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState<ErroresForm>({})
+    
 
     //Maneja los cambios en cualquier input del form
     const manejoCambiosEnInput = (e: React.ChangeEvent<HTMLInputElement>, field: keyof InputsRegistro) => {
@@ -48,35 +38,19 @@ export const RegisterUsuario = () => {
         }))
     }
 
-    //Funcion para validar desde el front los requeridos y coincidencia
-    const validarFormulario = (data: InputsRegistro): boolean => {
-        const posiblesErrores: ErroresForm = {}
-
-        if (!data.nombre) posiblesErrores.nombre = 'El nombre es obligatorio'
-        if (!data.apellido) posiblesErrores.apellido = 'El apellido es obligatorio'
-        if (!data.usuario) posiblesErrores.usuario = 'El usuario es obligatorio'
-        if (!data.password) posiblesErrores.password = 'La contraseña es obligatoria'
-        if (!data.confirmarPassword) posiblesErrores.confirmarPassword = 'Debe re-ingresar la contraseña'
-
-        if (!data.calle) posiblesErrores.calle = 'La calle es obligatoria'
-        if (!data.altura || isNaN(Number(data.altura)) || Number(data.altura) <= 0) {
-            posiblesErrores.altura = 'Ingrese una altura válida'
-        }
-
-
-        if (data.password && data.confirmarPassword && data.password !== data.confirmarPassword) {
-            posiblesErrores.confirmarPassword = 'Las contraseñas no coinciden'
-        }
-
-        setErrors(posiblesErrores)
-        return Object.keys(posiblesErrores).length === 0 //si no hay ningun error, retorna true
-    }
 
     //Funcion que llama al AUTH SERVICE
     const guardarUsuario = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        //Llamo a funcion en /utils que se encarga de chequear los potenciales errores de todos los inputs del Form
+        const nuevosErrores = obtenerErroresRegistro(values)
+
+        setErrors(nuevosErrores)
+
+        const esValido = Object.keys(nuevosErrores).length === 0        //Si el objeto de Errores está vacio, es porque está todo OK
         
-        if (validarFormulario(values)) {
+        if (esValido) {
             setIsLoading(true)              //Activa el spinner
             try {
                 await registro({
