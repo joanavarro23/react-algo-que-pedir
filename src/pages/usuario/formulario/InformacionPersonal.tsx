@@ -30,11 +30,11 @@ export const InformacionPersonal = () => {
     const validacionUbicacion = new CompositeValidacion()
     validacionUbicacion.agregar(validacionStrategy.valorRequerido)
     validacionUbicacion.agregar(validacionStrategy.rangoNumerido)
-
+    
     const validacionAltura = new CompositeValidacion()
     validacionAltura.agregar(validacionStrategy.valorRequerido)
     validacionAltura.agregar(validacionStrategy.valorPositivo)
-    
+
     return (
         <Stack py='5'>
             <Heading as='h1' size='md' textAlign="center">Perfil</Heading>
@@ -60,8 +60,13 @@ export const InformacionPersonal = () => {
                         <CampoTexto validacion={validar(usuarioForm.apellido, 'textoRequerido', 'apellido')} nombreLabel='Apellido' nombreTest='apellido' placeholder='Apellido'
                         value={usuarioForm.apellido} onChange={(event) => actualizarForm('apellido', event.target.value)} />
                         
-                        <CampoTexto validacion={validar(usuarioForm.direccion, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
-                        value={usuarioForm.direccion} onChange={(event) => actualizarForm('direccion', event.target.value)} />
+                        <HStack>
+                            <CampoTexto validacion={validar(usuarioForm.direccion, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
+                            value={usuarioForm.direccion} onChange={(event) => actualizarForm('direccion', event.target.value)} />
+
+                            <CampoTexto validacion={validar(usuarioForm.altura, validacionAltura, 'altura')} nombreLabel='Altura' nombreTest='altura' placeholder='Altura'
+                            value={usuarioForm.altura} onChange={(event) => actualizarForm('altura', event.target.value)} />
+                        </HStack>
 
                         <HStack>
                             <CampoTexto validacion={validar(usuarioForm.latitud, validacionUbicacion, 'latitud', {min: -90, max: 90})} nombreLabel='Latitud' nombreTest='latitud' 
