@@ -142,13 +142,13 @@ export const RegisterUsuario = () => {
 
                 <Field.Root required invalid={!!errors.password}>       {/*Password*/}
                     <Field.Label>Password*</Field.Label>
-                    <PasswordInput value={values.password} onChange={ (e) => manejoCambiosEnInput(e, 'password')}/>
+                    <PasswordInput placeholder="Ingresa tu contraseña" value={values.password} onChange={ (e) => manejoCambiosEnInput(e, 'password')}/>
                     <Field.ErrorText>{errors.password}</Field.ErrorText>
                 </Field.Root>
 
                 <Field.Root required invalid={!!errors.confirmarPassword}>      {/*Reingreso de password*/}
                     <Field.Label>Re-ingrese su Password*</Field.Label>
-                    <PasswordInput value={values.confirmarPassword} onChange={ (e) => manejoCambiosEnInput(e, 'confirmarPassword')}/>
+                    <PasswordInput placeholder="Repeti tu contraseña" value={values.confirmarPassword} onChange={ (e) => manejoCambiosEnInput(e, 'confirmarPassword')}/>
                     <Field.ErrorText>{errors.confirmarPassword}</Field.ErrorText>
                 </Field.Root>
 
