@@ -9,7 +9,7 @@ export type RestaurenteItemProps = {
     onEliminar: (id: number) => void
 }
 
-export const RestaurenteItem = ({ id, nombre, imagen='/restaurante.png' ,puntuacion, onEliminar }: RestaurenteItemProps) => {
+export const RestaurenteItem = ({ id, nombre, imagen ,puntuacion, onEliminar }: RestaurenteItemProps) => {
     return(
         <HStack justifyContent='space-between' key={id}>
             <HStack>
