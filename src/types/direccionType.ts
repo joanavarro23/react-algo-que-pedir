@@ -1,7 +1,6 @@
 export type DireccionJSON = {
-    calle: string,
-    ubicacion: {
-        x: number,
-        y: number
-    }
+    direccion: string,
+    altura: number,
+    latitud: number,
+    longitud: number
 }
