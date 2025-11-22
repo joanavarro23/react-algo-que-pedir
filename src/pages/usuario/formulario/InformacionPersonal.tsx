@@ -11,7 +11,9 @@ import { useEffect, useState } from 'react'
 import { Usuario } from '@/domain/Usuario'
 
 export const InformacionPersonal = () => {
-    const { usuario, guardarUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
+    const { usuario, guardando, guardarUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
+    
+    // Estado local para no generar reactividad en el preview de la informacion
     const [usuarioForm, setUsuarioForm] = useState<Usuario>(usuario)
     
     // Sincroniza el estado local cuando cambia el usuario principal
@@ -91,7 +93,9 @@ export const InformacionPersonal = () => {
                 </Card.Body>
             </Card.Root>
 
-            <Button onClick={() => guardarUsuario}>Guardar Cambios</Button>
+            <Button onClick={() => guardarUsuario(usuarioForm)} disabled={guardando} >
+                { guardando ? 'Guardando...' : 'Guardar Cambios' }
+                </Button>
         </Stack>
     )
 }
