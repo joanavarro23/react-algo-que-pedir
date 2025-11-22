@@ -2,45 +2,21 @@ import { Button } from '@/components/boton/boton'
 import { Articulo } from '@/components/articulo-checkout/Articulo'
 import { Heading, Stack, IconButton, Select, createListCollection, Portal, Flex, Text } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pedido } from '@/domain/Pedido'
 import { pedidoService } from '@/services/pedidoService'
-import { useNavigate, useOutlet, useOutletContext, useParams, type ErrorResponse } from 'react-router-dom'
+import { useNavigate, useOutletContext, type ErrorResponse } from 'react-router-dom'
 import { getMensajeError } from '@/utils/errorHandling'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { localService, medioDePagoLabels, type LocalJSON, type MedioDePago } from '@/services/localServiceTest'
 import type { CarritoContext } from '../layout-carrito/CarritoLayout'
-import { Plato } from '@/domain/Plato'
-import { Carrito, ItemPedido } from '@/domain/Carrito'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 
-const useMock = true
-
-const mockPlatos = [
-    Plato.fromJSON({ id: 1, nombre: 'Pizza Margherita', descripcion: 'Queso, tomate', precioUnitario: 12.50, imagenUrl: 'pizza-margherita.png', popular: true }),
-    Plato.fromJSON({ id: 2, nombre: 'Spaghetti Carbonara', descripcion: 'Huevo, panceta, queso', precioUnitario: 15.00, imagenUrl: 'spaghetti-carbonara.png', popular: false }),
-    Plato.fromJSON({ id: 3, nombre: 'Fettuccine Alfredo', descripcion: 'Crema, manteca, queso', precioUnitario: 14.00, imagenUrl: 'fettuccine-alfredo.png', popular: true }),
-]
-
-const mockItems = [
-    new ItemPedido(mockPlatos[0], 2), // 2 Margheritas
-    new ItemPedido(mockPlatos[1], 3), // 1 Carbonara
-]
-
-const mockCarrito = new Carrito(mockItems, 1) // Assume localId is 1 for the mock
-
-const mockContext: CarritoContext = {
-    carrito: mockCarrito,
-    setPlatoCantidad: (plato, cantidad, localId) => console.log(`Mock set ${cantidad} of ${plato.nombre} for local ${localId}`),
-    limpiarCarrito: () => console.log('Mock clear cart'),
-    decrementarPlato: (platoId) => console.log('Mock decrement plato:', platoId),
-}
 
 export const CheckoutPedido = () => {
     const navigate = useNavigate()
-    const realContext = useOutletContext<CarritoContext>()
-    const { carrito, setPlatoCantidad, decrementarPlato, limpiarCarrito } = useMock ? mockContext : realContext
+    const { carrito, decrementarPlato, limpiarCarrito } = useOutletContext<CarritoContext>()
     
     const [local, setLocal] = useState<LocalJSON | null>(null)
     const [medioSeleccionado, setMedioSeleccionado] = useState<MedioDePago>('EFECTIVO')
@@ -58,6 +34,7 @@ export const CheckoutPedido = () => {
                 const localData = await localService.obtenerLocalPorId(carrito.localId)
                 setLocal(localData)
             } catch (error) {
+                console.error('Error al cargar la información del local:', error)
                 toaster.create({ title: 'Error', description: 'No se pudo cargar la información del local.', type: 'error' })
                 navigate('/home')
             } finally {
