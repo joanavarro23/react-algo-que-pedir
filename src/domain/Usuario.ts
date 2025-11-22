@@ -1,3 +1,7 @@
+import type { DireccionJSON } from '@/types/direccionType'
+import { Ingrediente, type IngredienteJSON } from './Ingrediente'
+import { Criterio, type CriterioJSON } from './CriterioUsuario'
+
 export class Usuario {
   id?: number
 
@@ -11,30 +15,52 @@ export class Usuario {
     public direccion = '',
     public latitud = 0,
     public longitud = 0,
-    public distancia= 0
+    public distancia = 0,
+    public criterio: Criterio | null = null,
+    public ingredientesPreferidos: Ingrediente[] = [],
+    public ingredientesEvitar: Ingrediente[] = []
   ) {}
 
-  validarCambios() {
-    throw new Error('Method not implemented.')
+  
+
+  static fromJSON(usuarioJSON: UsuarioJSON): Usuario {
+      return Object.assign(new Usuario(), usuarioJSON, {
+        criterio: Criterio.fromJSON(usuarioJSON.criterio),
+        ingredientesPreferidos: usuarioJSON.ingredientesPreferidos.map(ing => Ingrediente.fromJSON(ing)),
+        ingredientesEvitar: usuarioJSON.ingredientesEvitar.map(ing => Ingrediente.fromJSON(ing))
+      })
+
   }
 
-  static fromJson(usuarioJSON: UsuarioJSON): Usuario {
-      return Object.assign(new Usuario(), usuarioJSON)
-
+  toJSON(): UsuarioJSON {
+    return {
+      id: this.id!,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      mail: this.email,
+      direccion: {
+        calle: this.direccion,
+        ubicacion: {
+          x: this.latitud,
+          y: this.longitud
+        }
+      },
+      distanciaMaximaCercana: this.distancia,
+      criterio: this.criterio?.toJSON() ?? { tipo: 'GENERAL' },
+      ingredientesPreferidos: this.ingredientesPreferidos.map(ing => ing.toJSON()),
+      ingredientesEvitar: this.ingredientesEvitar.map(ing => ing.toJSON())
+    }
   }
-
-  // toJSON(): UsuarioJSON {
-  //     return {...this}
-  // }
 }
 
 export type UsuarioJSON = {
     id: number
     nombre: string,
     apellido: string,
-    username: string,
-    password: string,
-    direccion: string,
-    latitud: number,
-    longitud: number
+    mail: string,
+    direccion: DireccionJSON,
+    distanciaMaximaCercana: number,
+    criterio: CriterioJSON,
+    ingredientesPreferidos: IngredienteJSON[],
+    ingredientesEvitar: IngredienteJSON[]
 }
