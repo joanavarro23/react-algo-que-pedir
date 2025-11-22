@@ -5,6 +5,9 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { PasswordInput } from '@/components/ui/password-input'
 import { login } from '@/services/authService'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
+import { toaster } from '@/components/chakra-toaster/toaster'
+import { handleAuthError } from '@/services/authService'
+
 
 
 //Tipamos los inputs que va a recibir el form para el Login
@@ -22,21 +25,38 @@ export const LoginUsuario = () => {
     mode: 'onTouched'
   })
 
-  /*Simulamos una llamada para que no rompa el submit */
+  /*Llama al service para loguear al usuario*/
   const onSubmit = async (data: LoginForm) => {
     try {
-      await login({
+      const response = await login({
         usuario: data.usuario,
         password: data.password
       })
 
+
+      toaster.create({
+        title: 'Bienvenido a Algo que Pedir',
+        description: `Hola, ${response.usuario.nombre}!`,
+        type: 'success',
+        duration: 1500
+      })
+
       navigate('/home')
     } catch (error) {
-        console.error('Error al iniciar sesión')
+      const mensajeError = handleAuthError(error)
+
+
+      toaster.create({
+        title: 'Error al iniciar sesión',
+        description: mensajeError,
+        type: 'error',
+        duration: 2000
+      })
+
     }
   }
 
-  if(isSubmitting) {return <LoadingSpinner/>} 
+  if (isSubmitting) { return <LoadingSpinner /> }
 
   return (
     <Stack p="3rem" gap="3" as="form" onSubmit={handleSubmit(onSubmit)}>
