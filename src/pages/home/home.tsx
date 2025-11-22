@@ -1,7 +1,7 @@
 import './home.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack, Checkbox, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FiShoppingCart, FiSearch } from 'react-icons/fi'
+import { FiSearch } from 'react-icons/fi'
 import { IoIosLogOut } from 'react-icons/io'
 import React from 'react'
 import axios from 'axios'
@@ -24,8 +24,14 @@ export const LocalesView = () => {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [locales, setLocales] = useState<Local[]>([])
   const [showNearby, setShowNearby] = useState<boolean>(false)
+  //Estado para poder tener el nombre del usuario
+  const [nombreUsuario, setNombreUsuario] = useState<string>('')
 
   useOnInit(() => {
+    //Recupero el nombre con el localStorage y lo seteo con useState
+    const nombreActual = localStorage.getItem('nombreUsuario')
+    if(nombreActual){ setNombreUsuario(nombreActual) }
+
     const fetchLocales = async (): Promise<void> => {
       try {
         const response = await axios.get<Local[]>(`${REST_SERVER_URL}/locales`)
@@ -57,11 +63,9 @@ export const LocalesView = () => {
       <Box className="delivery-header">
         <HStack justify="space-between" mb={4}>
           <Heading size="md">Delivery</Heading>
-          <Flex>
-            <IconButton variant="ghost" size="lg">
-              <FiShoppingCart />
-            </IconButton>
-            <IconButton variant="ghost" size="lg" onClick={handleLogOut}>
+          <Flex justifyContent="space-around" alignItems="center">
+            <Text>Hola, {nombreUsuario}!</Text>
+            <IconButton variant="ghost" size="xl" onClick={handleLogOut}>
               <IoIosLogOut />
             </IconButton>
           </Flex>

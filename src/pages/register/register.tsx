@@ -9,9 +9,13 @@ import React from 'react'
 
 //Tipado para los inputs
 type InputsRegistro = {
+    nombre: string,
+    apellido: string,
     usuario: string,
     password: string,
-    confirmarPassword: string
+    confirmarPassword: string,
+    calle: string,
+    altura: string
 }
 
 //Tipado para objeto de errores con Partial de TS que hace ? a todos los atributos idem InputsRegistro
@@ -22,9 +26,13 @@ export const RegisterUsuario = () => {
 
     //Estado para manejar las validaciones de los inputs
     const [values, setValues] = useState<InputsRegistro>({
+        nombre: '',
+        apellido: '',
         usuario: '',
         password: '',
-        confirmarPassword: ''
+        confirmarPassword: '',
+        calle: '',
+        altura: ''
     })
 
     //El flag de enviado viene en false y el objeto de errores vacio x default 
@@ -44,9 +52,17 @@ export const RegisterUsuario = () => {
     const validarFormulario = (data: InputsRegistro): boolean => {
         const posiblesErrores: ErroresForm = {}
 
+        if (!data.nombre) posiblesErrores.nombre = 'El nombre es obligatorio'
+        if (!data.apellido) posiblesErrores.apellido = 'El apellido es obligatorio'
         if (!data.usuario) posiblesErrores.usuario = 'El usuario es obligatorio'
         if (!data.password) posiblesErrores.password = 'La contraseña es obligatoria'
         if (!data.confirmarPassword) posiblesErrores.confirmarPassword = 'Debe re-ingresar la contraseña'
+
+        if (!data.calle) posiblesErrores.calle = 'La calle es obligatoria'
+        if (!data.altura || isNaN(Number(data.altura)) || Number(data.altura) <= 0) {
+            posiblesErrores.altura = 'Ingrese una altura válida'
+        }
+
 
         if (data.password && data.confirmarPassword && data.password !== data.confirmarPassword) {
             posiblesErrores.confirmarPassword = 'Las contraseñas no coinciden'
@@ -64,9 +80,13 @@ export const RegisterUsuario = () => {
             setIsLoading(true)              //Activa el spinner
             try {
                 await registro({
+                    nombre: values.nombre,
+                    apellido: values.apellido,
                     usuario: values.usuario,
                     password: values.password,
-                    confirmarPassword: values.confirmarPassword
+                    confirmarPassword: values.confirmarPassword,
+                    calle: values.calle,
+                    altura: values.altura
                 })
                 navigate('/loginUsuario')       //Redirige a login si todo salio OK
             } catch (error) {
@@ -89,6 +109,31 @@ export const RegisterUsuario = () => {
 
             {/*Contenedor de todos los inputs y boton*/}
             <Stack gap="5">
+
+                <Field.Root required invalid={!!errors.nombre}>        {/*Nombre del usuario*/}
+                    <Field.Label>Nombre*</Field.Label>
+                    <Input placeholder="Ingresa tu nombre" value={values.nombre} onChange={ (e) => manejoCambiosEnInput(e, 'nombre')}/>
+                    <Field.ErrorText>{errors.nombre}</Field.ErrorText>
+                </Field.Root> 
+
+                <Field.Root required invalid={!!errors.apellido}>        {/*Apellido del usuario*/}
+                    <Field.Label>Apellido*</Field.Label>
+                    <Input placeholder="Ingresa tu apellido" value={values.apellido} onChange={ (e) => manejoCambiosEnInput(e, 'apellido')}/>
+                    <Field.ErrorText>{errors.apellido}</Field.ErrorText>
+                </Field.Root>
+
+                <Field.Root required invalid={!!errors.calle}>        {/*Direccion: Calle*/}
+                    <Field.Label>Calle*</Field.Label>
+                    <Input placeholder="Ej: Av. San Martin..." value={values.calle} onChange={ (e) => manejoCambiosEnInput(e, 'calle')}/>
+                    <Field.ErrorText>{errors.calle}</Field.ErrorText>
+                </Field.Root> 
+
+                <Field.Root required invalid={!!errors.altura}>        {/*Direccion: Altura*/}
+                    <Field.Label>Altura*</Field.Label>
+                    <Input type="number" placeholder="Ej: 457" value={values.altura} onChange={ (e) => manejoCambiosEnInput(e, 'altura')}/>
+                    <Field.ErrorText>{errors.altura}</Field.ErrorText>
+                </Field.Root> 
+
                 <Field.Root required invalid={!!errors.usuario}>        {/*Usuario*/}
                     <Field.Label>Usuario*</Field.Label>
                     <Input placeholder="Ingresa tu usuario" value={values.usuario} onChange={ (e) => manejoCambiosEnInput(e, 'usuario')}/>
