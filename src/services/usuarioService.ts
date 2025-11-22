@@ -8,15 +8,9 @@ const usuarioAsJson = (usuarioJSON: UsuarioJSON) => Usuario.fromJson(usuarioJSON
 
 class UsuarioService {
     async getById(id: number) {
-        // const usuarioJson = await axios.get(`${REST_SERVER_URL}/usuario/${id}`)
-        // return usuarioAsJson(usuarioJson.data)
-        return USUARIOS_MOCK[id]
-    }
-
-    async getByUsername(username: String): Promise<Usuario> {
-        const queryByUsername = () => axios.get<UsuarioJSON>(`${REST_SERVER_URL}/usuario/${username}`)
-        const usuarioJSON = await getAxiosData(queryByUsername)
-        return Usuario.fromJson(usuarioJSON)
+         const queryById = () => axios.get<UsuarioJSON>(`${REST_SERVER_URL}/usuario/${id}`)
+         const usuarioJSON = await getAxiosData(queryById)
+         return usuarioAsJson(usuarioJSON)
     }
 
     actualizar(usuarioActualizar: Usuario) {
