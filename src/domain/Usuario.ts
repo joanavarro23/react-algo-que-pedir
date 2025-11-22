@@ -24,6 +24,20 @@ export class Usuario {
 
   }
 
+  toJSON(): UsuarioJSON {
+    return {
+      id: this.id!,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      username: this.username,
+      password: this.password,
+      direccion: this.direccion,
+      ubicacion: this.ubicacion,
+      latitud: this.latitud,
+      longitud: this.longitud
+    }
+  }
+
   // toJSON(): UsuarioJSON {
   //     return {...this}
   // }
