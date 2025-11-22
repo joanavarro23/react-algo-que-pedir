@@ -54,12 +54,12 @@ const reglasValidacion: Regla[] = [
     },
     {
         campoAchequear: 'nombre',
-        esValido: (data) => soloTextoRegex.test(data.calle),
+        esValido: (data) => soloTextoRegex.test(data.nombre),
         mensajeError: 'El nombre solo puede contener letras'
     },
     {
         campoAchequear: 'apellido',
-        esValido: (data) => soloTextoRegex.test(data.calle),
+        esValido: (data) => soloTextoRegex.test(data.apellido),
         mensajeError: 'El apellido solo puede contener letras'
     }
 ]
