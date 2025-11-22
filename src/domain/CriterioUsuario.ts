@@ -6,6 +6,8 @@ export class Criterio {
     public subCriterios: Criterio[] = []  // para combinados
   ) {}
 
+  esCombinado(): boolean { return this.tipo === 'COMBINADO' }
+
   static fromJSON(criterioJSON: CriterioJSON): Criterio {
     return new Criterio(
       criterioJSON.tipo,
