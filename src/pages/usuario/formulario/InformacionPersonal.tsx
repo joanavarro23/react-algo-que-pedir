@@ -9,12 +9,9 @@ import { CompositeValidacion, validacionStrategy } from '@/utils/validacionStrat
 import { Button } from '@/components/boton/boton'
 import { useEffect, useState } from 'react'
 import { Usuario } from '@/domain/Usuario'
-import { usuarioService } from '@/services/usuarioService'
-import { toaster } from '@/components/chakra-toaster/toaster'
-import { getMensajeError } from '@/utils/errorHandling'
 
 export const InformacionPersonal = () => {
-    const { usuario, setUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
+    const { usuario, guardarUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
     const [usuarioForm, setUsuarioForm] = useState<Usuario>(usuario)
     
     // Sincroniza el estado local cuando cambia el usuario principal
@@ -27,35 +24,14 @@ export const InformacionPersonal = () => {
         setUsuarioForm(Object.assign(new Usuario(), { ...usuarioForm, [referencia]: valor }))
     }
 
-    // Guardar cambios
-    const guardar = () => {
-        try {
-            setUsuario(usuarioForm)
-
-            // Validar y guardar en el back
-            // usuarioForm.validarCambios()
-            // await 
-            usuarioService.actualizar(usuarioForm)
-
-            toaster.create({
-                title: 'Usuario actualizado',
-                description: 'Los datos se actualizaron con éxito.',
-                type: 'success'
-            })
-        } catch (error: unknown) {
-            const errorMessage = getMensajeError(error)
-            toaster.create({
-                title: 'Error al actualizar',
-                description: errorMessage,
-                type: 'error'
-            })
-        }
-    }
-
     // Validaciones compuestas para los numeros:
-    const validacionNumerica = new CompositeValidacion()
-    validacionNumerica.agregar(validacionStrategy.valorRequerido)
-    validacionNumerica.agregar(validacionStrategy.rangoNumerido)
+    const validacionUbicacion = new CompositeValidacion()
+    validacionUbicacion.agregar(validacionStrategy.valorRequerido)
+    validacionUbicacion.agregar(validacionStrategy.rangoNumerido)
+
+    const validacionAltura = new CompositeValidacion()
+    validacionAltura.agregar(validacionStrategy.valorRequerido)
+    validacionAltura.agregar(validacionStrategy.valorPositivo)
     
     return (
         <Stack py='5'>
@@ -85,13 +61,13 @@ export const InformacionPersonal = () => {
                         <CampoTexto validacion={validar(usuarioForm.direccion, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
                         value={usuarioForm.direccion} onChange={(event) => actualizarForm('direccion', event.target.value)} />
 
-                        <Stack direction='row'>
-                            <CampoTexto validacion={validar(usuarioForm.latitud, validacionNumerica, 'latitud', {min: -90, max: 90})} nombreLabel='Latitud' nombreTest='latitud' 
+                        <HStack>
+                            <CampoTexto validacion={validar(usuarioForm.latitud, validacionUbicacion, 'latitud', {min: -90, max: 90})} nombreLabel='Latitud' nombreTest='latitud' 
                             placeholder='Ej: -34.61' type='number' value={usuarioForm.latitud} onChange={(event) => actualizarForm('latitud', event.target.value)} />
                             
-                            <CampoTexto validacion={validar(usuarioForm.longitud, validacionNumerica, 'longitud', {min: -180, max: 180})} nombreLabel='Longitud' nombreTest='longitud' 
+                            <CampoTexto validacion={validar(usuarioForm.longitud, validacionUbicacion, 'longitud', {min: -180, max: 180})} nombreLabel='Longitud' nombreTest='longitud' 
                             placeholder='Ej: 58.38' type='number' value={usuarioForm.longitud} onChange={(event) => actualizarForm('longitud', event.target.value)} />
-                        </Stack>
+                        </HStack>
                     </Stack>
                 </Card.Body>
             </Card.Root>
@@ -115,7 +91,7 @@ export const InformacionPersonal = () => {
                 </Card.Body>
             </Card.Root>
 
-            <Button onClick={guardar}>Guardar Cambios</Button>
+            <Button onClick={() => guardarUsuario}>Guardar Cambios</Button>
         </Stack>
     )
 }
