@@ -2,7 +2,7 @@ export class Ingrediente {
     id?: number
 
   constructor(
-    public nombre = ''
+    public nombre: string = ''
   ) {}
 
   static fromJSON(ingredienteJSON: IngredienteJSON): Ingrediente {
