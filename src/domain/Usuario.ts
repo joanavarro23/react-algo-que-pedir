@@ -57,6 +57,8 @@ export class Usuario {
       nombre: this.nombre,
       apellido: this.apellido,
       mail: this.email,
+      username: this.username,
+      password: this.password,
       direccion: {
         direccion: this.direccion,
         altura: this.altura,
@@ -76,6 +78,8 @@ export type UsuarioJSON = {
     nombre: string,
     apellido: string,
     mail: string,
+    username: string,
+    password: string,
     direccion: DireccionJSON,
     distanciaMaximaCercana: number,
     criterio: CriterioJSON,

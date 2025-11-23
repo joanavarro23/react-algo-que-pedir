@@ -1,7 +1,7 @@
 import './home.css'
 import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, HStack, Checkbox, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FiShoppingCart, FiSearch } from 'react-icons/fi'
+import { FiSearch } from 'react-icons/fi'
 import { IoIosLogOut } from 'react-icons/io'
 import React from 'react'
 import axios from 'axios'
@@ -9,6 +9,8 @@ import { useOnInit } from '@/customHooks/useOnInit'
 import { REST_SERVER_URL } from '@/services/constants'
 import { logout } from '@/services/authService'
 import { useNavigate } from 'react-router-dom'
+import { toaster } from '@/components/chakra-toaster/toaster'
+
 
 interface Local {
   idLocal: number
@@ -24,8 +26,14 @@ export const LocalesView = () => {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [locales, setLocales] = useState<Local[]>([])
   const [showNearby, setShowNearby] = useState<boolean>(false)
+  //Estado para poder tener el nombre del usuario
+  const [nombreUsuario, setNombreUsuario] = useState<string>('')
 
   useOnInit(() => {
+    //Recupero el nombre con el localStorage y lo seteo con useState
+    const nombreActual = localStorage.getItem('nombreUsuario')
+    if (nombreActual) { setNombreUsuario(nombreActual) }
+
     const fetchLocales = async (): Promise<void> => {
       try {
         const response = await axios.get<Local[]>(`${REST_SERVER_URL}/locales`)
@@ -42,6 +50,14 @@ export const LocalesView = () => {
   //Agrego fx que llama al logout del service para asociar la accion con el icono del /home
   const handleLogOut = () => {
     logout()
+
+    toaster.create({
+      title: 'Sesión cerrada',
+      description: 'Has cerrado la sesion correctamente',
+      type: 'info',
+      duration: 2000
+    })
+
     navigate('/loginUsuario', { replace: true })
   }
 
@@ -57,11 +73,9 @@ export const LocalesView = () => {
       <Box className="delivery-header">
         <HStack justify="space-between" mb={4}>
           <Heading size="md">Delivery</Heading>
-          <Flex>
-            <IconButton variant="ghost" size="lg">
-              <FiShoppingCart />
-            </IconButton>
-            <IconButton variant="ghost" size="lg" onClick={handleLogOut}>
+          <Flex justifyContent="space-around" alignItems="center">
+            <Text>Hola, {nombreUsuario}!</Text>
+            <IconButton variant="ghost" size="xl" onClick={handleLogOut}>
               <IoIosLogOut />
             </IconButton>
           </Flex>
@@ -107,7 +121,7 @@ export const LocalesView = () => {
               className="local-card"
               cursor="pointer"
               borderRadius="20px" overflow="hidden"
-              onClick= { () => window.location.href = `/local/${local.idLocal}/platos` }
+              onClick={() => window.location.href = `/local/${local.idLocal}/platos`}
               transition="transform 0.2s"
               _hover={{ transform: 'scale(1.02)' }}
             >

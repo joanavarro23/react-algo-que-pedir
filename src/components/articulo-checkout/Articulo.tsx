@@ -8,9 +8,10 @@ interface ArticuloProps {
   nombre: string
   cantidad: number
   precioUnitario: number
+  onDecrement: () =>  void
 }
 
-export const Articulo = ({ nombre, cantidad, precioUnitario }: ArticuloProps) => {
+export const Articulo = ({ nombre, cantidad, precioUnitario, onDecrement }: ArticuloProps) => {
     const precioTotal = precioUnitario * cantidad
 
     return(
@@ -24,7 +25,7 @@ export const Articulo = ({ nombre, cantidad, precioUnitario }: ArticuloProps) =>
                 <span className='texto-secundario-checkout'>Cantidad: {cantidad}</span>
                 <span className='texto-secundario-checkout'>Precio unitario: ${precioUnitario.toFixed(2)}</span>
                 </Stack>
-                <IconButton variant="ghost" mt="-2"><IoMdClose /></IconButton>
+                <IconButton variant="ghost" mt="-2" onClick={onDecrement}><IoMdClose /></IconButton>
             </HStack>
         </article>
     )

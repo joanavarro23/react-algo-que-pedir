@@ -14,9 +14,10 @@ import { RegisterUsuario } from '@/pages/register/register'
 import { CalificacionesView } from '@/pages/calificar-local/Calificar'
 
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
+import { CarritoLayout } from '@/pages/layout-carrito/CarritoLayout'
 
 const ProtectedRoute = () => {
-    const estaLogueado = !!localStorage.getItem('usuario')
+    const estaLogueado = !!localStorage.getItem('idUsuario')
 
     return estaLogueado ? <Outlet /> : <Navigate to="/loginUsuario" replace />
 }
@@ -43,10 +44,10 @@ export const AQPRoutes = () =>
                     <Route path="ingredientes-evitar" element={<IngredientesEvitar />} />
                 </Route>
 
-                //Layout compartido entre vista donde se crea el pedido + el checkout
-                <Route>                                                         {/* Armado y checkout del pedido */}
+                {/* Layout compartido entre vista donde se crea el pedido + el checkout */}
+                <Route element={<CarritoLayout />}>                                                         {/* Armado y checkout del pedido */}
                     <Route path="/local/:idLocal/platos" element={<DetalleLocal />} />
-                    <Route path="/checkout-pedido/:idPedido" element={<CheckoutPedido />}> </Route>
+                    <Route path="/checkout-pedido/" element={<CheckoutPedido />}> </Route>
                 </Route>
               
                 <Route path="/calificar-local" element={ <CalificacionesView/> } />
