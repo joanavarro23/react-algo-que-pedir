@@ -1,6 +1,6 @@
 import { Button } from '@/components/boton/boton'
 import { ItemRow } from '@/components/itemRow/itemRow'
-import { CheckboxCard, CheckboxGroup, Collapsible, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { Box, CheckboxCard, CheckboxGroup, Collapsible, Flex, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
 import { CiSquarePlus } from 'react-icons/ci'
 import { MdClose } from 'react-icons/md'
@@ -43,7 +43,12 @@ export const CriteriosBusqueda = () => {
 
     // seleccionar y agregar criterio
     const toggleCriterio = (tipo: TipoCriterio) => {
-        setSeleccionados(prev => { return prev.filter(t => t !== tipo) })
+        setSeleccionados(prev => { 
+            if (prev.includes(tipo)) {
+                return prev.filter(t => t !== tipo)
+            }
+            return [...prev, tipo]
+        })
     }
 
     // seleccionar el criterio
@@ -70,7 +75,7 @@ export const CriteriosBusqueda = () => {
 
     // Construir el criterio para guardar
     const construirCriterio = (): Criterio => {
-        if (seleccionados.length === 0 || seleccionados.includes('GENERAL')) {
+        if (seleccionados.length === 0) {
             return new Criterio('GENERAL')
         }
 
@@ -149,7 +154,9 @@ export const CriteriosBusqueda = () => {
                                         ) : (
                                             <Text color='gray.500'> Aún no seleccionaste locales preferidos </Text>
                                         )}
-                                        <IconButton onClick={abrirModalLocales}> <CiSquarePlus /> </IconButton>
+                                        <Flex justifyContent='end'>
+                                            <IconButton variant='ghost' onClick={abrirModalLocales}> <CiSquarePlus /> </IconButton>
+                                        </Flex>
                                     </CheckboxCard.Addon>
                                 </Collapsible.Content>
                             </Collapsible.Root>
@@ -166,9 +173,11 @@ export const CriteriosBusqueda = () => {
                                             <ItemRow titulo={palabra} icono={<MdClose/>} onClick={() => eliminarPalabra(palabra)} />
                                             ))
                                         ) : (
-                                            <Text color='green.500'> A´n no tenés palabras clave </Text>
+                                            <Text color='gray.500'> Aún no tenés palabras clave </Text>
                                         )}
-                                        <IconButton onClick={abrirModalPalabras}> <CiSquarePlus /> </IconButton>
+                                        <Flex justifyContent='end'>
+                                            <IconButton  variant='ghost' onClick={abrirModalPalabras}> <CiSquarePlus /> </IconButton>
+                                        </Flex>
                                     </CheckboxCard.Addon>
                                 </Collapsible.Content>
                             </Collapsible.Root>
