@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
@@ -19,7 +18,7 @@ export type PerfilContextType = {
     gotoPreferencias: (opcion: Preferencias) => void
 }
 
-const USUARIO_ID = 0
+const USUARIO_ID = 1
 
 export const PerfilUsuario = () => {
     const [usuario, setUsuario] = useState<Usuario>(new Usuario())
