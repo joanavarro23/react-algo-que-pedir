@@ -60,7 +60,7 @@ export class Usuario {
       username: this.username,
       password: this.password,
       direccion: {
-        direccion: this.direccion,
+        calle: this.direccion,
         altura: this.altura,
         latitud: this.latitud,
         longitud: this.longitud
