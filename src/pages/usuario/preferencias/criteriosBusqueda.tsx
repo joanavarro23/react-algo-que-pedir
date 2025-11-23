@@ -2,6 +2,7 @@ import { Button } from '@/components/boton/boton'
 import { ItemRow } from '@/components/itemRow/itemRow'
 import { CheckboxCard, CheckboxGroup, Collapsible, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
+import { CiSquarePlus } from 'react-icons/ci'
 import { MdClose } from 'react-icons/md'
 import type { PerfilContextType } from '../Perfil'
 import { useOutletContext } from 'react-router-dom'
@@ -11,14 +12,14 @@ import { RestaurenteItem } from '@/components/perfil-usuario/restauranteItem'
 import { Contador } from '@/components/contador/contador'
 import { Criterio, type TipoCriterio } from '@/domain/CriterioUsuario'
 import { CRITERIOS_CONFIG } from '@/types/criterios'
-import { C } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js'
+import type { Local } from '@/domain/LocalCriterio'
 
 export const CriteriosBusqueda = () => {
-    const { usuario, navigate } = useOutletContext<PerfilContextType>()
+    const { usuario, setUsuario, navigate } = useOutletContext<PerfilContextType>()
     
     // Estado local para manejar los criterios seleccionados
     const [seleccionados, setSeleccionados] = useState<TipoCriterio[]>([])
-    const [localesPreferidos, setLocalesPreferidos] = useState<number[]>([])
+    const [localesPreferidos, setLocalesPreferidos] = useState<Local[]>([])
     const [distancia, setDistancia] = useState(usuario.distancia)
     const [palabrasClave, setPalabrasClave] = useState<string[]>([])
     const [nuevaPalabra, setNuevaPalabra] = useState('')
@@ -28,11 +29,13 @@ export const CriteriosBusqueda = () => {
         const criteriosActuales = obtenerCriteriosActuales(usuario.criterio)
         setSeleccionados(criteriosActuales)
         setDistancia(usuario.distancia)
+        // setPalabrasClave(usuario.obtenerPalabrasClave())
+        // setLocalesPreferidos(usuario.obtenerLocalesPreferidos())
         
     }, [usuario])
     // Extraigo los criterios con los que viene para mostrarlos
     const obtenerCriteriosActuales = (criterio: Criterio): TipoCriterio[] => {
-        if(criterio.tipo === 'COMBINADO') {
+        if(criterio.esCombinado()) {
             return criterio.subCriterios.map(subCriterio => subCriterio.tipo)
         }
         return [criterio.tipo]
@@ -55,6 +58,14 @@ export const CriteriosBusqueda = () => {
     }
     const eliminarPalabra = (palabra: string) => {
         setPalabrasClave(prev => prev.filter(p => p !== palabra))
+    }
+
+    // manejo de lista de locales
+    const agregarLocal = () => {
+
+    }
+    const eliminarLocal = (id: number) => {
+        setLocalesPreferidos(prev => prev.filter(l => l.id !== id))
     }
 
     // Construir el criterio para guardar
@@ -93,6 +104,14 @@ export const CriteriosBusqueda = () => {
     
     const volver = () => { navigate(-1) }
 
+    // modales para agregar locales y agregar palabras
+    const abrirModalLocales = () => {
+        console.log('Abrir modal para lista de locales')
+    }
+    const abrirModalPalabras = () => {
+        console.log('Abrir modal para lista de palabras')
+    }
+
     return (
         <Stack py='5'>
             <HStack alignItems='center' justifyContent='center' onClick={volver}>
@@ -122,12 +141,15 @@ export const CriteriosBusqueda = () => {
                                 <Collapsible.Content>
                                     <CheckboxCard.Addon>
                                         {localesPreferidos.length > 0 ? (
-                                            localesPreferidos.map((item) => (
-                                                <RestaurenteItem id={item.id} nombre={item.nombre} puntuacion={item.puntuacion} tiempo={item.tiempo} precio={item.precio} />
+                                            localesPreferidos.map((local) => (
+                                                <RestaurenteItem 
+                                                id={local.id!} nombre={local.nombre} imagen={local.imagen} puntuacion={local.puntuacion}
+                                                onEliminar={eliminarLocal} />
                                             ))
                                         ) : (
-                                            <Text> Aun no seleccionaste locales preferidos </Text>
+                                            <Text color='gray.500'> Aún no seleccionaste locales preferidos </Text>
                                         )}
+                                        <IconButton onClick={abrirModalLocales}> <CiSquarePlus /> </IconButton>
                                     </CheckboxCard.Addon>
                                 </Collapsible.Content>
                             </Collapsible.Root>
@@ -139,9 +161,14 @@ export const CriteriosBusqueda = () => {
                                 <Collapsible.Trigger display='none'></Collapsible.Trigger> 
                                 <Collapsible.Content>
                                     <CheckboxCard.Addon>
-                                        {palabrasClave.map((item) => (
-                                            <ItemRow titulo={item.nombre} subtitulo={item.tiempo} id={item.id} icono={<MdClose/>} />    
-                                        ))}
+                                        {palabrasClave.length > 0 ? (
+                                            palabrasClave.map((palabra) => (
+                                            <ItemRow titulo={palabra} icono={<MdClose/>} onClick={() => eliminarPalabra(palabra)} />
+                                            ))
+                                        ) : (
+                                            <Text color='green.500'> A´n no tenés palabras clave </Text>
+                                        )}
+                                        <IconButton onClick={abrirModalPalabras}> <CiSquarePlus /> </IconButton>
                                     </CheckboxCard.Addon>
                                 </Collapsible.Content>
                             </Collapsible.Root>
