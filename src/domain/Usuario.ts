@@ -28,6 +28,7 @@ export class Usuario {
         altura: usuarioJSON.direccion.altura,
         latitud: usuarioJSON.direccion.latitud,
         longitud: usuarioJSON.direccion.longitud,
+        distancia: usuarioJSON.distanciaMaximaCercana,
         criterio: Criterio.fromJSON(usuarioJSON.criterio),
         ingredientesPreferidos: usuarioJSON.ingredientesPreferidos.map(ing => Ingrediente.fromJSON(ing)),
         ingredientesEvitar: usuarioJSON.ingredientesEvitar.map(ing => Ingrediente.fromJSON(ing))
