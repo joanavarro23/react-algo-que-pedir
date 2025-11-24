@@ -1,34 +1,11 @@
 import { IoMdArrowBack } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/boton/boton'
+import ResumenDetallePedido from './DetallePedidoItems'
 import { Articulo } from '../articulo-checkout/Articulo'
+import { type PedidoDetalleProps } from '@/types/pedidoDetalleProps'
 import { Heading, VStack, HStack, IconButton, Text, Image } from '@chakra-ui/react'
 
-
-interface Restaurante {
-  nombre: string
-  urlImagenLocal: string
-  rating: string
-}
-
-interface Articulo {
-  nombre: string
-  cantidad: number
-  precioUnitario: number
-}
-
-interface PedidoDetalleProps {
-  restaurante: Restaurante
-  articulos: Articulo[]
-  subtotal: number
-  recargo: number
-  tarifaEntrega: number
-  distancia:string
-  total: number
-  mostrarFormaDePago?: boolean
-  medioDePago?: string
-  isCheckout: boolean
-}
 export const PedidoDetalle = ({
   restaurante,
   articulos,
@@ -37,14 +14,13 @@ export const PedidoDetalle = ({
   tarifaEntrega,
   distancia,
   total,
-  mostrarFormaDePago = false,
   medioDePago,
   isCheckout
 }: PedidoDetalleProps) => {
 
   const navigate = useNavigate()
 
-  const volver = ()  => {
+  const volver = () => {
     navigate(-1)
   }
 
@@ -77,53 +53,53 @@ export const PedidoDetalle = ({
       </VStack>
 
       <VStack align="stretch" mb={6}>
-        <Heading as="h2" size="sm" mb={3}>Artículos</Heading>
-        {articulos.map((articulo, idArt) => (
-          <HStack key={idArt} justify="space-between" align="center" mb={2}>
-            <Text>{articulo.nombre} x{articulo.cantidad}</Text>
-            <Text fontWeight="bold">${(articulo.precioUnitario * articulo.cantidad).toFixed(2)}</Text>
-          </HStack>
-        ))}
-      </VStack>
-        {/* Hacer componentes con el código repetido */}
-      <VStack align="stretch" mb={6}>
-        <Heading as="h2" size="sm" mb={3}>Resumen</Heading>
-        <HStack justify="space-between" mb={1}>
-          <Text>Subtotal</Text>
-          <Text>${subtotal.toFixed(2)}</Text>
-        </HStack>
-        <HStack justify="space-between" mb={1}>
-          <Text>Recargo por tipo de pago</Text>
-          <Text>${recargo.toFixed(2)}</Text>
-        </HStack>
-        <HStack justify="space-between" mb={1}>
-          <Text>Tarifa de entrega</Text>
-          <Text>${tarifaEntrega.toFixed(2)}</Text>
-        </HStack>
-        <HStack justify="space-between" fontWeight="bold">
-          <Text>Total</Text>
-          <Text>${total.toFixed(2)}</Text>
-        </HStack>
+      <Heading as="h2" size="xl" mb={3}>Artículos</Heading>
+
+      {articulos.map((articulo, idArt) => (
+        <Articulo
+          key={idArt}
+          nombre={articulo.nombre}
+          cantidad={articulo.cantidad}
+          precioUnitario={articulo.precioUnitario}
+        />
+      ))}
       </VStack>
 
-      <Text>Forma de Pago</Text>
+      <ResumenDetallePedido
+        items={[
+          { label: "Subtotal", value: subtotal },
+          { label: "Recargo por tipo de pago", value: recargo },
+          { label: "Tarifa de entrega", value: tarifaEntrega },
+          { label: "Total", value: total, bold: true }
+        ]}
+      />
+
+
       <VStack align="stretch">
-        {isCheckout ?
+
+      {isCheckout ? (
+        <VStack align="stretch">
+          <Text>Forma de Pago</Text>
           <select name="medio-de-pago" id="medio-de-pago">
             <option value="efectivo">Efectivo</option>
             <option value="tarjeta">Tarjeta</option>
             <option value="QR">QR</option>
-          </select> : <p>{medioDePago}</p>}
+          </select>
+        </VStack>
+      ) : (
+        <HStack w="100%" justify="space-between">
+          <Text>Forma de Pago</Text>
+          <Text fontWeight="medium">{medioDePago}</Text>
+        </HStack>
+      )}
+      </VStack>
 
-        {isCheckout &&
-          <>
-            <Button mb={2}>Confirmar pedido</Button>
-            <Button variant="secundario">Limpiar carrito de compras</Button>
-          </>
-        }
-          </VStack>
-
-      
+      {isCheckout &&
+        <>
+          <Button mb={2}>Confirmar pedido</Button>
+          <Button variant="secundario">Limpiar carrito de compras</Button>
+        </>
+      }
     </VStack>
-  )
+  ) //Fin return
 }

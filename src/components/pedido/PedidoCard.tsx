@@ -8,9 +8,10 @@ import { Button, Card, Image, Grid, GridItem, VStack } from "@chakra-ui/react"
 interface PedidoCardProps {
   order: Pedido
   onCancel?: (id: number) => void
+  mostrarCancelacion?: boolean
 }
 
-export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
+export const PedidoCard = ({ order, onCancel, mostrarCancelacion }: PedidoCardProps) => {
   const navigate = useNavigate()
   const { isOpen, ask, cancel: closeDrawer } = useConfirmModal()
 
@@ -59,7 +60,7 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
             </GridItem>
 
             <GridItem gridRow="1 / 4" gridColumn="3 / 4" display="flex" alignItems="center" justifyContent="center" p={3}>
-              {!!onCancel && (
+              {mostrarCancelacion && (
                   <Button
                     size="sm"
                     variant="ghost"

@@ -1,32 +1,39 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { agruparPlatos } from '@/utils/agruparPlatos'
+import { VStack, Spinner, Heading, Text } from '@chakra-ui/react'
 import { obtenerDetallePedido } from '@/services/detallePedidoService'
-import { VStack, Spinner, Box, Heading, Text } from '@chakra-ui/react'
 import { PedidoDetalle } from '@/components/pedido/DetallePedidoComponente'
 
 export const PaginaDetallePedido = () => {
   const { id } = useParams()
-  const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [pedido, setPedido] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 
-  if (!init && id) {
-    setInit(true)
+  if (!pedido && !loading && id) {
     setLoading(true)
 
-    obtenerDetallePedido(Number(id))
-      .then(data => setPedido(data))
-      .catch(err => {
-        console.error(err)
-        setError("Error al obtener el pedido")
+    obtenerDetallePedido(+id)
+      .then(data => {
+        const articulosAgrupados = agruparPlatos(data.platosDelPedido)
+
+        setPedido({
+          ...data,
+          articulos: articulosAgrupados,
+        })
+
+        setLoading(false)
       })
-      .finally(() => setLoading(false))
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
   }
 
   if (loading) {
     return (
-      <VStack p={4} flex={1}>
+      <VStack p={4}>
         <Spinner size="xl" />
         <Text>Cargando pedido...</Text>
       </VStack>
@@ -35,7 +42,7 @@ export const PaginaDetallePedido = () => {
 
   if (error) {
     return (
-      <VStack p={4} flex={1}>
+      <VStack p={4}>
         <Heading>Error</Heading>
         <Text>{error}</Text>
       </VStack>
@@ -44,7 +51,7 @@ export const PaginaDetallePedido = () => {
 
   if (!pedido) {
     return (
-      <VStack p={4} flex={1}>
+      <VStack p={4}>
         <Text>No se encontró el pedido con ID "{id}"</Text>
       </VStack>
     )
@@ -53,14 +60,14 @@ export const PaginaDetallePedido = () => {
   return (
     <PedidoDetalle
       restaurante={pedido.local}
-      articulos={pedido.platosDelPedido}
+      articulos={pedido.articulos}
       subtotal={pedido.costoSubtotalPedido}
       recargo={pedido.recargoMedioDePago}
       tarifaEntrega={pedido.tarifaEntrega}
       distancia={pedido.distancia}
       total={pedido.costoTotalPedido}
       medioDePago={pedido.medioDePago}
-      isCheckout={false}
+      isCheckout={true}
     />
   )
 }

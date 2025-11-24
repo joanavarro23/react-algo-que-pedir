@@ -6,7 +6,6 @@ export interface Local {
   urlImagenLocal: string
 }
 
-
 export interface Pedido {
   id: number
   local: Local
