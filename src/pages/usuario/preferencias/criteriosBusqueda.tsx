@@ -13,6 +13,7 @@ import { Contador } from '@/components/contador/contador'
 import { Criterio, type TipoCriterio } from '@/domain/CriterioUsuario'
 import { CRITERIOS_CONFIG } from '@/types/criterios'
 import type { Local } from '@/domain/LocalCriterio'
+import { Usuario } from '@/domain/Usuario'
 
 export const CriteriosBusqueda = () => {
     const { usuario, setUsuario, navigate } = useOutletContext<PerfilContextType>()
@@ -66,8 +67,10 @@ export const CriteriosBusqueda = () => {
     }
 
     // manejo de lista de locales
-    const agregarLocal = () => {
-
+    const agregarLocal = (local: Local) => {
+        if (!localesPreferidos.some(l => l.id === local.id)) {
+            setLocalesPreferidos(prev => [...prev, local])
+        }
     }
     const eliminarLocal = (id: number) => {
         setLocalesPreferidos(prev => prev.filter(l => l.id !== id))
@@ -99,6 +102,11 @@ export const CriteriosBusqueda = () => {
     }
     
     const guardarCriterios = () => {
+        const nuevoCriterio = construirCriterio()
+
+        //actualiza solo el estado local del usuario en el padre
+        setUsuario(Object.assign(new Usuario(), { ...usuario, criterio: nuevoCriterio, distancia: distancia }))
+       
         toaster.create({
             title: 'Criterios seleccionados:',
             description: seleccionados.join(', '),
