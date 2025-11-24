@@ -1,5 +1,5 @@
 export type DireccionJSON = {
-    direccion?: string,
+    direccion: string,
     calle: string,
     altura: number,
     latitud: number,

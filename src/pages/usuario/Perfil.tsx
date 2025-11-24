@@ -47,7 +47,7 @@ export const PerfilUsuario = () => {
     const guardarUsuario = async (usuarioActualizado: Usuario) => {
         try {
             setGuardando(true)
-            usuarioActualizado.validarCambios()
+            // usuarioActualizado.validarCambios()
             const usuarioGuardado = await usuarioService.actualizar(usuarioActualizado)
             setUsuario(usuarioGuardado)
 
@@ -76,6 +76,6 @@ export const PerfilUsuario = () => {
     }
 
     return <>
-        <Outlet context={{usuario, setUsuario, traerUsuario, navigate, gotoPreferencias}}/>
+        <Outlet context={{usuario, setUsuario, cargando, guardando, guardarUsuario, navigate, gotoPreferencias}}/>
     </>           
 }

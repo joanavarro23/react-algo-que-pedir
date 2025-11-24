@@ -11,8 +11,8 @@ export class Usuario {
     public imagen: string = '/usuario-chica.png',
     public username: string = '',
     public password: string = '',
-    public email: string = '',
-    public direccion: string = '',
+    public mail: string = '',
+    public calle: string = '',
     public altura: number = 0,
     public latitud: number = 0,
     public longitud: number = 0,
@@ -22,25 +22,9 @@ export class Usuario {
     public ingredientesEvitar: Ingrediente[] = []
   ) {}
 
-  validarCambios() {
-    // if (!this.nombre.trim()) throw new Error('El nombre es requerido')
-    // if (!this.apellido.trim()) throw new Error('El apellido es requerido')
-    // if (!this.email.trim()) throw new Error('El email es requerido')
-    // if (!this.direccion.trim()) throw new Error('La dirección es requerida')
-    // if (this.latitud < -90 || this.latitud > 90) {
-    //   throw new Error('La latitud debe estar entre -90 y 90')
-    // }
-    // if (this.longitud < -180 || this.longitud > 180) {
-    //   throw new Error('La longitud debe estar entre -180 y 180')
-    // }
-    // if (this.tienesCriterioImpaciente() && this.distancia <= 0) {
-    //   throw new Error('La distancia máxima debe ser mayor a 0 para criterio Impaciente')
-    // }
-  }
-
   static fromJSON(usuarioJSON: UsuarioJSON): Usuario {
       const usuario = Object.assign(new Usuario(), usuarioJSON, {
-        direccion: usuarioJSON.direccion.direccion,
+        calle: usuarioJSON.direccion.calle,
         altura: usuarioJSON.direccion.altura,
         latitud: usuarioJSON.direccion.latitud,
         longitud: usuarioJSON.direccion.longitud,
@@ -56,11 +40,10 @@ export class Usuario {
       id: this.id!,
       nombre: this.nombre,
       apellido: this.apellido,
-      mail: this.email,
-      username: this.username,
-      password: this.password,
+      mail: this.mail,
       direccion: {
-        calle: this.direccion,
+        direccion: `${this.calle} ${this.altura}`,
+        calle: this.calle,
         altura: this.altura,
         latitud: this.latitud,
         longitud: this.longitud
@@ -78,8 +61,6 @@ export type UsuarioJSON = {
     nombre: string,
     apellido: string,
     mail: string,
-    username: string,
-    password: string,
     direccion: DireccionJSON,
     distanciaMaximaCercana: number,
     criterio: CriterioJSON,
