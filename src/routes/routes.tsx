@@ -1,8 +1,8 @@
 // RUTAS DE LA PAGINA [React Routes]
 import { CheckoutPedido } from '@/pages/checkout-pedido/Checkout'
 import { PerfilUsuario } from '@/pages/usuario/Perfil'
-import { CriteriosBusqueda } from '@/pages/usuario/preferencias/criteriosBusqueda'
-import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/ingredientes'
+import { CriteriosBusqueda } from '@/pages/usuario/preferencias/CriteriosBusqueda'
+import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/Ingredientes'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
 import { ListaPedidos } from '@/pages/detalle-pedido/ListaPedidos'

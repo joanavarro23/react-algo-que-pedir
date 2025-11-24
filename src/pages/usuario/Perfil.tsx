@@ -1,31 +1,36 @@
-/* eslint-disable no-undef */
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { Stack } from '@chakra-ui/react'
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import { Outlet, useNavigate, type ErrorResponse } from 'react-router-dom'
 import type { Preferencias } from './subrutasPerfil'
+import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 
 export type PerfilContextType = {
     usuario: Usuario
     setUsuario: Dispatch<SetStateAction<Usuario>> //
-    traerUsuario: () => Promise<Usuario> //
-    actualizar: (referencia: keyof Usuario, valor: unknown) => void
-    guardar: () => Promise<Usuario>
-    navigate: ReturnType<typeof useNavigate> //
+    cargando: boolean
+    guardando: boolean
+    guardarUsuario: (usuarioActualizado: Usuario) => void
+    navigate: ReturnType<typeof useNavigate>
     gotoPreferencias: (opcion: Preferencias) => void
 }
 
+const USUARIO_ID = 1
+
 export const PerfilUsuario = () => {
     const [usuario, setUsuario] = useState<Usuario>(new Usuario())
+    const [cargando, setCargando] = useState(true)
+    const [guardando, setGuardando] = useState(false)
+    const navigate = useNavigate()
     
     // Carga de datos inicial
     const traerUsuario = async () => {
         try {
-            const usuario = await usuarioService.getById(0) //+id!
+            setCargando(true)
+            const usuario = await usuarioService.getById(USUARIO_ID) //+id!
             setUsuario(usuario)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
@@ -34,42 +39,43 @@ export const PerfilUsuario = () => {
                 description: mensajeError,
                 type: 'error',
             })
-        }
+        } finally { setCargando(false) }
     }
     useOnInit(traerUsuario)
 
-    // Actualización de los campos inputs
-    const actualizar = (referencia: keyof typeof usuario, valor: unknown) => {
-        setUsuario(Object.assign(new Usuario(), { ...usuario, [referencia]: valor }))
-    }
-
-    // Se guardan los cambios realizados
-    const guardar = async () => {
+    // Guardar y actualizar el usuario
+    const guardarUsuario = async (usuarioActualizado: Usuario) => {
         try {
-            usuario.validarCambios()
-            await usuarioService.actualizar(usuario)
+            setGuardando(true)
+            usuarioActualizado.validarCambios()
+            const usuarioGuardado = await usuarioService.actualizar(usuarioActualizado)
+            setUsuario(usuarioGuardado)
+
             toaster.create({
                 title: 'Usuario actualizado',
                 description: 'Los datos se actualizaron con éxito.',
-                type: 'success',
+                type: 'success'
             })
         } catch (error: unknown) {
-            const errorMessage = getMensajeError(error)
+            const errorMessage = getMensajeError(error as ErrorResponse)
             toaster.create({
-                title: 'Error al actualizar usuario',
+                title: 'Error al guardar cambios',
                 description: errorMessage,
                 type: 'error'
             })
-        }
+        } finally { setGuardando(false) }
     }
 
     // Navegación a las preferencias
-    const navigate = useNavigate()
     const gotoPreferencias = (opcion: Preferencias) => {
         navigate(opcion.path)
     }
 
+    if (cargando) {
+        return <LoadingSpinner mensaje='perfil'/>
+    }
+
     return <>
-        <Outlet context={{usuario, setUsuario, traerUsuario, actualizar, guardar, navigate, gotoPreferencias}}/>
+        <Outlet context={{usuario, setUsuario, traerUsuario, navigate, gotoPreferencias}}/>
     </>           
 }
