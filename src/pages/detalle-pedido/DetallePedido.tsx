@@ -67,7 +67,7 @@ export const PaginaDetallePedido = () => {
       distancia={pedido.distancia}
       total={pedido.costoTotalPedido}
       medioDePago={pedido.medioDePago}
-      isCheckout={true}
+      isCheckout={false}
     />
   )
 }

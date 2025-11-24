@@ -30,5 +30,4 @@ export const ResumenDetallePedido: React.FC<ResumenData> = ({ titulo = "Resumen"
   )
 }
 
-
 export default ResumenDetallePedido
