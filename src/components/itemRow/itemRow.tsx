@@ -1,4 +1,4 @@
-import { Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 
 interface ItemRowProps {
