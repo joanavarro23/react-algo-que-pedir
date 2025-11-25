@@ -61,7 +61,7 @@ export const LocalesView = () => {
     <Box className="delivery-container">
       {/* Header */}
       <Box className="delivery-header">
-        <HStack justify="space-between" mb={4}>
+        <HStack justify="space-between" mb={2}>
           <Heading size="md">Delivery</Heading>
           <Flex justifyContent="space-around" alignItems="center">
             <Text>Hola, {nombreUsuario}!</Text>

@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import { test, describe, expect, vi } from 'vitest'
+import { test, describe, expect } from 'vitest'
 import { Button } from './boton'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/styles/theme'
-import userEvent from '@testing-library/user-event'
 
 describe('boton tests', () => {
     test('deberia mostrar el boton primario', () => {

@@ -1,6 +1,6 @@
-import { Plato } from "@/domain/Plato"
+import { Plato } from '@/domain/Plato'
 
-export type EstadoPedido = "PENDIENTE" | "PREPARADO" | "ENTREGADO" | "CANCELADO"
+export type EstadoPedido = 'PENDIENTE' | 'PREPARADO' | 'ENTREGADO' | 'CANCELADO'
 
 export interface Local {
   idLocal: number

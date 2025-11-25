@@ -1,5 +1,5 @@
-import { type Restaurante } from "./restaurante"
-import { Articulo } from "@/components/articulo-checkout/Articulo"
+import { type Restaurante } from './restaurante'
+import { Articulo } from '@/components/articulo-checkout/Articulo'
 
 export interface PedidoDetalleProps {
   restaurante: Restaurante

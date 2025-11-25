@@ -1,6 +1,6 @@
 import { Button } from '@/components/boton/boton'
 import { ItemRow } from '@/components/itemRow/itemRow'
-import { Box, CheckboxCard, CheckboxGroup, Collapsible, Flex, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { CheckboxCard, CheckboxGroup, Collapsible, Flex, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
 import { CiSquarePlus } from 'react-icons/ci'
 import { MdClose } from 'react-icons/md'
