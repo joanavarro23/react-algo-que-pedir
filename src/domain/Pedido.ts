@@ -28,7 +28,7 @@ export class Pedido {
     static fromJson(pedidoJSON: PedidoJSON): Pedido {
        const pedido = Object.assign(new Pedido(), pedidoJSON, {
             platosDelPedido: pedidoJSON.platosDelPedido.map(platoJSON => Plato.fromJSON(platoJSON)),
-            usuario: Usuario.fromJson(pedidoJSON.usuario),
+            usuario: Usuario.fromJSON(pedidoJSON.usuario),
        })
        return pedido
     }
