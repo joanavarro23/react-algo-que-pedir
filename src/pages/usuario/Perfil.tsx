@@ -44,11 +44,6 @@ export const PerfilUsuario = () => {
     }
     useOnInit(traerUsuario)
 
-    //Para la carga cada vez que se inicia sesion nuevamente
-    useEffect(() => {
-        traerUsuario()
-    }, [USUARIO_ID])
-
     // Guardar y actualizar el usuario
     const guardarUsuario = async (usuarioActualizado: Usuario) => {
         try {

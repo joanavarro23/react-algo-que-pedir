@@ -1,19 +1,16 @@
 import { Button } from '@/components/boton/boton'
 import { ModalIngredientes } from '@/components/perfil-usuario/modalListaIngredientes'
 import { Usuario } from '@/domain/Usuario'
-import { Flex, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import { Box, Flex, Heading, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
 import { IoMdArrowBack } from 'react-icons/io'
-import { useOutletContext, type useNavigate } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import type { PerfilContextType } from '../Perfil'
 import { useState } from 'react'
 import type { Ingrediente } from '@/domain/Ingrediente'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { MdClose } from 'react-icons/md'
+import { ItemRow } from '@/components/itemRow/itemRow'
 
-type ContextType = {
-    data: Usuario
-    navigate: ReturnType<typeof useNavigate>
-}
 export const IngredientesPreferidos = () => {
     const { usuario, setUsuario, navigate } = useOutletContext<PerfilContextType>()
 
@@ -30,73 +27,50 @@ export const IngredientesPreferidos = () => {
     }
 
     const eliminarIngrediente = (id: number) => {
-        
+        const ingredientesActualizados = usuario.ingredientesPreferidos.filter(
+            (ing) => ing.id !== id
+        )
+        setUsuario(Object.assign(new Usuario(), { ...usuario, ingredientesPreferidos: ingredientesActualizados }))
+
+        toaster.create({
+            title: 'Ingredientes eliminado',
+            description: 'Los cambios se guardarán cuando presiones "Guardar cambios"',
+            type: 'info',
+        })
     }
 
     const volver = () => navigate(-1)
 
     return (
         <>
-            <Stack py={5} px={4} minH="100vh" bg="gray.50">
+            <Stack py={5} pb="100px">
                 {/* Header */}
-                <HStack mb={4}>
-                    <IconButton 
-                        variant="ghost" 
-                        onClick={volver}
-                        aria-label="Volver"
-                    >
-                        <IoMdArrowBack size={24} />
-                    </IconButton>
-                    <Heading as='h1' size="lg">Ingredientes preferidos</Heading>
+                <HStack alignItems='center' justifyContent='center' onClick={volver}>
+                    <IconButton variant="ghost"><IoMdArrowBack /></IconButton>
+                    <Heading as='h1'>Ingrediente Preferido</Heading>
                 </HStack>
 
                 {/* Lista de ingredientes */}
-                <Stack gap={2} flex={1}>
+                <Stack gap={2} >
                     {usuario.ingredientesPreferidos.length > 0 ? (
                         usuario.ingredientesPreferidos.map((ingrediente) => (
-                            <Flex
-                                key={ingrediente.id}
-                                justify="space-between"
-                                align="center"
-                                p={3}
-                                bg="white"
-                                borderRadius="md"
-                                shadow="sm"
-                            >
-                                <Text fontWeight="medium">{ingrediente.nombre}</Text>
-                                <IconButton
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => eliminarIngrediente(ingrediente.id!)}
-                                    aria-label="Eliminar ingrediente"
-                                >
-                                    <MdClose size={20} />
-                                </IconButton>
-                            </Flex>
+                            <Box p={3} bg="white" borderRadius="md" shadow="sm">
+                                <ItemRow key={ingrediente.id!} titulo={ingrediente.nombre} icono={<MdClose/>} onClick={()=>eliminarIngrediente(ingrediente.id!)}/>
+                            </Box>
                         ))
                     ) : (
-                        <Flex 
-                            justify="center" 
-                            align="center" 
-                            minH="200px"
-                        >
-                            <Text color="gray.500">
-                                No hay ingredientes preferidos
-                            </Text>
-                        </Flex>
+                        <Text color="gray.500" alignContent="center" >
+                            No hay ingredientes preferidos
+                        </Text>
                     )}
                 </Stack>
 
                 {/* Botón agregar ingrediente */}
-                <Button
-                    onClick={() => setModalAbierto(true)}
-                    colorScheme="red"
-                    w="full"
-                    position="sticky"
-                    bottom={4}
-                >
-                    Añadir ingrediente
-                </Button>
+                <Flex position="fixed" bottom="80px" left={0} right={0} justifyContent="center" px={4} >
+                    <Button onClick={() => setModalAbierto(true)} maxW="400px" w="full">
+                        Añadir ingrediente
+                    </Button>
+                </Flex>
             </Stack>
 
             {/* Modal de selección */}
@@ -121,80 +95,57 @@ export const IngredientesEvitar = () => {
         setUsuario(Object.assign(new Usuario(), {...usuario, ingredientesEvitar: ingredientes}))
         
         toaster.create({
-            title: 'Ingredientes actualizados',
+            title: 'Ingrediente actualizado',
             description: 'Los cambios se guardarán cuando presiones "Guardar cambios"',
             type: 'info',
         })
     }
 
     const eliminarIngrediente = (id: number) => {
+        const ingredientesActualizados = usuario.ingredientesEvitar.filter(
+            (ing) => ing.id !== id
+        )
+        setUsuario(Object.assign(new Usuario(), { ...usuario, ingredientesEvitar: ingredientesActualizados }))
 
+        toaster.create({
+            title: 'Ingrediente eliminado',
+            description: 'Los cambios se guardarán cuando presiones "Guardar cambios"',
+            type: 'info',
+        })
     }
 
     const volver = () => navigate(-1)
 
     return (
         <>
-            <Stack py={5} px={4} minH="100vh" bg="gray.50">
+            <Stack py={5} pb='100px'>
                 {/* Header */}
-                <HStack mb={4}>
-                    <IconButton 
-                        variant="ghost" 
-                        onClick={volver}
-                        aria-label="Volver"
-                    >
-                        <IoMdArrowBack size={24} />
-                    </IconButton>
-                    <Heading as='h1' size="lg">Ingredientes a evitar</Heading>
+                <HStack alignItems='center' justifyContent='center' onClick={volver}>
+                    <IconButton variant="ghost"><IoMdArrowBack /></IconButton>
+                    <Heading as='h1'>Ingredientes a Evitar</Heading>
                 </HStack>
 
                 {/* Lista de ingredientes */}
-                <Stack gap={2} flex={1}>
+                <Stack gap={2}>
                     {usuario.ingredientesEvitar.length > 0 ? (
                         usuario.ingredientesEvitar.map((ingrediente) => (
-                            <Flex
-                                key={ingrediente.id}
-                                justify="space-between"
-                                align="center"
-                                p={3}
-                                bg="white"
-                                borderRadius="md"
-                                shadow="sm"
-                            >
-                                <Text fontWeight="medium">{ingrediente.nombre}</Text>
-                                <IconButton
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => eliminarIngrediente(ingrediente.id!)}
-                                    aria-label="Eliminar ingrediente"
-                                >
-                                    <MdClose size={20} />
-                                </IconButton>
-                            </Flex>
+                            <Box p={3} bg="white" borderRadius="md" shadow="sm">
+                                <ItemRow key={ingrediente.id!} titulo={ingrediente.nombre} icono={<MdClose/>} onClick={()=>eliminarIngrediente(ingrediente.id!)}/>
+                            </Box>
                         ))
                     ) : (
-                        <Flex 
-                            justify="center" 
-                            align="center" 
-                            minH="200px"
-                        >
-                            <Text color="gray.500">
-                                No hay ingredientes a evitar
-                            </Text>
-                        </Flex>
+                        <Text color="gray.500" alignContent="center" >
+                            No hay ingredientes a evitar
+                        </Text>
                     )}
                 </Stack>
 
                 {/* Botón agregar ingrediente */}
-                <Button
-                    onClick={() => setModalAbierto(true)}
-                    colorScheme="red"
-                    w="full"
-                    position="sticky"
-                    bottom={4}
-                >
-                    Añadir ingrediente
-                </Button>
+                <Flex position="fixed" bottom="80px" left={0} right={0} justifyContent="center" px={4} >
+                    <Button onClick={() => setModalAbierto(true)} maxW="400px" w="full">
+                        Añadir ingrediente
+                    </Button>
+                </Flex>
             </Stack>
 
             {/* Modal de selección */}

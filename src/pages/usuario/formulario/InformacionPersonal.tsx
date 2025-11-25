@@ -9,17 +9,13 @@ import { CompositeValidacion, validacionStrategy } from '@/utils/validacionStrat
 import { Button } from '@/components/boton/boton'
 import { useEffect, useState } from 'react'
 import { Usuario } from '@/domain/Usuario'
+import { useOnInit } from '@/customHooks/useOnInit'
 
 export const InformacionPersonal = () => {
     const { usuario, guardando, guardarUsuario, gotoPreferencias } = useOutletContext<PerfilContextType>()
     
     // Estado local para no generar reactividad en el preview de la informacion
     const [usuarioForm, setUsuarioForm] = useState<Usuario>(usuario)
-    
-    // Sincroniza el estado local cuando cambia el usuario principal
-    useEffect(() => {
-        setUsuarioForm(usuario)
-    }, [usuario])
 
     // Actualizacion local del form
     const actualizarForm = (referencia: keyof Usuario, valor: unknown) => {

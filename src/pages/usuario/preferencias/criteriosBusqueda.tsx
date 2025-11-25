@@ -20,46 +20,6 @@ import { ModalPalabrasClave } from '@/components/perfil-usuario/modalPalabras'
 export const CriteriosBusqueda = () => {
     const { usuario, setUsuario, navigate } = useOutletContext<PerfilContextType>()
     
-    // Estado local para manejar los criterios seleccionados
-    const [seleccionados, setSeleccionados] = useState<TipoCriterio[]>([])
-    const [localesPreferidos, setLocalesPreferidos] = useState<Local[]>([])
-    const [distancia, setDistancia] = useState(usuario.distancia)
-    const [palabrasClave, setPalabrasClave] = useState<string[]>([])
-    const [nuevaPalabra, setNuevaPalabra] = useState('')
-
-    const [modalLocalesAbierto, setModalLocalesAbierto] = useState(false)
-    const [modalPalabrasAbierto, setModalPalabrasAbierto] = useState(false)
-
-    // Inicializar desde el usuario los criterios que trae
-    useEffect(() => {
-        const criteriosActuales = obtenerCriteriosActuales(usuario.criterio)
-        setSeleccionados(criteriosActuales)
-        setDistancia(usuario.distancia)
-        
-        setPalabrasClave([])
-        setLocalesPreferidos([])
-
-        const extraerDatosCriterio = (criterio: Criterio) => {
-        if (criterio.tipo === 'MARKETING' && criterio.palabrasClave.length > 0) {
-            setPalabrasClave(prev => [...prev, ...criterio.palabrasClave])
-        }
-        if (criterio.tipo === 'FIEL' && criterio.localesPreferidos.length > 0) {
-            setLocalesPreferidos(prev => [...prev, ...criterio.localesPreferidos])
-        }
-    }
-        
-        // Extraer datos según el tipo de criterio
-        if (usuario.criterio.esCombinado()) {
-            // Si es combinado, extraer de cada subcriterio
-            usuario.criterio.subCriterios.forEach(subCriterio => {
-                extraerDatosCriterio(subCriterio)
-            })
-        } else {
-            // Si es simple, extraer directamente
-            extraerDatosCriterio(usuario.criterio)
-        }
-        
-    }, [usuario])
     // Extraigo los criterios con los que viene para mostrarlos
     const obtenerCriteriosActuales = (criterio: Criterio): TipoCriterio[] => {
         if(criterio.esCombinado()) {
@@ -67,6 +27,15 @@ export const CriteriosBusqueda = () => {
         }
         return [criterio.tipo]
     }
+    // Estado local para manejar los criterios seleccionados
+    const [seleccionados, setSeleccionados] = useState<TipoCriterio[]>(()=>obtenerCriteriosActuales(usuario.criterio))
+    const [localesPreferidos, setLocalesPreferidos] = useState<Local[]>(usuario.criterio.localesPreferidos)
+    const [distancia, setDistancia] = useState(usuario.distancia)
+    const [palabrasClave, setPalabrasClave] = useState<string[]>(usuario.criterio.palabrasClave)
+
+    const [modalLocalesAbierto, setModalLocalesAbierto] = useState(false)
+    const [modalPalabrasAbierto, setModalPalabrasAbierto] = useState(false)
+   
 
     // seleccionar y agregar criterio
     const toggleCriterio = (tipo: TipoCriterio) => {
