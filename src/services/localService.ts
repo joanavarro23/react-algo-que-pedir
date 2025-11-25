@@ -1,9 +1,7 @@
-//archivo momentaneo para poder laburar la vista 
-// del detalle-local
 import axios from 'axios'
 import { REST_SERVER_URL } from './constants'
 import { getAxiosData } from './common'
-import type { LocalJSON } from '@/domain/Local'
+import { Local, type LocalJSON } from '@/domain/Local'
 class LocalService {
     async obtenerLocalPorId(idLocal : number) {
         const url = `${REST_SERVER_URL}/local/${idLocal}`
@@ -13,8 +11,8 @@ class LocalService {
     }
 
     async obtenerTodos() {
-        const queryLocal = () => axios.get<LocalJSON>(`${REST_SERVER_URL}/locales`)
-        return getAxiosData(queryLocal)
+        const queryLocal = () => axios.get<LocalJSON[]>(`${REST_SERVER_URL}/locales`)
+        return (await getAxiosData(queryLocal)).map(local => Local.fromJSON(local))
     }
 }
 
