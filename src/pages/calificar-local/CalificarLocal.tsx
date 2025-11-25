@@ -69,7 +69,7 @@ export default function CalificarLocalView() {
     }
 
     return (
-        <Box className="calificar-container">
+        <Box className="calificar-container" m={5}>
             <Box className="calificar-header">
                 <HStack justify="space-between" align="center">
                     <IconButton
