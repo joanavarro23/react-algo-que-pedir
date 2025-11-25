@@ -1,12 +1,12 @@
-import { useState } from "react"
-import type { Pedido } from "./Pedido"
-import { useOnInit } from "@/customHooks/useOnInit"
-import { LuCheck, LuClock, LuCircleX } from "react-icons/lu"
-import { toaster } from "@/components/chakra-toaster/toaster"
-import { PedidoCard } from "../../components/pedido/PedidoCard"
-import { getPedidosPorEstados } from "@/services/detallePedidoService"
-import { cancelarPedidoService } from "@/services/detallePedidoService"
-import { VStack, Heading, Spinner, Tabs, Text } from "@chakra-ui/react"
+import { useState } from 'react'
+import type { Pedido } from './Pedido'
+import { useOnInit } from '@/customHooks/useOnInit'
+import { LuCheck, LuClock, LuCircleX } from 'react-icons/lu'
+import { toaster } from '@/components/chakra-toaster/toaster'
+import { PedidoCard } from '../../components/pedido/PedidoCard'
+import { getPedidosPorEstados } from '@/services/detallePedidoService'
+import { cancelarPedidoService } from '@/services/detallePedidoService'
+import { VStack, Heading, Spinner, Tabs, Text } from '@chakra-ui/react'
 
 export const ListaPedidos = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -18,19 +18,19 @@ export const ListaPedidos = () => {
 
   const estadoPedido = [
     {
-      value: "pendientes",
+      value: 'pendientes',
       pedidos: pedidosPendientes,
-      emptyMessage: "No tenés pedidos pendientes"
+      emptyMessage: 'No tenés pedidos pendientes'
     },
     {
-      value: "completados",
+      value: 'completados',
       pedidos: pedidosCompletados,
-      emptyMessage: "No tenés pedidos completados"
+      emptyMessage: 'No tenés pedidos completados'
     },
     {
-      value: "cancelados",
+      value: 'cancelados',
       pedidos: pedidosCancelados,
-      emptyMessage: "No tenés pedidos cancelados"
+      emptyMessage: 'No tenés pedidos cancelados'
     }
   ]
 
@@ -64,23 +64,23 @@ export const ListaPedidos = () => {
       setPedidosPendientes(prev => prev.filter(p => p.id !== id))
 
       toaster.create({
-        description: "El pedido se canceló correctamente",
-        type: "success"
+        description: 'El pedido se canceló correctamente',
+        type: 'success'
       })
 
     } catch (error) {
       console.error(error)
 
       toaster.create({
-        description: "No se pudo cancelar el pedido",
-        type: "error"
+        description: 'No se pudo cancelar el pedido',
+        type: 'error'
       })
     }
   }
 
-  const cargarCancelados = () => cargarPedidosPorEstados(["CANCELADO"], setPedidosCancelados)
-  const cargarCompletados = () => cargarPedidosPorEstados(["ENTREGADO"], setPedidosCompletados)
-  const cargarPendientes = () => cargarPedidosPorEstados(["PENDIENTE", "PREPARADO"], setPedidosPendientes)
+  const cargarCancelados = () => cargarPedidosPorEstados(['CANCELADO'], setPedidosCancelados)
+  const cargarCompletados = () => cargarPedidosPorEstados(['ENTREGADO'], setPedidosCompletados)
+  const cargarPendientes = () => cargarPedidosPorEstados(['PENDIENTE', 'PREPARADO'], setPedidosPendientes)
 
   useOnInit(() => {
     cargarPendientes()
@@ -98,11 +98,11 @@ export const ListaPedidos = () => {
       <Tabs.Root
         value={tabActual}
         onValueChange={(details) => {
-          const value = details.value;
-          setTabActual(value);
-          if (value === "pendientes") cargarPendientes();
-          if (value === "completados") cargarCompletados();
-          if (value === "cancelados") cargarCancelados();
+          const value = details.value
+          setTabActual(value)
+          if (value === 'pendientes') cargarPendientes()
+          if (value === 'completados') cargarCompletados()
+          if (value === 'cancelados') cargarCancelados()
         }}
         variant="line"
         w="100%"
@@ -130,8 +130,8 @@ export const ListaPedidos = () => {
                   <PedidoCard
                     key={pedido.id}
                     order={pedido}
-                    onCancel={tab.value === "pendientes" ? cancelarPedidoBackend : undefined}
-                    mostrarCancelacion={tab.value === "pendientes"}
+                    onCancel={tab.value === 'pendientes' ? cancelarPedidoBackend : undefined}
+                    mostrarCancelacion={tab.value === 'pendientes'}
                   />
                 ))
               ) : (
