@@ -18,7 +18,8 @@ export type LocalJSON = {
     urlImagenLocal: string,
     mediosDePago: MedioDePago[],
     rating: number,
-    reviews: String,
+    cantidadReviews: number,
+    reviews: string[],
     tarifaEntrega: number,
     recargosMedioDePago: Record<MedioDePago, number>
 }
