@@ -45,7 +45,7 @@ export const InformacionPersonal = () => {
                     <Avatar.Image src={usuario.imagen}/>
                 </Avatar.Root> 
                 <Heading as='h2' size='2xl'>{usuario.nombre} {usuario.apellido}</Heading>
-                <Text color='textoSecundario'>{usuario.email}</Text>
+                <Text color='textoSecundario'>{usuario.mail}</Text>
             </VStack>
             
             <Card.Root variant='outline'>
@@ -61,8 +61,8 @@ export const InformacionPersonal = () => {
                         value={usuarioForm.apellido} onChange={(event) => actualizarForm('apellido', event.target.value)} />
                         
                         <HStack>
-                            <CampoTexto validacion={validar(usuarioForm.direccion, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
-                            value={usuarioForm.direccion} onChange={(event) => actualizarForm('direccion', event.target.value)} />
+                            <CampoTexto validacion={validar(usuarioForm.calle, 'textoRequerido', 'direccion')} nombreLabel='Direccion' nombreTest='direccion' placeholder='Direccion'
+                            value={usuarioForm.calle} onChange={(event) => actualizarForm('calle', event.target.value)} />
 
                             <CampoTexto validacion={validar(usuarioForm.altura, validacionAltura, 'altura')} nombreLabel='Altura' nombreTest='altura' placeholder='Altura'
                             value={usuarioForm.altura} onChange={(event) => actualizarForm('altura', event.target.value)} />

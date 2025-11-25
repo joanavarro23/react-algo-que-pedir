@@ -13,7 +13,7 @@ import { toaster } from '@/components/chakra-toaster/toaster'
 import { useState, useEffect } from 'react'
 
 import { platoService } from '@/services/platoService'
-import { localService } from '@/services/localServiceTest'
+import { localService } from '@/services/localService'
 import { useOnInit } from '@/customHooks/useOnInit'
 import type { CarritoContext } from '../layout-carrito/CarritoLayout'
 

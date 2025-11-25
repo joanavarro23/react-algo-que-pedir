@@ -7,10 +7,11 @@ import { Button, Card, Image, Grid, GridItem, VStack } from "@chakra-ui/react"
 
 interface PedidoCardProps {
   order: Pedido
-  onCancel: (id: number) => void
+  onCancel?: (id: number) => void
+  mostrarCancelacion?: boolean
 }
 
-export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
+export const PedidoCard = ({ order, onCancel, mostrarCancelacion }: PedidoCardProps) => {
   const navigate = useNavigate()
   const { isOpen, ask, cancel: closeDrawer } = useConfirmModal()
 
@@ -20,7 +21,7 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
 
   const cancelarPedido = (e: React.MouseEvent) => {
     e.stopPropagation()
-    ask(() => onCancel(order.id))
+    ask(() => onCancel && onCancel(order.id))
   }
 
   return (
@@ -50,17 +51,16 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
                   {order.local.nombre}
                 </Card.Title>
                 <Card.Description fontSize="s" color="gray.600">
-                  Total: ${order.precioTotal.toFixed(2)}
+                  Total: ${order.costoTotalPedido.toFixed(2)}
                 </Card.Description>
                 <Card.Description fontSize="s" color="gray.600">
-                  {order.hora} - {order.items} artículos
+                  {order.fechaPedido} - {order.cantidadDePlatos} artículos
                 </Card.Description>
               </VStack>
             </GridItem>
 
             <GridItem gridRow="1 / 4" gridColumn="3 / 4" display="flex" alignItems="center" justifyContent="center" p={3}>
-              {order.estadoPedido !== "ENTREGADO" &&
-                order.estadoPedido !== "CANCELADO" && (
+              {mostrarCancelacion && (
                   <Button
                     size="sm"
                     variant="ghost"
@@ -79,7 +79,7 @@ export const PedidoCard = ({ order, onCancel }: PedidoCardProps) => {
       <ConfirmDrawer
         open={isOpen}
         onConfirm={() => {
-          onCancel(order.id)
+          onCancel && onCancel(order.id)
           closeDrawer()
         }}
         onCancel={closeDrawer}

@@ -1,4 +1,4 @@
-import { Local, type LocalJSON } from './LocalCriterio'
+import { Local, type LocalCriterioJSON } from './Local'
 
 export class Criterio {
   constructor(
@@ -42,7 +42,7 @@ export type TipoCriterio =
 
 export type CriterioJSON = {
   tipo: TipoCriterio
-  localesPreferidos?: LocalJSON[]
+  localesPreferidos?: LocalCriterioJSON[]
   palabrasClave?: string[]
   subCriterios?: CriterioJSON[]
 }
