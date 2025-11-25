@@ -103,7 +103,7 @@ export const LocalesView = () => {
           Locales de comidas
         </Heading>
 
-        <SimpleGrid columns={2} gap="1">
+        <SimpleGrid columns={2} gap="3">
           {filteredLocales.map((localFiltrado) => (
             <Card.Root
               variant={'outline'}
