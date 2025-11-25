@@ -2,15 +2,18 @@ export type ValidacionResultado = {
     esValido: boolean,
     mensajeError?: string
 }
-interface ValidacionStrategy<T> {
-    esValido(valor: T, campo?: string, rango?: { min?: number, max?: number }): ValidacionResultado
+
+export type Ranges = { min: number, max: number } | undefined
+
+interface ValidacionStrategy {
+    esValido(valor: string | number, campo?: string, rango?: Ranges): ValidacionResultado
 }
 
 // Validacion compuesta
-export class CompositeValidacion implements ValidacionStrategy<string | number> {
-    private estrategias: ValidacionStrategy<string | number>[] = []
+export class CompositeValidacion implements ValidacionStrategy {
+    private estrategias: ValidacionStrategy[] = []
 
-    esValido(valor: string | number, campo?: string, rango?: { min: number; max: number }): ValidacionResultado {
+    esValido(valor: string | number, campo?: string, rango?: Ranges): ValidacionResultado {
         return {
             esValido: this.estrategias.every((estrategia) => estrategia.esValido(valor, campo, rango).esValido ),
             mensajeError: this.estrategias
@@ -20,31 +23,31 @@ export class CompositeValidacion implements ValidacionStrategy<string | number> 
         }
     }
 
-    agregar(nuevaEstrategia: ValidacionStrategy<string | number>) { this.estrategias.push(nuevaEstrategia)}
+    agregar(nuevaEstrategia: ValidacionStrategy) { this.estrategias.push(nuevaEstrategia)}
 }
 
-class TextoRequerido implements ValidacionStrategy<string> {
-    esValido(valor: string, campo: string): ValidacionResultado {
+class TextoRequerido implements ValidacionStrategy {
+    esValido(valor: string, campo?: string, _rango?: Ranges): ValidacionResultado {
         const estaVacio = !valor || valor.trim().length === 0
         return {
             esValido: !estaVacio,
-            mensajeError: estaVacio ? `El campo: ${campo} es requerido` : undefined
+            mensajeError: estaVacio ? `El campo ${campo} es requerido` : undefined
         }
     }
 }
 
-class ValorRequerido implements ValidacionStrategy<number> {
-    esValido(valor: number, campo: string): ValidacionResultado {
+class ValorRequerido implements ValidacionStrategy{
+    esValido(valor: number, campo?: string, _rango?: Ranges): ValidacionResultado {
         const esInvalido = !valor
         return {
             esValido: !esInvalido,
-            mensajeError: esInvalido ? `El campo: ${campo} es requerido` : undefined
+            mensajeError: esInvalido ? `El campo ${campo} es requerido` : undefined
         }
     }
 }
 
-class ValorPositivo implements ValidacionStrategy<number> {
-    esValido(valor: number): ValidacionResultado {
+class ValorPositivo implements ValidacionStrategy {
+    esValido(valor: number, _campo?: string, _rango?: Ranges): ValidacionResultado {
         const esPositivo = valor > 0
         return {
             esValido: esPositivo,
@@ -53,13 +56,16 @@ class ValorPositivo implements ValidacionStrategy<number> {
     }
 }
 
-class RangoNumerico implements ValidacionStrategy<number> {
-    esValido(valor: number, _campo: string, rango: { min: number, max: number }): ValidacionResultado {
-        const dentroDelRango = valor >= rango.min && valor <= rango.max
+class RangoNumerico implements ValidacionStrategy {
+    esValido(valor: number, _campo?: string, rango?: { min: number, max: number }): ValidacionResultado {
+        if (!rango) {
+            throw new Error('Se requiere un rango definido')
+        }
+        const dentroDelRango = valor >= rango!.min && valor <= rango!.max
         return {
             esValido: dentroDelRango,
             mensajeError: !dentroDelRango 
-                ? `Debe estar entre ${rango.min} y ${rango.max}` 
+                ? `Debe estar entre ${rango!.min} y ${rango!.max}` 
                 : undefined
         }
     }

@@ -12,9 +12,9 @@ export const ItemRow = ({ titulo, subtitulo, icono, onClick }: ItemRowProps ) =>
     return(
         <HStack justifyContent='space-between'>
             <Stack>
-                <Text>{titulo}</Text>
+                <Text fontWeight='semibold' fontSize='md'>{titulo}</Text>
                 {subtitulo && (
-                    <Heading as='p' size='xs'>{subtitulo}</Heading>
+                    <Text fontSize='sm'>{subtitulo}</Text>
                 )}
             </Stack>
             {icono && (

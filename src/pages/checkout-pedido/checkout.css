@@ -1,5 +1,5 @@
 .main-checkout {
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .container-checkout{
@@ -38,4 +38,8 @@
 
 .precio-resumen {
     font-size: 13px;
+}
+
+.boton-checkout {
+    width: 100%;
 }

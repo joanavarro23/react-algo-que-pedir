@@ -3,7 +3,7 @@ import {
   Button,
   Portal,
   CloseButton
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 interface ConfirmDrawerProps {
   open: boolean;
@@ -50,5 +50,5 @@ export const ConfirmDrawer = ({
         </Drawer.Positioner>
       </Portal>
     </Drawer.Root>
-  );
-};
+  )
+}
