@@ -1,8 +1,8 @@
 // RUTAS DE LA PAGINA [React Routes]
 import { CheckoutPedido } from '@/pages/checkout-pedido/Checkout'
 import { PerfilUsuario } from '@/pages/usuario/Perfil'
-import { CriteriosBusqueda } from '@/pages/usuario/preferencias/CriteriosBusqueda'
-import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/Ingredientes'
+import { CriteriosBusqueda } from '@/pages/usuario/preferencias/criteriosBusqueda'
+import { IngredientesEvitar, IngredientesPreferidos } from '@/pages/usuario/preferencias/ingredientes'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { DetalleLocal } from '@/pages/detalle-local/DetalleLocal'
 import { ListaPedidos } from '@/pages/detalle-pedido/ListaPedidos'
@@ -15,6 +15,7 @@ import { CalificacionesView } from '@/pages/calificar-local/Calificar'
 
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
 import { CarritoLayout } from '@/pages/layout-carrito/CarritoLayout'
+import CalificarLocalView from '@/pages/calificar-local/CalificarLocal'
 
 const ProtectedRoute = () => {
     const estaLogueado = !!localStorage.getItem('idUsuario')
@@ -51,6 +52,7 @@ export const AQPRoutes = () =>
                 </Route>
               
                 <Route path="/calificar-local" element={ <CalificacionesView/> } />
+                <Route path="/calificar/:localId" element={<CalificarLocalView />} />
               
                 <Route path="/detalle-pedido">                  {/* Detalle del pedido */}
                     <Route index element={<ListaPedidos />} />
