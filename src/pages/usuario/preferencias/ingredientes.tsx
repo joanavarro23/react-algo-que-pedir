@@ -20,7 +20,7 @@ export const IngredientesPreferidos = () => {
     const [modalAbierto, setModalAbierto] = useState(false)
 
     const agregarIngredientes = (ingredientes: Ingrediente[]) => {
-        setUsuario(Object.assign(new Usuario(), {...usuario, IngredientesPreferidos: ingredientes}))
+        setUsuario(Object.assign(new Usuario(), {...usuario, ingredientesPreferidos: ingredientes}))
         
         toaster.create({
             title: 'Ingredientes actualizados',
@@ -118,7 +118,7 @@ export const IngredientesEvitar = () => {
     const [modalAbierto, setModalAbierto] = useState(false)
 
     const agregarIngredientes = (ingredientes: Ingrediente[]) => {
-        setUsuario(Object.assign(new Usuario(), {...usuario, IngredientesPreferidos: ingredientes}))
+        setUsuario(Object.assign(new Usuario(), {...usuario, ingredientesEvitar: ingredientes}))
         
         toaster.create({
             title: 'Ingredientes actualizados',
