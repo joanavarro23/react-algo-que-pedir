@@ -1,11 +1,11 @@
-import axios from "axios"
-import type { Pedido } from "@/pages/detalle-pedido/Pedido"
+import axios from 'axios'
+import type { Pedido } from '@/pages/detalle-pedido/Pedido'
 
-const BASE_URL = "http://localhost:9000"
+const BASE_URL = 'http://localhost:9000'
 const PEDIDOS_URL = `${BASE_URL}/pedidos`
 const DETALLE_PEDIDOS_URL = `${BASE_URL}/checkout-pedido`
 
-const userId = Number(localStorage.getItem("idUsuario"))
+const userId = Number(localStorage.getItem('idUsuario'))
 
 export interface DetallePedidoResponse {
   id: number
@@ -49,15 +49,15 @@ export async function getPedidosPorEstados(estados: string[]): Promise<Pedido[]>
     )
     return responses.flatMap(r => r.data)
   } catch (err) {
-    console.error("Error al obtener pedidos", err)
-    throw new Error("Error al cargar pedidos")
+    console.error('Error al obtener pedidos', err)
+    throw new Error('Error al cargar pedidos')
   }
 }
 
 export const cancelarPedidoService = async (id: number) => {
   const response = await axios.patch(PEDIDOS_URL, {
     id,
-    nuevoEstado: "CANCELADO"
+    nuevoEstado: 'CANCELADO'
   })
   return response.data
 }
