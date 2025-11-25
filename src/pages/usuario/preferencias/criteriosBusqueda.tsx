@@ -12,7 +12,7 @@ import { RestaurenteItem } from '@/components/perfil-usuario/restauranteItem'
 import { Contador } from '@/components/contador/contador'
 import { Criterio, type TipoCriterio } from '@/domain/CriterioUsuario'
 import { CRITERIOS_CONFIG } from '@/types/criterios'
-import type { Local } from '@/domain/LocalCriterio'
+import type { Local } from '@/domain/Local'
 import { Usuario } from '@/domain/Usuario'
 
 export const CriteriosBusqueda = () => {
@@ -30,8 +30,8 @@ export const CriteriosBusqueda = () => {
         const criteriosActuales = obtenerCriteriosActuales(usuario.criterio)
         setSeleccionados(criteriosActuales)
         setDistancia(usuario.distancia)
-        // setPalabrasClave(usuario.obtenerPalabrasClave())
-        // setLocalesPreferidos(usuario.obtenerLocalesPreferidos())
+        setPalabrasClave(usuario.criterio.palabrasClave)
+        setLocalesPreferidos(usuario.criterio.localesPreferidos)
         
     }, [usuario])
     // Extraigo los criterios con los que viene para mostrarlos

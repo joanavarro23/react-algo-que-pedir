@@ -1,4 +1,4 @@
-import { Local, type LocalJSON } from './LocalCriterio'
+import { Local, type LocalJSON } from './Local'
 
 export class Criterio {
   constructor(

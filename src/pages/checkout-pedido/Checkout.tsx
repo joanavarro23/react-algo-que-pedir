@@ -9,7 +9,7 @@ import { useNavigate, useOutletContext, type ErrorResponse } from 'react-router-
 import { getMensajeError } from '@/utils/errorHandling'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
-import { localService, medioDePagoLabels, type LocalJSON, type MedioDePago } from '@/services/localServiceTest'
+import { localService, medioDePagoLabels, type LocalJSON, type MedioDePago } from '@/services/localService'
 import type { CarritoContext } from '../layout-carrito/CarritoLayout'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 import type { Usuario } from '@/domain/Usuario'
