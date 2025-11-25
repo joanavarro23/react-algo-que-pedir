@@ -10,7 +10,7 @@ import { PlatoModal } from '@/components/plato-modal/platoModal'
 import { Button } from '@/components/boton/boton'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 import { toaster } from '@/components/chakra-toaster/toaster'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { platoService } from '@/services/platoService'
 import { localService } from '@/services/localService'
