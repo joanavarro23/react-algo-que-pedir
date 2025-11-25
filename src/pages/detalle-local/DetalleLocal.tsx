@@ -180,7 +180,7 @@ export const DetalleLocal = () => {
                         ) : (
                             local.reviews.map((review, index) => (
                                 <Card.Root key={index} w="100%" p="4" boxShadow="sm">
-                                    <Card.Body>
+                                    <Card.Body p="1">
                                         <HStack mb="2">
                                             <Text fontWeight="semibold" fontSize="sm">
                                                 Reseña #{index + 1}
