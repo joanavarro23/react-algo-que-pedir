@@ -12,7 +12,7 @@ import { RestaurenteItem } from '@/components/perfil-usuario/restauranteItem'
 import { Contador } from '@/components/contador/contador'
 import { Criterio, type TipoCriterio } from '@/domain/CriterioUsuario'
 import { CRITERIOS_CONFIG } from '@/types/criterios'
-import type { Local } from '@/domain/Local'
+import { Local } from '@/domain/Local'
 import { Usuario } from '@/domain/Usuario'
 
 export const CriteriosBusqueda = () => {
@@ -68,12 +68,12 @@ export const CriteriosBusqueda = () => {
 
     // manejo de lista de locales
     const agregarLocal = (local: Local) => {
-        if (!localesPreferidos.some(l => l.id === local.id)) {
+        if (!localesPreferidos.some(l => l.idLocal === local.idLocal)) {
             setLocalesPreferidos(prev => [...prev, local])
         }
     }
     const eliminarLocal = (id: number) => {
-        setLocalesPreferidos(prev => prev.filter(l => l.id !== id))
+        setLocalesPreferidos(prev => prev.filter(l => l.idLocal !== id))
     }
 
     // Construir el criterio para guardar
@@ -156,7 +156,7 @@ export const CriteriosBusqueda = () => {
                                         {localesPreferidos.length > 0 ? (
                                             localesPreferidos.map((local) => (
                                                 <RestaurenteItem 
-                                                id={local.id!} nombre={local.nombre} imagen={local.imagen} puntuacion={local.puntuacion}
+                                                id={local.idLocal!} nombre={local.nombre} imagen={local.urlImagenLocal} puntuacion={local.rating}
                                                 onEliminar={eliminarLocal} />
                                             ))
                                         ) : (

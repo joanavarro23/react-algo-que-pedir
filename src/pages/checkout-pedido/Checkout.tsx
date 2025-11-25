@@ -58,7 +58,7 @@ export const CheckoutPedido = () => {
             setUsuario(userData)
 
             if (localData && userData) {
-                const distanciaCalculada = await distanciaService.obtenerDistancia(localData.idLocal, userData.id!)
+                const distanciaCalculada = await distanciaService.obtenerDistancia(localData.idLocal!, userData.id!)
                 setDistancia(distanciaCalculada)
             }
         } catch (error) {
