@@ -3,22 +3,13 @@ import { Box, Input, Heading, SimpleGrid, Card, Image, Stack, Text, IconButton, 
 import { useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { IoIosLogOut } from 'react-icons/io'
+import { MdLocationOn } from 'react-icons/md'
 import React from 'react'
-import axios from 'axios'
 import { useOnInit } from '@/customHooks/useOnInit'
-import { REST_SERVER_URL } from '@/services/constants'
 import { logout } from '@/services/authService'
 import { useNavigate } from 'react-router-dom'
 import { toaster } from '@/components/chakra-toaster/toaster'
-
-
-interface Local {
-  idLocal: number
-  nombre: string
-  direccion: string
-  urlImagenLocal: string
-}
-
+import { HomeService, type Local } from '@/services/homeService'
 
 export const LocalesView = () => {
   const navigate = useNavigate()
@@ -32,15 +23,13 @@ export const LocalesView = () => {
   useOnInit(() => {
     //Recupero el nombre con el localStorage y lo seteo con useState
     const nombreActual = localStorage.getItem('nombreUsuario')
+    const idUsuario = localStorage.getItem('idUsuario')
     if (nombreActual) { setNombreUsuario(nombreActual) }
-
-    const fetchLocales = async (): Promise<void> => {
-      try {
-        const response = await axios.get<Local[]>(`${REST_SERVER_URL}/locales`)
-        console.log('API Response:', response.data)
-        setLocales(response.data)
-      } catch {
-        throw new Error('Error al obtener los locales')
+    
+    const fetchLocales = async () => {
+      if (idUsuario) {
+        const localesData = await HomeService.fetchLocales(idUsuario)
+        setLocales(localesData)
       }
     }
 
@@ -62,9 +51,10 @@ export const LocalesView = () => {
   }
 
 
-  const filteredLocales: Local[] = locales.filter((local: Local) =>
-    local.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    local.direccion.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredLocales: Local[] = locales.filter((localFiltrado: Local) =>
+    (localFiltrado.local.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    localFiltrado.local.direccion.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (!showNearby || localFiltrado.esCercano)
   )
 
   return (
@@ -114,31 +104,44 @@ export const LocalesView = () => {
         </Heading>
 
         <SimpleGrid columns={2} gap="1">
-          {filteredLocales.map((local) => (
+          {filteredLocales.map((localFiltrado) => (
             <Card.Root
               variant={'outline'}
-              key={local.idLocal}
+              key={localFiltrado.local.idLocal}
               className="local-card"
               cursor="pointer"
               borderRadius="20px" overflow="hidden"
-              onClick={() => window.location.href = `/local/${local.idLocal}/platos`}
+              onClick={() => window.location.href = `/local/${localFiltrado.local.idLocal}/platos`}
               transition="transform 0.2s"
               _hover={{ transform: 'scale(1.02)' }}
             >
               <Card.Body gap="0" p="0" >
                 <Box position="relative">
                   <Image
-                    src={local.urlImagenLocal}
-                    alt={local.nombre}
+                    src={localFiltrado.local.urlImagenLocal}
+                    alt={localFiltrado.local.nombre}
                     className="local-image"
                   />
+                  {localFiltrado.esCercano && (
+                    <Box
+                      position="absolute"
+                      top="2"
+                      right="2"
+                      bg="white"
+                      borderRadius="full"
+                      p="1.5"
+                      boxShadow="md"
+                    >
+                      <MdLocationOn size={16} color="#E53E3E" />
+                    </Box>
+                  )}
                 </Box>
                 <Stack p={2}>
                   <Card.Title fontSize="sm">
-                    {local.nombre}
+                    {localFiltrado.local.nombre}
                   </Card.Title>
                   <Card.Description fontSize="xs" color="gray.600">
-                    {local.direccion}
+                    {localFiltrado.local.direccion}
                   </Card.Description>
                 </Stack>
               </Card.Body>
