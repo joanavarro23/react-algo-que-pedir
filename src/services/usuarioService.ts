@@ -11,7 +11,7 @@ class UsuarioService {
     }
 
     async actualizar(usuarioActualizar: Usuario) {
-        const query = () => axios.put(`${REST_SERVER_URL}/usuario/${usuarioActualizar.id}`, usuarioActualizar.toJSON())
+        const query = () => axios.put<UsuarioJSON>(`${REST_SERVER_URL}/usuario/${usuarioActualizar.id}`, usuarioActualizar.toJSON())
         const usuarioJson = await getAxiosData(query)
         return Usuario.fromJSON(usuarioJson)
     }

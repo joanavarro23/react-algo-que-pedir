@@ -12,7 +12,10 @@ import { RestaurenteItem } from '@/components/perfil-usuario/restauranteItem'
 import { Contador } from '@/components/contador/contador'
 import { Criterio, type TipoCriterio } from '@/domain/CriterioUsuario'
 import { CRITERIOS_CONFIG } from '@/types/criterios'
-import type { Local } from '@/domain/LocalCriterio'
+import { Local } from '@/domain/Local'
+import { Usuario } from '@/domain/Usuario'
+import { ModalLocalesPreferidos } from '@/components/perfil-usuario/modalLocales'
+import { ModalPalabrasClave } from '@/components/perfil-usuario/modalPalabras'
 
 export const CriteriosBusqueda = () => {
     const { usuario, setUsuario, navigate } = useOutletContext<PerfilContextType>()
@@ -24,13 +27,37 @@ export const CriteriosBusqueda = () => {
     const [palabrasClave, setPalabrasClave] = useState<string[]>([])
     const [nuevaPalabra, setNuevaPalabra] = useState('')
 
+    const [modalLocalesAbierto, setModalLocalesAbierto] = useState(false)
+    const [modalPalabrasAbierto, setModalPalabrasAbierto] = useState(false)
+
     // Inicializar desde el usuario los criterios que trae
     useEffect(() => {
         const criteriosActuales = obtenerCriteriosActuales(usuario.criterio)
         setSeleccionados(criteriosActuales)
         setDistancia(usuario.distancia)
-        // setPalabrasClave(usuario.obtenerPalabrasClave())
-        // setLocalesPreferidos(usuario.obtenerLocalesPreferidos())
+        
+        setPalabrasClave([])
+        setLocalesPreferidos([])
+
+        const extraerDatosCriterio = (criterio: Criterio) => {
+        if (criterio.tipo === 'MARKETING' && criterio.palabrasClave.length > 0) {
+            setPalabrasClave(prev => [...prev, ...criterio.palabrasClave])
+        }
+        if (criterio.tipo === 'FIEL' && criterio.localesPreferidos.length > 0) {
+            setLocalesPreferidos(prev => [...prev, ...criterio.localesPreferidos])
+        }
+    }
+        
+        // Extraer datos según el tipo de criterio
+        if (usuario.criterio.esCombinado()) {
+            // Si es combinado, extraer de cada subcriterio
+            usuario.criterio.subCriterios.forEach(subCriterio => {
+                extraerDatosCriterio(subCriterio)
+            })
+        } else {
+            // Si es simple, extraer directamente
+            extraerDatosCriterio(usuario.criterio)
+        }
         
     }, [usuario])
     // Extraigo los criterios con los que viene para mostrarlos
@@ -55,22 +82,27 @@ export const CriteriosBusqueda = () => {
     const estaSeleccionado = (tipo: TipoCriterio) => seleccionados.includes(tipo)
     
     // Manejo de las palabras claves
-    const agregarPalabra = () => {
-        if(nuevaPalabra.trim() && !palabrasClave.includes(nuevaPalabra.trim())) {
-            setPalabrasClave(prev => [...prev, nuevaPalabra.trim()])
-            setNuevaPalabra('')
-        }
+    const agregarPalabra = (palabras: string[]) => {
+        setPalabrasClave(palabras)
     }
     const eliminarPalabra = (palabra: string) => {
         setPalabrasClave(prev => prev.filter(p => p !== palabra))
     }
 
     // manejo de lista de locales
-    const agregarLocal = () => {
-
+    const agregarLocal = (locales: Local[]) => {
+        setLocalesPreferidos(locales)
     }
     const eliminarLocal = (id: number) => {
-        setLocalesPreferidos(prev => prev.filter(l => l.id !== id))
+        setLocalesPreferidos(prev => prev.filter(l => l.idLocal !== id))
+    }
+
+    // modales para agregar locales y agregar palabras
+    const abrirModalLocales = () => {
+        setModalLocalesAbierto(true)
+    }
+    const abrirModalPalabras = () => {
+        setModalPalabrasAbierto(true)
     }
 
     // Construir el criterio para guardar
@@ -99,6 +131,11 @@ export const CriteriosBusqueda = () => {
     }
     
     const guardarCriterios = () => {
+        const nuevoCriterio = construirCriterio()
+
+        //actualiza solo el estado local del usuario en el padre
+        setUsuario(Object.assign(new Usuario(), { ...usuario, criterio: nuevoCriterio, distancia: distancia }))
+       
         toaster.create({
             title: 'Criterios seleccionados:',
             description: seleccionados.join(', '),
@@ -109,25 +146,17 @@ export const CriteriosBusqueda = () => {
     
     const volver = () => { navigate(-1) }
 
-    // modales para agregar locales y agregar palabras
-    const abrirModalLocales = () => {
-        console.log('Abrir modal para lista de locales')
-    }
-    const abrirModalPalabras = () => {
-        console.log('Abrir modal para lista de palabras')
-    }
-
     return (
-        <Stack py='5'>
+        <><Stack py='5'>
             <HStack alignItems='center' justifyContent='center' onClick={volver}>
-                <IconButton variant="ghost" ><IoMdArrowBack/></IconButton>
+                <IconButton variant="ghost"><IoMdArrowBack /></IconButton>
                 <Heading as='h1'>Selecciona tu criterio</Heading>
             </HStack>
 
             <CheckboxGroup bg='white'>
                 <Stack gap="2">
                     {CRITERIOS_CONFIG.map((criterio) => (
-                        <CheckboxCard.Root key={criterio.value} checked={estaSeleccionado(criterio.value)} onCheckedChange={() => toggleCriterio(criterio.value)} >
+                        <CheckboxCard.Root key={criterio.value} checked={estaSeleccionado(criterio.value)} onCheckedChange={() => toggleCriterio(criterio.value)}>
                             <CheckboxCard.HiddenInput />
                             <CheckboxCard.Control>
                                 <CheckboxCard.Content>
@@ -139,70 +168,84 @@ export const CriteriosBusqueda = () => {
                                 <CheckboxCard.Indicator />
                             </CheckboxCard.Control>
 
-                        {/* Desplegable para locales: criterio FIEL */}
-                        {criterio.type === 'restaurantes' && (
-                            <Collapsible.Root open={estaSeleccionado(criterio.value)}>
-                                <Collapsible.Trigger display='none'></Collapsible.Trigger> {/* Necesario para el desplegable*/}
-                                <Collapsible.Content>
-                                    <CheckboxCard.Addon>
-                                        {localesPreferidos.length > 0 ? (
-                                            localesPreferidos.map((local) => (
-                                                <RestaurenteItem 
-                                                id={local.id!} nombre={local.nombre} imagen={local.imagen} puntuacion={local.puntuacion}
-                                                onEliminar={eliminarLocal} />
-                                            ))
-                                        ) : (
-                                            <Text color='gray.500'> Aún no seleccionaste locales preferidos </Text>
-                                        )}
-                                        <Flex justifyContent='end'>
-                                            <IconButton variant='ghost' onClick={abrirModalLocales}> <CiSquarePlus /> </IconButton>
-                                        </Flex>
-                                    </CheckboxCard.Addon>
-                                </Collapsible.Content>
-                            </Collapsible.Root>
-                        )}
+                            {/* Desplegable para locales: criterio FIEL */}
+                            {criterio.type === 'restaurantes' && (
+                                <Collapsible.Root open={estaSeleccionado(criterio.value)}>
+                                    <Collapsible.Trigger display='none'></Collapsible.Trigger> {/* Necesario para el desplegable*/}
+                                    <Collapsible.Content>
+                                        <CheckboxCard.Addon>
+                                            {localesPreferidos.length > 0 ? (
+                                                localesPreferidos.map((local) => (
+                                                    <RestaurenteItem
+                                                        id={local.idLocal!} nombre={local.nombre} imagen={local.urlImagenLocal} puntuacion={local.rating} tarifaEntrega={local.tarifaEntrega}
+                                                        onEliminar={eliminarLocal} />
+                                                ))
+                                            ) : (
+                                                <Text color='gray.500'> Aún no seleccionaste locales preferidos </Text>
+                                            )}
+                                            <Flex justifyContent='end'>
+                                                <IconButton variant='ghost' onClick={abrirModalLocales}> <CiSquarePlus /> </IconButton>
+                                            </Flex>
+                                        </CheckboxCard.Addon>
+                                    </Collapsible.Content>
+                                </Collapsible.Root>
+                            )}
 
-                        {/* Desplegable para palabras: criterio MARKETING */}
-                        {criterio.type === 'palabras' && (
-                            <Collapsible.Root open={estaSeleccionado(criterio.value)}>
-                                <Collapsible.Trigger display='none'></Collapsible.Trigger> 
-                                <Collapsible.Content>
-                                    <CheckboxCard.Addon>
-                                        {palabrasClave.length > 0 ? (
-                                            palabrasClave.map((palabra) => (
-                                            <ItemRow titulo={palabra} icono={<MdClose/>} onClick={() => eliminarPalabra(palabra)} />
-                                            ))
-                                        ) : (
-                                            <Text color='gray.500'> Aún no tenés palabras clave </Text>
-                                        )}
-                                        <Flex justifyContent='end'>
-                                            <IconButton  variant='ghost' onClick={abrirModalPalabras}> <CiSquarePlus /> </IconButton>
-                                        </Flex>
-                                    </CheckboxCard.Addon>
-                                </Collapsible.Content>
-                            </Collapsible.Root>
-                        )}
+                            {/* Desplegable para palabras: criterio MARKETING */}
+                            {criterio.type === 'palabras' && (
+                                <Collapsible.Root open={estaSeleccionado(criterio.value)}>
+                                    <Collapsible.Trigger display='none'></Collapsible.Trigger>
+                                    <Collapsible.Content>
+                                        <CheckboxCard.Addon>
+                                            {palabrasClave.length > 0 ? (
+                                                palabrasClave.map((palabra, index) => (
+                                                    <ItemRow key={index} titulo={palabra} icono={<MdClose />} onClick={() => eliminarPalabra(palabra)} />
+                                                ))
+                                            ) : (
+                                                <Text color='gray.500'> Aún no tenés palabras clave </Text>
+                                            )}
+                                            <Flex justifyContent='end'>
+                                                <IconButton variant='ghost' onClick={abrirModalPalabras}> <CiSquarePlus /> </IconButton>
+                                            </Flex>
+                                        </CheckboxCard.Addon>
+                                    </Collapsible.Content>
+                                </Collapsible.Root>
+                            )}
 
-                        {/* Desplegable para distancia: criterio IMPACIENTE */}
-                        {criterio.type === 'distancia' && (
-                            <Collapsible.Root open={estaSeleccionado(criterio.value)}>
-                                <Collapsible.Trigger display='none'></Collapsible.Trigger>
-                                <Collapsible.Content>
-                                    <CheckboxCard.Addon>
-                                        <HStack justifyContent='space-between'>
-                                            <Text>Distancia máxima (km)</Text>
-                                            <Contador valor={usuario.distancia}/>
-                                        </HStack>
-                                    </CheckboxCard.Addon>
-                                </Collapsible.Content>
-                            </Collapsible.Root>
-                        )}
-                    </CheckboxCard.Root>
-                ))}
+                            {/* Desplegable para distancia: criterio IMPACIENTE */}
+                            {criterio.type === 'distancia' && (
+                                <Collapsible.Root open={estaSeleccionado(criterio.value)}>
+                                    <Collapsible.Trigger display='none'></Collapsible.Trigger>
+                                    <Collapsible.Content>
+                                        <CheckboxCard.Addon>
+                                            <HStack justifyContent='space-between'>
+                                                <Text>Distancia máxima (km)</Text>
+                                                <Contador valor={usuario.distancia} />
+                                            </HStack>
+                                        </CheckboxCard.Addon>
+                                    </Collapsible.Content>
+                                </Collapsible.Root>
+                            )}
+                        </CheckboxCard.Root>
+                    ))}
                 </Stack>
             </CheckboxGroup>
 
             <Button onClick={guardarCriterios}>Guardar</Button>
         </Stack>
+        
+        <ModalLocalesPreferidos 
+            open={modalLocalesAbierto}
+            onClose={() => setModalLocalesAbierto(false)}
+            localesSeleccionados={localesPreferidos}
+            onSeleccionar={agregarLocal}
+        />
+        <ModalPalabrasClave
+            open={modalPalabrasAbierto}
+            onClose={() => setModalPalabrasAbierto(false)}
+            palabrasActuales={palabrasClave}
+            onGuardar={agregarPalabra}
+        />
+        </>
     )
 }

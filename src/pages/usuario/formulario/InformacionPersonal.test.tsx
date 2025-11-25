@@ -254,7 +254,7 @@ describe('InformacionPersonal', () => {
             const nuevoUsuario = new Usuario()
             nuevoUsuario.nombre = 'Maria'
             nuevoUsuario.apellido = 'Martínez'
-            nuevoUsuario.email = 'correo@mock.com'
+            nuevoUsuario.mail = 'correo@mock.com'
             
             mockContextValue.usuario = nuevoUsuario
             

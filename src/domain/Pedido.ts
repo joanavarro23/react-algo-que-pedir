@@ -1,7 +1,7 @@
 import type { Carrito } from './Carrito'
 import { Plato } from './Plato'
 import { type PlatoJSON } from './Plato'
-import type { LocalJSON, MedioDePago } from '@/services/localServiceTest'
+import type { LocalJSON, MedioDePago } from '@/services/localService'
 import { Usuario, type UsuarioJSON } from './Usuario'
 
 export type PedidoJSON = {

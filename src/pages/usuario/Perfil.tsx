@@ -3,7 +3,7 @@ import { useOnInit } from '@/customHooks/useOnInit'
 import { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { getMensajeError } from '@/utils/errorHandling'
-import { useState, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import { Outlet, useNavigate, type ErrorResponse } from 'react-router-dom'
 import type { Preferencias } from './subrutasPerfil'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
@@ -18,7 +18,6 @@ export type PerfilContextType = {
     gotoPreferencias: (opcion: Preferencias) => void
 }
 
-const USUARIO_ID = 1
 
 export const PerfilUsuario = () => {
     const [usuario, setUsuario] = useState<Usuario>(new Usuario())
@@ -26,11 +25,13 @@ export const PerfilUsuario = () => {
     const [guardando, setGuardando] = useState(false)
     const navigate = useNavigate()
     
+    const USUARIO_ID = +localStorage.getItem('idUsuario')!
+
     // Carga de datos inicial
     const traerUsuario = async () => {
         try {
             setCargando(true)
-            const usuario = await usuarioService.getById(USUARIO_ID) //+id!
+            const usuario = await usuarioService.getById(USUARIO_ID)
             setUsuario(usuario)
         } catch (error: unknown) {
             const mensajeError = getMensajeError(error as ErrorResponse)
@@ -43,11 +44,16 @@ export const PerfilUsuario = () => {
     }
     useOnInit(traerUsuario)
 
+    //Para la carga cada vez que se inicia sesion nuevamente
+    useEffect(() => {
+        traerUsuario()
+    }, [USUARIO_ID])
+
     // Guardar y actualizar el usuario
     const guardarUsuario = async (usuarioActualizado: Usuario) => {
         try {
             setGuardando(true)
-            usuarioActualizado.validarCambios()
+            // usuarioActualizado.validarCambios()
             const usuarioGuardado = await usuarioService.actualizar(usuarioActualizado)
             setUsuario(usuarioGuardado)
 
@@ -76,6 +82,6 @@ export const PerfilUsuario = () => {
     }
 
     return <>
-        <Outlet context={{usuario, setUsuario, traerUsuario, navigate, gotoPreferencias}}/>
+        <Outlet context={{usuario, setUsuario, cargando, guardando, guardarUsuario, navigate, gotoPreferencias}}/>
     </>           
 }

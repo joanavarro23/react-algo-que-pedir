@@ -9,12 +9,13 @@ import { useNavigate, useOutletContext, type ErrorResponse } from 'react-router-
 import { getMensajeError } from '@/utils/errorHandling'
 import { toaster } from '@/components/chakra-toaster/toaster'
 import { useOnInit } from '@/customHooks/useOnInit'
-import { localService, medioDePagoLabels, type LocalJSON, type MedioDePago } from '@/services/localServiceTest'
 import type { CarritoContext } from '../layout-carrito/CarritoLayout'
 import { LoadingSpinner } from '@/components/spinnerCargando/spinner'
 import type { Usuario } from '@/domain/Usuario'
 import { usuarioService } from '@/services/usuarioService'
 import { distanciaService } from '@/services/distanciaService'
+import { type MedioDePago, type LocalJSON, medioDePagoLabels } from '@/domain/Local'
+import { localService } from '@/services/localService'
 
 
 export const CheckoutPedido = () => {
@@ -57,7 +58,7 @@ export const CheckoutPedido = () => {
             setUsuario(userData)
 
             if (localData && userData) {
-                const distanciaCalculada = await distanciaService.obtenerDistancia(localData.idLocal, userData.id!)
+                const distanciaCalculada = await distanciaService.obtenerDistancia(localData.idLocal!, userData.id!)
                 setDistancia(distanciaCalculada)
             }
         } catch (error) {
