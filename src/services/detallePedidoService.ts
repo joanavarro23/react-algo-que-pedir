@@ -47,7 +47,6 @@ export async function getPedidosPorEstados(estados: string[]): Promise<Pedido[]>
         axios.get(BASE_USUARIO_URL, { params: { estado } })
       )
     )
-    console.log(responses.flatMap(r => r.data))
     return responses.flatMap(r => r.data)
   } catch (err) {
     console.error("Error al obtener pedidos", err)

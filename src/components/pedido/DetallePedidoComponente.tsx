@@ -60,7 +60,7 @@ export const PedidoDetalle = ({
           key={idArt}
           nombre={articulo.nombre}
           cantidad={articulo.cantidad}
-          precioUnitario={articulo.precioUnitario.toFixed(2)}
+          precioUnitario={articulo.precioUnitario}
         />
       ))}
       </VStack>

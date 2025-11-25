@@ -51,10 +51,10 @@ export const PedidoCard = ({ order, onCancel, mostrarCancelacion }: PedidoCardPr
                   {order.local.nombre}
                 </Card.Title>
                 <Card.Description fontSize="s" color="gray.600">
-                  Total: ${order.precioTotal.toFixed(2)}
+                  Total: ${order.costoTotalPedido.toFixed(2)}
                 </Card.Description>
                 <Card.Description fontSize="s" color="gray.600">
-                  {order.fecha} - {order.items} artículos
+                  {order.fechaPedido} - {order.cantidadDePlatos} artículos
                 </Card.Description>
               </VStack>
             </GridItem>
