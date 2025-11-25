@@ -45,12 +45,13 @@ export class CalificarService {
   static async puntuarLocal(
     idUsuario: string,
     idLocal: string,
-    puntuacion: number
+    puntuacion: number,
+    review: string
   ): Promise<void> {
     try {
       await axios.post(
         `${REST_SERVER_URL}/usuario/${idUsuario}/puntuar-local/${idLocal}`,
-        { puntuacion },
+        { puntuacion, review },
         {
           headers: {
             'Content-Type': 'application/json'

@@ -14,7 +14,8 @@ export class Local {
     public urlImagenLocal: string = '',
     public mediosDePago: MedioDePago[] = [],
     public rating: number = 0,
-    public reviews: string = '',
+    public cantidadReviews: number = 0,
+    public reviews: string[] = [],
     public tarifaEntrega: number = 0,
     public recargosMedioDePago: Record<MedioDePago, number> = { EFECTIVO: 0, TARJETA: 0, QR: 0}
   ){}
@@ -48,7 +49,8 @@ export type LocalJSON = {
     urlImagenLocal: string,
     mediosDePago: MedioDePago[],
     rating: number,
-    reviews: String,
+    cantidadReviews: number,
+    reviews: string[],
     tarifaEntrega: number,
     recargosMedioDePago: Record<MedioDePago, number>
 }

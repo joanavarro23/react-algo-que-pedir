@@ -1,4 +1,4 @@
-import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs, useDisclosure } from '@chakra-ui/react'
+import { Box, IconButton, Image, Heading, VStack, Text, Flex, HStack, Tabs, useDisclosure, Card } from '@chakra-ui/react'
 import { FaStar } from 'react-icons/fa'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
@@ -22,7 +22,8 @@ interface LocalInfo {
     nombre: string,
     urlImagenLocal: string,
     rating: number,
-    reviews: string,
+    cantidadReviews: number,
+    reviews: string[],
     pedidos?: number
 }
 
@@ -95,7 +96,8 @@ export const DetalleLocal = () => {
                 nombre: localData.nombre,
                 urlImagenLocal: localData.urlImagenLocal,
                 rating: localData.rating,
-                reviews: localData.reviews.toString(),
+                cantidadReviews: localData.cantidadReviews,
+                reviews: localData.reviews,
                 pedidos: 0 // TODO: completar cuando el back devuelva cantidad de pedidos
             })
 
@@ -151,7 +153,7 @@ export const DetalleLocal = () => {
                     <HStack fontSize="sm">
                         <FaStar color="#f9d44dff" />
                         <Text>
-                            {`${local.rating.toFixed(2)} (${local.reviews}+ reviews) · ${local.pedidos} pedidos`}
+                            {`${local.rating.toFixed(2)} (${local.cantidadReviews}+ reviews) · ${local.pedidos} pedidos`}
                         </Text>
                     </HStack>
                 </Flex>
@@ -172,7 +174,26 @@ export const DetalleLocal = () => {
                 </Tabs.Content>
 
                 <Tabs.Content value="reseñas">
-                    <Text>Developing... jeje</Text>
+                    <VStack w="100%" gap="3" mt="3">
+                        {local.reviews.length === 0 ? (
+                            <Text color="gray.500">No hay reseñas todavía</Text>
+                        ) : (
+                            local.reviews.map((review, index) => (
+                                <Card.Root key={index} w="100%" p="4" boxShadow="sm">
+                                    <Card.Body>
+                                        <HStack mb="2">
+                                            <Text fontWeight="semibold" fontSize="sm">
+                                                Reseña #{index + 1}
+                                            </Text>
+                                        </HStack>
+                                        <Text fontSize="sm" color="gray.700">
+                                            {review}
+                                        </Text>
+                                    </Card.Body>
+                                </Card.Root>
+                            ))
+                        )}
+                    </VStack>
                 </Tabs.Content>
             </Tabs.Root>
 

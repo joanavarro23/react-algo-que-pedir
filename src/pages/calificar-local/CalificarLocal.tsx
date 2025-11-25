@@ -28,7 +28,7 @@ export default function CalificarLocalView() {
 
         try {
             setLoading(true)
-            await CalificarService.puntuarLocal(idUsuario, localId, rating)
+            await CalificarService.puntuarLocal(idUsuario, localId, rating, comentario)
             navigate('/calificar-local')
         } catch (error) {
             console.error('Error al puntuar local:', error)
@@ -42,20 +42,18 @@ export default function CalificarLocalView() {
         for (let i = 1; i <= 5; i++) {
             const isActive = i <= rating
             stars.push(
-                <Box key={i} className="star-container">
+                <Box key={i}>
                     <IconButton
+                        m= {0}
+                        gap={0}
                         aria-label={`${i} estrellas`}
-                        size="lg"
+                        size="2xl"
                         variant="ghost"
                         color={isActive ? 'yellow.400' : 'gray.300'}
                         onClick={() => setRating(i)}
-                        className="star-button"
                     >
-                        {isActive ? <AiFillStar /> : <AiOutlineStar />}
+                        {isActive ? <AiFillStar/> : <AiOutlineStar/>}
                     </IconButton>
-                    <Text fontSize="xs" color="gray.600" mt={1}>
-                        {i}
-                    </Text>
                 </Box>
             )
         }
