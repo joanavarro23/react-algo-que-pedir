@@ -65,8 +65,8 @@ export const PedidoDetalle = ({
             precioUnitario={articulo.precioUnitario}
             onDecrement={function (): void {
               toaster.create({
-                description: "No es posible cancelar este artículo, el pedido ya está hecho",
-                type: "warning"
+                description: 'No es posible cancelar este artículo, el pedido ya está hecho',
+                type: 'warning'
               })
             }} />
         ))}
@@ -74,10 +74,10 @@ export const PedidoDetalle = ({
 
       <ResumenDetallePedido
         items={[
-          { label: "Subtotal", value: subtotal },
-          { label: "Recargo por tipo de pago", value: recargo },
-          { label: "Tarifa de entrega", value: tarifaEntrega },
-          { label: "Total", value: total, bold: true }
+          { label: 'Subtotal', value: subtotal },
+          { label: 'Recargo por tipo de pago', value: recargo },
+          { label: 'Tarifa de entrega', value: tarifaEntrega },
+          { label: 'Total', value: total, bold: true }
         ]}
       />
 

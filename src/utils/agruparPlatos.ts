@@ -1,4 +1,4 @@
-import type { Plato } from "@/types/plato"
+import type { Plato } from '@/types/plato'
 
 export interface PlatoAgrupado {
   id: number

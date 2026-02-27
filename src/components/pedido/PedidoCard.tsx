@@ -1,9 +1,9 @@
-import { LuX } from "react-icons/lu"
-import { useNavigate } from "react-router-dom"
-import type { Pedido } from "@/pages/detalle-pedido/Pedido"
-import { ConfirmDrawer } from "../confirm-modal/ConfirmModal"
-import { useConfirmModal } from "@/customHooks/useConfirmModal"
-import { Button, Card, Image, Grid, GridItem, VStack } from "@chakra-ui/react"
+import { LuX } from 'react-icons/lu'
+import { useNavigate } from 'react-router-dom'
+import type { Pedido } from '@/pages/detalle-pedido/Pedido'
+import { ConfirmDrawer } from '../confirm-modal/ConfirmModal'
+import { useConfirmModal } from '@/customHooks/useConfirmModal'
+import { Button, Card, Image, Grid, GridItem, VStack } from '@chakra-ui/react'
 
 interface PedidoCardProps {
   order: Pedido
@@ -33,7 +33,7 @@ export const PedidoCard = ({ order, onCancel, mostrarCancelacion }: PedidoCardPr
             templateRows="auto auto auto"
             w="100%"
             onClick={clickearCard}
-            _hover={{ cursor: "pointer", bg: "gray.50" }}
+            _hover={{ cursor: 'pointer', bg: 'gray.50' }}
           >
             <GridItem gridRow="1 / 4" gridColumn="1 / 2">
               <Image
