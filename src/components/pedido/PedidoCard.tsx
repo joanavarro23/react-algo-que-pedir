@@ -1,3 +1,4 @@
+import React from 'react'
 import { LuX } from 'react-icons/lu'
 import { useNavigate } from 'react-router-dom'
 import type { Pedido } from '@/pages/detalle-pedido/Pedido'
