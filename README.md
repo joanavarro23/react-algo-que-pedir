@@ -29,37 +29,44 @@ La aplicación ofrece un flujo completo desde el descubrimiento de locales hasta
 
 El sistema está estructurado en las siguientes secciones principales:
 
-1.  **Login y Registro:** Puerta de entrada para los usuarios del sistema.
+### **Login y Registro:** 
+Puerta de entrada para los usuarios del sistema.
 
 ![Login y Register](public/login-register.gif)
 
-2.  **Home (Listado de Locales):** Vista principal donde se pueden buscar y filtrar locales gastronómicos.
+### **Home (Listado de Locales):** 
+Vista principal donde se pueden buscar y filtrar locales gastronómicos.
 
 ![Home](public/home.gif)
 
-3.  **Detalle del Local:** Vista de los platos ofrecidos por un local específico, permitiendo agregarlos al carrito.
+### **Detalle del Local:** 
+Vista de los platos ofrecidos por un local específico, permitiendo agregarlos al carrito.
 
 ![Detalle Local](public/local.gif)
 
-4.  **Checkout:** Pantalla para finalizar la compra, elegir el método de pago y confirmar la transacción.
+ ### **Checkout:** 
+ Pantalla para finalizar la compra, elegir el método de pago y confirmar la transacción.
 
 ![Checkout](public/checkout.gif)
 
-5.  **Perfil del Usuario:**
-    *   **Información Personal:** Datos básicos del usuario.
-    *   **Preferencias:** Configuración de ingredientes (preferidos/evitar) y criterios de búsqueda personalizados.
+###  **Perfil del Usuario:**
+- **Información Personal:** Datos básicos del usuario.
+- **Preferencias:** Configuración de ingredientes (preferidos/evitar) y criterios de búsqueda personalizados.
 
 ![Perfil](public/perfil.gif)
 
-6.  **Mis Pedidos:** Listado histórico de todos los pedidos realizados por el usuario.
+### **Mis Pedidos:** 
+Listado histórico de todos los pedidos realizados por el usuario.
 
 ![Pedidos](public/pedidos.gif)
 
-7.  **Detalle del Pedido:** Información exhaustiva de un pedido específico (ítems, costos, estado).
+### **Detalle del Pedido:** 
+Información exhaustiva de un pedido específico (ítems, costos, estado).
 
 ![Detalle Pedido](public/detalle-pedido.png)
 
-8.  **Calificar Local:** Interfaz para brindar feedback sobre la experiencia en un local determinado.
+### **Calificar Local:** 
+Interfaz para brindar feedback sobre la experiencia en un local determinado.
 
 ![Calificar](public/calificar.gif)
 
